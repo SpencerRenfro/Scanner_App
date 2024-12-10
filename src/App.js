@@ -8,8 +8,10 @@ import Checkout from "./pages/Checkout";
 import InventoryPage from "./pages/InventoryPage";
 import CheckIn from "./pages/CheckIn";
 import SingleItemInfo from "./pages/ItemInfo";
-// import ItemCreationFailure from "./pages/crud_pages/ItemCreationFailure";
 import ItemManagement from "./pages/ItemManagement";
+
+//
+import AddItemPage from "./pages/AddItemPage";
 
 import SignOut from "./pages/SignOut";
 import Logs from "./pages/Logs";
@@ -19,10 +21,6 @@ import Banner from "./components/Banner";
 // Banner Components
 
 function App() {
-  // hide navbar for signout page
-  const location = useLocation();
-  const hideNavbar = location.pathname.includes("/sign-out");
-
   // Banners
   const [bannerType, setBannerType] = useState(""); // success, failure, updateSuccess
   const [bannerMessage, setBannerMessage] = useState("");
@@ -36,6 +34,25 @@ function App() {
   const [itemSignOutSuccess, setItemSignOutSuccess] = useState(false);
   const [itemSignOutFailure, setItemSignOutFailure] = useState(false);
 
+  // hide navbar for select pages
+  const location = useLocation();
+  // const hideNavbar = location.pathname.includes("/sign-out");
+
+  // new boolean hide nvabar for select pages
+  const [hideNavbar, setHideNavbar] = useState(false);
+
+  const handleHideNavbar = () => {
+    setHideNavbar(false);
+  };
+
+  //useEffect to hide navbar on select pages
+  useEffect(() => {
+    if (location.pathname.includes("/sign-out")) {
+      setHideNavbar(true);
+    } else if (location.pathname.includes("/add-item")) {
+      setHideNavbar(true);
+    }
+  }, [location.pathname]);
   useEffect(() => {
     if (itemCreationSuccess) {
       setBannerType("success");
@@ -131,6 +148,16 @@ function App() {
           <Route
             path="/add-item"
             element={
+              <AddItemPage
+                setItemCreationSuccess={setItemCreationSuccess}
+                setItemCreationFailure={setItemCreationFailure}
+                handleHideNavbar={handleHideNavbar}
+              />
+            }
+          />
+          <Route
+            path="/add-itemPage"
+            element={
               <AddItem
                 setItemCreationSuccess={setItemCreationSuccess}
                 setItemCreationFailure={setItemCreationFailure}
@@ -149,7 +176,7 @@ function App() {
               />
             }
           />
-          <Route path="/:id/sign-out" element={<SignOut />} />
+          <Route path="/:id/sign-out" element={<SignOut />} handleHideNavbar={handleHideNavbar} />
           <Route path="/item-management" element={<ItemManagement />} />
         </Routes>
       </div>

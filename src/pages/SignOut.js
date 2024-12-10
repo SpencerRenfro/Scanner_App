@@ -10,7 +10,7 @@ import SignOutForm from "../components/sign-out/SignOutForm";
 import close from "../assets/close.svg";
 import dollarSign from "../assets/icons/dollar-sign.svg";
 
-export default function SignOut() {
+export default function SignOut(handleHideNavbar) {
   const { id } = useParams();
   const url = `http://localhost:8000/inventory/${id}`;
   const { data: item, isPending, error } = useFetch(url);
@@ -35,10 +35,10 @@ export default function SignOut() {
   };
 
   return (
-    <div className="">
+    <div>
       <div className="flex items-center justify-between p-6 shadow-lg">
         <h1>Sign Item Out</h1>
-        <button>
+        <button onClick={handleHideNavbar}>
         <NavLink to="/">
           <img src={close} width={25} alt="close" />
         </NavLink>
@@ -64,13 +64,9 @@ export default function SignOut() {
         )}
         <div className="col-span-5 col-start-4 mt-12 mb-6">
           <SignOutForm
-            // customerName={customerName}
-            //setCustomerName={setCustomerName}
             customerFirstName={customerFirstName}
             setCustomerLastName={setCustomerLastName}
-            // customerEmail={customerEmail}
             setCustomerEmail={setCustomerEmail}
-            // customerPhone={customerPhone}
             setCustomerPhone={setCustomerPhone}
             url={url}
             handleSignOut={handleSignOut}
