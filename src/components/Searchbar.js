@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, term }) {
+export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, term, isInventoryData }) {
   useEffect(() => {
     if (!inventoryItems.length) {
       console.log("No inventory items available yet.");
@@ -19,7 +19,11 @@ export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, t
       return itemName.includes(lowerCaseTerm) || itemId.includes(lowerCaseTerm);
     });
 
-    setFilteredItems(results); // Update filtered items for display
+    // Update new category items to display in inventory, causes infinitite loop for
+    if(isInventoryData){
+      setFilteredItems(results);
+    }
+     
     console.log("Filtered items:", results);
   }, [term, inventoryItems, setFilteredItems]); // Effect runs when term or inventoryItems updates
 

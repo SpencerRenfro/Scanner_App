@@ -10,9 +10,9 @@ import CheckIn from "./pages/CheckIn";
 import SingleItemInfo from "./pages/ItemInfo";
 // import ItemCreationFailure from "./pages/crud_pages/ItemCreationFailure";
 import ItemManagement from "./pages/ItemManagement";
-import LogsTwo from "./components/logs/Logs";
-import SignOut from "./pages/SignOut";
 
+import SignOut from "./pages/SignOut";
+import Logs from "./pages/Logs";
 // Components
 import Navbar from "./ui/Navbar";
 import Banner from "./components/Banner";
@@ -137,7 +137,7 @@ function App() {
               />
             }
           />
-          <Route path="/logs" element={<LogsTwo />} />
+          <Route path="/logs" element={<Logs />} />
           <Route path="/inventory/:id" element={<SingleItemInfo />} />
           <Route
             path="/inventory/:id/edit"

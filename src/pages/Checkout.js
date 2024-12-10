@@ -7,10 +7,6 @@ import ScanInput from "../components/ScanInput";
 
 import ItemFoundCard from "../components/ItemFoundCard";
 
-//DatePicker
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
 //hooks
 import { useFindItem } from "../hooks/useFindItem";
 

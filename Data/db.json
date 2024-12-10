@@ -378,6 +378,23 @@
       "barcodeUrl": "",
       "qrCode": "",
       "status": "IN"
+    },
+    {
+      "id": "92ce",
+      "date": "12/9/2024, 11:55:57 PM",
+      "name": "Dumpt Truck",
+      "category": "Heavy Equipment",
+      "price": 300,
+      "serialNumber": "na",
+      "description": "",
+      "barcode": "980204226991",
+      "barcodeCombinedName": "980204226991_Dumpt Truck",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN",
+      "dayOfWeek": "Monday",
+      "time": "6:55"
     }
   ],
   "categories": [
@@ -422,6 +439,12 @@
       "name": "Pens",
       "barcode": "239846860540",
       "barcodeCombinedName": "239846860540_Fountain pen"
+    },
+    {
+      "id": "2574",
+      "name": "Heavy Equipment",
+      "barcode": "980204226991",
+      "barcodeCombinedName": "980204226991_Dumpt Truck"
     }
   ],
   "itemLogs": [
@@ -430,245 +453,360 @@
       "name": "Beats By Dr. Dre",
       "action": "CREATED",
       "date": "06/25/2024",
-      "barcode": "079498404880"
+      "barcode": "079498404880",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "4a1f_Beats",
       "name": "Beats By Dr. Dre",
       "action": "OUT",
       "date": "06/27/2024",
-      "barcode": "079498404882"
+      "barcode": "079498404882",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "4a1f_Beats",
       "name": "Beats By Dr. Dre",
       "action": "DELETED",
       "date": "06/28/2024",
-      "barcode": "079498404883"
+      "barcode": "079498404883",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "60de_Drill",
       "name": "Impact Drill",
       "action": "CREATED",
       "date": "06/25/2024",
-      "barcode": "079498404884"
+      "barcode": "079498404884",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "60de_Drill",
       "name": "Impact Drill",
       "action": "IN",
       "date": "06/26/2024",
-      "barcode": "079498404885"
+      "barcode": "079498404885",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "60de_Drill",
       "name": "Impact Drill",
       "action": "OUT",
       "date": "06/27/2024",
-      "barcode": "079498404886"
+      "barcode": "079498404886",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "60de_Drill",
       "name": "Impact Drill",
       "action": "DELETED",
       "date": "06/28/2024",
-      "barcode": "079498404887"
+      "barcode": "079498404887",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "2bdc_Xbox",
       "name": "Xbox",
       "action": "CREATED",
       "date": "06/25/2024",
-      "barcode": "079498404888"
+      "barcode": "079498404888",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "2bdc_Xbox",
       "name": "Xbox",
       "action": "IN",
       "date": "06/26/2024",
-      "barcode": "079498404889"
+      "barcode": "079498404889",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "2bdc_Xbox",
       "name": "Xbox",
       "action": "OUT",
       "date": "06/27/2024",
-      "barcode": "079498404890"
+      "barcode": "079498404890",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "2bdc_Xbox",
       "name": "Xbox",
       "action": "DELETED",
       "date": "06/28/2024",
-      "barcode": "079498404891"
+      "barcode": "079498404891",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "c897_TowTruck",
       "name": "TowTruck",
       "action": "CREATED",
       "date": "06/25/2024",
-      "barcode": "079498404892"
+      "barcode": "079498404892",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Transport"
     },
     {
       "id": "c897_TowTruck",
       "name": "TowTruck",
       "action": "IN",
       "date": "06/26/2024",
-      "barcode": "079498404893"
+      "barcode": "079498404893",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Transport"
     },
     {
       "id": "c897_TowTruck",
       "name": "TowTruck",
       "action": "OUT",
       "date": "06/27/2024",
-      "barcode": "079498404894"
+      "barcode": "079498404894",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Transport"
     },
     {
       "id": "c897_TowTruck",
       "name": "TowTruck",
       "action": "DELETED",
       "date": "06/28/2024",
-      "barcode": "079498404895"
+      "barcode": "079498404895",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Transport"
     },
     {
       "id": "264247637115_Socket Wrench",
       "name": "Socket Wrench",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "030189894638"
+      "barcode": "030189894638",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "667813666430_PLayStation 5",
       "name": "PLayStation 5",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "793423873495"
+      "barcode": "793423873495",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "567560567822_Biology for DUMMIES",
       "name": "Biology for DUMMIES",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "868090635148"
+      "barcode": "868090635148",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Education"
     },
     {
       "id": "930725238709_Nintendo 64",
       "name": "Nintendo 64",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "175026044034"
+      "barcode": "175026044034",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "925022869793_Screw Driver",
       "name": "Screw Driver",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "694483607696"
+      "barcode": "694483607696",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Tools"
     },
     {
       "id": "940007881716_ps4 Controller",
       "name": "ps4 Controller",
       "action": "CREATED",
       "date": "07/11/2024",
-      "barcode": "370559391260"
+      "barcode": "370559391260",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "510069796038_Meepo Board ",
       "name": "Meepo Board ",
       "action": "CREATED",
       "date": "07/13/2024",
-      "barcode": "510069796038"
+      "barcode": "510069796038",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "952757878824_Ore",
       "name": "Ore",
       "action": "CREATED",
       "date": "07/13/2024",
-      "barcode": "952757878824"
+      "barcode": "952757878824",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Raw Materials"
     },
     {
       "id": "943969238701_Grass",
       "name": "Grass",
       "action": "CREATED",
       "date": "07/13/2024",
-      "barcode": "943969238701"
+      "barcode": "943969238701",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Organic Materials"
     },
     {
       "id": "691500691878_Radio",
       "name": "Radio",
       "action": "CREATED",
       "date": "07/13/2024",
-      "barcode": "691500691878"
+      "barcode": "691500691878",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "239846860540_Fountain pen",
       "name": "Fountain pen",
       "action": "CREATED",
       "date": "07/16/2024",
-      "barcode": "239846860540"
+      "barcode": "239846860540",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Pens"
     },
     {
       "id": "734599256844_Cofee Mug",
       "name": "Cofee Mug",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "734599256844"
+      "barcode": "734599256844",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "780080166660_Xbox Controller",
       "name": "Xbox Controller",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "780080166660"
+      "barcode": "780080166660",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Electronics"
     },
     {
       "id": "815999632731_werew",
       "name": "werew",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "815999632731"
+      "barcode": "815999632731",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "096146968791_fdsfds",
       "name": "fdsfds",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "096146968791"
+      "barcode": "096146968791",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "116565213285_gfsdcgsf",
       "name": "gfsdcgsf",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "116565213285"
+      "barcode": "116565213285",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "835171181111_gfsdgfs",
       "name": "gfsdgfs",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "835171181111"
+      "barcode": "835171181111",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "675083411165_fdsggsdf",
       "name": "fdsggsdf",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "675083411165"
+      "barcode": "675083411165",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "924035239217_fdsaf",
       "name": "fdsaf",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "924035239217"
+      "barcode": "924035239217",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
     },
     {
       "id": "469210057564_dsadsa",
       "name": "dsadsa",
       "action": "CREATED",
       "date": "10/03/2024",
-      "barcode": "469210057564"
+      "barcode": "469210057564",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Other"
+    },
+    {
+      "id": "980204226991_Dumpt Truck",
+      "name": "Dumpt Truck",
+      "action": "CREATED",
+      "date": "12/9/2024, 11:55:57 PM",
+      "barcode": "980204226991",
+      "dayOfWeek": "Monday",
+      "time": "6:55 AM",
+      "category": "Heavy Equipment"
     }
   ]
 }

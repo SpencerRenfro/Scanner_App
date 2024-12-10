@@ -36,6 +36,8 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
 
   const [formData, setFormData] = useState({
     date: "",
+    dayOfWeek: "",
+    time: "",
     name: "",
     category: "",
     price: 0.0,
@@ -53,8 +55,11 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
     name: "",
     action: "CREATED",
     date: "",
+    dayOfWeek: "",
+    time: "",
     barcode: "",
     id: "",
+    category: "",
   });
 
   const [categoriesDataForm, setCategoriesDataForm] = useState({
@@ -89,6 +94,9 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
     ) {
       postCategoryData(categoriesDataForm);
     }
+
+    //print entire form data
+    console.log("Form Data:", formData);
   };
 
   const handleCategoryCheckBox = () => {
@@ -116,16 +124,26 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
   };
 
   useEffect(() => {
-    let today = new Date().toLocaleDateString(undefined, {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      minute: "2-digit",
-      hour12: false, // Change to `true` if you want 12-hour format
+    const dateObject = new Date();
+    let dayOfWeek = new Date().toLocaleString(undefined,{
+      weekday: "long"
+    })
+    const date = new Date().toLocaleString(undefined, {
+      hour: "numeric",
+      minute: "numeric",
+     
     });
+    const parts = date.split(/[:\s]+/);
+    console.log('hoursMinutesMeridian:', parts[0] + ":" + parts[1] + " " + parts[2]);
+
+    
+
+
     setFormData((prevFormData) => ({
       ...prevFormData,
-      date: today,
+      date: dateObject.toLocaleString(),
+      dayOfWeek: dayOfWeek,
+      time: parts[0] + ":" + parts[1] + " " + parts[2],
       barcode: barcodeState,
       barcodeCombinedName: `${barcodeState}_${prevFormData.name}`,
     }));
@@ -134,7 +152,10 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
       name: formData.name,
       barcode: barcodeState,
       id: `${barcodeState}_${formData.name}`,
-      date: today,
+      date: dateObject.toLocaleString(),
+      dayOfWeek: dayOfWeek,
+      time: parts[0] + ":" + parts[1] + " " + parts[2],
+      category: formData.category,
     }));
     setCategoriesDataForm((prevCategoriesDataForm) => ({
       ...prevCategoriesDataForm,
@@ -142,6 +163,7 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
       barcode: barcodeState,
       barcodeCombinedName: `${barcodeState}_${formData.name}`,
     }));
+    console.log('formData submitted:', formData);
   }, [formData.name, barcodeState, formData.category]);
   //added formData.caetegory to dependancy array
 

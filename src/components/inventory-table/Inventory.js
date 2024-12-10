@@ -77,14 +77,13 @@ export default function Inventory({ inventoryItems, categoryItems }) {
 
   return (
     <div>
-      {/* <h1 className="col-start-1 col-span-12 font-bold text-3xl text-black my-10"> */}
       <div className="flex flex-grow justify-between my-10 mx-40">
         <h1 className="font-bold text-3xl">Inventory</h1>
         <AddItem />
       </div>
       <div className="grid grid-cols-12 mx-40 mt-10">
         <div className="col-span-7 mr-10">
-          <Searchbar inventoryItems={inventoryItems} setTerm={setTerm} term={term} setFilteredItems={setFilteredItems} />
+          <Searchbar inventoryItems={inventoryItems} setTerm={setTerm} term={term} setFilteredItems={setFilteredItems} isInventoryData={true}/>
         </div>
         <FilterInventory
           filter={filter}
@@ -92,7 +91,7 @@ export default function Inventory({ inventoryItems, categoryItems }) {
           categories={categoryItems}
         />
         <div className="col-span-12 h-20">
-          <div className="flex gap-7">
+          <div className="flex gap-7 mt-5">
             <Results itemCount={itemCount} />
             <CheckedIn checkedIn={checkedIn} />
             <CheckedOut checkedOut={checkedOut} />

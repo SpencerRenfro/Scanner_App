@@ -1,13 +1,13 @@
 //hooks
 import { useEffect, useState } from "react";
-import { useFetch } from "../../hooks/useFetch";
+import { useFetch } from "../hooks/useFetch";
 
 //components
-import Searchbar from "../Searchbar";
-import FilterLogs from "./FilterLogs";
-import Results from "../inventory-table/Results";
-import Table from "./Table";
-import Pagination from "../../ui/pagination/Pagination";
+import Searchbar from "../components/Searchbar";
+import FilterLogs from "../components/logs/FilterLogs";
+import Results from "../components/inventory-table/Results";
+import Table from "../components/logs/Table";
+import Pagination from "../ui/pagination/Pagination";
 
 export default function LogsTwo() {
   const [filteredLogs, setFilteredLogs] = useState([]); // Store filtered logs here
@@ -45,6 +45,7 @@ export default function LogsTwo() {
         </h1>
         <div className="col-span-7 mr-10">
           <Searchbar
+            isInventoryData={false} // pass false to searchbar for logs, this indicates it's not inventory data
             inventoryItems={filteredLogs} // Pass logs to the searchbar for filtering
             setTerm={setTerm}
             setFilteredItems={setFilteredLogs} // Ensure it updates filtered logs
@@ -52,7 +53,7 @@ export default function LogsTwo() {
         </div>
         <FilterLogs filter={filter} setFilter={setFilter} />
         <div className="col-span-12 -4 h-20">
-          <div className="flex gap-7">
+          <div className="flex gap-7 mt-5">
             <Results itemCount={filteredLogs.length} /> {/* Update based on filtered logs */}
           </div>
         </div>
