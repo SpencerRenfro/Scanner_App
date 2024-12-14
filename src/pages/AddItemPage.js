@@ -103,6 +103,7 @@ export default function AddItem({
     }
 
     console.log("Form Data Submitted:", formData);
+    handleHideNavbar(); // Hide the navbar after submission
   };
 
   // Initialize date and time in the form data (with `.split`)
