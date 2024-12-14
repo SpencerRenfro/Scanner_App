@@ -26,21 +26,27 @@ export default function Table({ categoryFilter, filteredItems }) {
                   </NavLink>
                 </td>
                 <td className="w-1/6">
-                  <p>{item.description}</p>
+                  <p>{item.description.length > 15 ? item.description.slice(0, 15) + '...'
+                  : item.description}</p>
                 </td>
                 <td className="w-1/6">
                   <p>{item.category}</p>
                 </td>
                 <td className="w-1/6">
-                  {item.status === "IN" ? (
-                    <div className="badge badge-success badge-outline badge-lg w-14">
-                      IN
+                  <div className="flex">
+                    {item.status === "IN" ? (
+                      <div className="badge badge-success badge-outline badge-lg w-14 mr-2">
+                        IN
+                      </div>
+                    ) : (
+                      <div className="badge badge-error badge-outline badge-lg w-14 mr-2">
+                        OUT
+                      </div>
+                    )}
+                    <div>
+                      <NavLink to={`/inventory/${item.id}/edit`}>EDIT</NavLink>
                     </div>
-                  ) : (
-                    <div className="badge badge-error badge-outline badge-lg w-14">
-                      OUT
-                    </div>
-                  )}
+                  </div>
                 </td>
                 <td className="w-1/6">
                   <p>{item.price}</p>
@@ -61,7 +67,9 @@ export default function Table({ categoryFilter, filteredItems }) {
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-50 w-52 p-2 shadow">
                       <li>
-                        <NavLink to={`/inventory/${item.id}/edit`}>Edit</NavLink>
+                        <NavLink to={`/inventory/${item.id}/edit`}>
+                          Edit
+                        </NavLink>
                       </li>
                       <li>Sign In</li>
                       <NavLink to={`/${item.id}/sign-out`}>Sign Out</NavLink>

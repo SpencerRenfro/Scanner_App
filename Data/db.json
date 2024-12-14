@@ -395,6 +395,26 @@
       "status": "IN",
       "dayOfWeek": "Monday",
       "time": "6:55"
+    },
+    {
+      "id": "d010",
+      "date": "12/14/2024, 5:32:02 AM",
+      "dayOfWeek": "Saturday",
+      "time": "5:32 AM",
+      "name": "test item",
+      "category": "Education",
+      "price": null,
+      "serialNumber": "n/a",
+      "description": "test...",
+      "barcode": "012999116295",
+      "barcodeCombinedName": "012999116295_test item",
+      "itemCollection": [
+        "f",
+        "f"
+      ],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
     }
   ],
   "categories": [

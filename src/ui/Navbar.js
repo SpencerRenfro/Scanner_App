@@ -30,18 +30,18 @@ export default function Example() {
       </div>
       <div>
         <div className="dropdown dropdown-end">
-          <div
+          {/* <div
             tabIndex={0}
             role="button"
             className={`justify-center  mx-10
-            ${isActive("/item-management") ? `opacity-100 ${itemManagementSelection = "Item Management"}` 
+            ${isActive("/item-management") ? `opacity-100 ${itemManagementSelection = "Item Management"}`
             : isActive("/add-item") ? `${itemManagementSelection = "Add Item"} opacity-100`
-            : isActive("/checkout") ? `${itemManagementSelection = "Check-out"} opacity-100` 
+            : isActive("/checkout") ? `${itemManagementSelection = "Check-out"} opacity-100`
             : isActive("/check-in") ? `${itemManagementSelection = "Scan"} opacity-100`
             : `${itemManagementSelection = "Item Management"} opacity-50`}`}
           >
             {itemManagementSelection}
-          </div>
+          </div> */}
           <ul
             tabIndex={0}
             className="menu dropdown-content bg-base-100 rounded-box z-[1] mt-10 w-52 p-2 shadow"
