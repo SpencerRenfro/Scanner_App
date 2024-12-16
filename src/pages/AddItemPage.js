@@ -12,6 +12,7 @@ export default function AddItem({
   setItemCreationSuccess,
   setItemCreationFailure,
   handleHideNavbar,
+  setHideNavbar,
 }) {
   // States and Hooks
   const [customCategory, setCustomCategory] = useState(false);
@@ -19,18 +20,45 @@ export default function AddItem({
   const [barcodeState, setBarcodeState] = useState();
   const navigate = useNavigate();
 
-  const { postData: postInventoryData, data: inventoryData, error: inventoryError } = useFetch(
-    "http://localhost:8000/inventory",
-    "POST"
-  );
-  const { postData: postCategoryData, data: categorySubmission, error: categoryError } = useFetch(
-    "http://localhost:8000/categories",
-    "POST"
-  );
+  const {
+    postData: postInventoryData,
+    data: inventoryData,
+    error: inventoryError,
+  } = useFetch("http://localhost:8000/inventory", "POST");
+  const {
+    postData: postCategoryData,
+    data: categorySubmission,
+    error: categoryError,
+  } = useFetch("http://localhost:8000/categories", "POST");
   const { data: categories, error: categoryErrorFetch } = useFetch(
     "http://localhost:8000/categories",
     "GET"
   );
+
+  const {
+    postData: postLogsData,
+    data: logsData,
+    error: logsError,
+  } = useFetch("http://localhost:8000/itemLogs", "POST");
+
+  // objects for posting data
+
+  const [categoriesDataForm, setCategoriesDataForm] = useState({
+    name: "",
+    barcode: "",
+    barcodeCombinedName: "",
+  });
+
+  const [logsDataForm, setLogsDataForm] = useState({
+    name: "",
+    action: "CREATED",
+    date: "",
+    dayOfWeek: "",
+    time: "",
+    barcode: "",
+    id: "",
+    category: "",
+  });
 
   const [formData, setFormData] = useState({
     date: "",
@@ -49,7 +77,10 @@ export default function AddItem({
     status: "IN",
   });
 
-  const { canvasRef, barcode } = useBarcodeGenerator(formData.name, setBarcodeState);
+  const { canvasRef, barcode } = useBarcodeGenerator(
+    formData.name,
+    setBarcodeState
+  );
 
   // Check for duplicate categories
   const isDuplicateCategory = (categoryName) => {
@@ -84,22 +115,36 @@ export default function AddItem({
     e.preventDefault();
 
     // Check for duplicate category before submission
-    if (customCategory && formData.category && isDuplicateCategory(formData.category)) {
-      alert("The category name already exists. Please choose a different name.");
+    if (
+      customCategory &&
+      formData.category &&
+      isDuplicateCategory(formData.category)
+    ) {
+      alert(
+        "The category name already exists. Please choose a different name."
+      );
       return;
     }
 
     // Post the form data
-    postInventoryData(formData);
-
-    // Add custom category if applicable
-    if (customCategory && formData.category && !isDuplicateCategory(formData.category)) {
-      const newCategoryData = {
-        name: formData.category,
-        barcode: barcodeState,
-        barcodeCombinedName: `${barcodeState}_${formData.name}`,
-      };
-      postCategoryData(newCategoryData);
+    try {
+      postLogsData(logsDataForm);
+      postInventoryData(formData);
+      // Add custom category if applicable
+      if (
+        customCategory &&
+        formData.category &&
+        !isDuplicateCategory(formData.category)
+      ) {
+        const newCategoryData = {
+          name: formData.category,
+          barcode: barcodeState,
+          barcodeCombinedName: `${barcodeState}_${formData.name}`,
+        };
+        postCategoryData(newCategoryData);
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     console.log("Form Data Submitted:", formData);
@@ -108,6 +153,7 @@ export default function AddItem({
 
   // Initialize date and time in the form data (with `.split`)
   useEffect(() => {
+    // setHideNavbar(true); // Hide the navbar on this page
     const now = new Date();
     const formattedTime = now.toLocaleString(undefined, {
       hour: "numeric",
@@ -126,7 +172,23 @@ export default function AddItem({
       barcode: barcodeState,
       barcodeCombinedName: `${barcodeState}_${prevFormData.name}`,
     }));
-  }, [barcodeState]);
+    setLogsDataForm((prevLogsDataForm) => ({
+      ...prevLogsDataForm,
+      name: formData.name,
+      barcode: barcodeState,
+      id: `${barcodeState}_${formData.name}`,
+      date: now.toLocaleString(),
+      dayOfWeek: now.toLocaleString(undefined, { weekday: "long" }),
+      time: parts[0] + ":" + parts[1] + " " + parts[2],
+      category: formData.category,
+    }));
+    setCategoriesDataForm((prevCategoriesDataForm) => ({
+      ...prevCategoriesDataForm,
+      name: formData.category,
+      barcode: barcodeState,
+      barcodeCombinedName: `${barcodeState}_${formData.name}`,
+    }));
+  }, [formData.name, formData.category, barcodeState]);
 
   // Handle submission success or failure
   useEffect(() => {
@@ -135,7 +197,7 @@ export default function AddItem({
       setItemCreationSuccess(true);
     } else if (inventoryError) {
       setItemCreationFailure(true);
-      navigate("/item-creation-failure");
+      navigate("/");
     }
   }, [inventoryData, inventoryError]);
 
@@ -144,7 +206,13 @@ export default function AddItem({
       <div className="flex items-center justify-between p-6 shadow-lg">
         <h1>New Item</h1>
         <button onClick={handleHideNavbar}>
-          <NavLink to="/">
+          <NavLink
+            to="/"
+            onClick={() => {
+              setHideNavbar(false);
+              console.log("hideNavbar: false");
+            }}
+          >
             <img src={close} width={25} alt="close" />
           </NavLink>
         </button>
@@ -189,14 +257,14 @@ export default function AddItem({
             />
           ) : (
             <select
-              className="select select-bordered col-span-5 my-6 py-7 w-full"
+              className="select select-bordered col-span-5 my-6 w-full h-16"
               value={formData.category}
               onChange={(e) => {
                 setFormData({ ...formData, category: e.target.value });
               }}
               required
             >
-              <option value="" disabled>
+              <option value="" disabled selected>
                 Select Category
               </option>
               {categories?.map((category) => (
@@ -256,7 +324,7 @@ export default function AddItem({
               </li>
             ))}
           </ul>
-          <button className="btn btn-primary" type="submit">
+          <button className="btn bg-indigo-900 text-white hover:bg-indigo-700" type="submit">
             Submit
           </button>
         </form>

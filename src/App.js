@@ -145,13 +145,14 @@ function App() {
           <Route path="/" element={<InventoryPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/check-in" element={<CheckIn />} />
-          <Route
+          <Route run json-server
             path="/add-item"
             element={
               <AddItemPage
                 setItemCreationSuccess={setItemCreationSuccess}
                 setItemCreationFailure={setItemCreationFailure}
                 handleHideNavbar={handleHideNavbar}
+                setHideNavbar={setHideNavbar}
               />
             }
           />
@@ -176,7 +177,7 @@ function App() {
               />
             }
           />
-          <Route path="/:id/sign-out" element={<SignOut />} handleHideNavbar={handleHideNavbar} />
+          <Route path="/:id/sign-out" element={<SignOut handleHideNavbar={handleHideNavbar}/>}  />
           <Route path="/item-management" element={<ItemManagement />} />
         </Routes>
       </div>

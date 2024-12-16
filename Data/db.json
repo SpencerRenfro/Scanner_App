@@ -415,6 +415,23 @@
       "barcodeUrl": "",
       "qrCode": "",
       "status": "IN"
+    },
+    {
+      "id": "5664",
+      "date": "12/16/2024, 1:44:53 PM",
+      "dayOfWeek": "Monday",
+      "time": "1:44 PM",
+      "name": "test item",
+      "category": "Electronics",
+      "price": 0,
+      "serialNumber": "1365214651",
+      "description": "test description",
+      "barcode": "225576457377",
+      "barcodeCombinedName": "225576457377_test item",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
     }
   ],
   "categories": [
@@ -827,6 +844,34 @@
       "dayOfWeek": "Monday",
       "time": "6:55 AM",
       "category": "Heavy Equipment"
+    }
+  ],
+  "customers": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "email": "",
+      "phone": ""
+    },
+    {
+      "id": "b0f1",
+      "firstName": "Spencer",
+      "lastName": "Renfro",
+      "email": "spencer.renfro13@gmail.com",
+      "phone": "2173134416",
+      "action": "OUT",
+      "barcode": " 161964567241",
+      "fullName": "Spencer Renfro"
+    },
+    {
+      "id": "b0bb",
+      "firstName": "Spencer",
+      "lastName": "Renfro",
+      "email": "spencer.renfro13@gmail.com",
+      "phone": "2173134416",
+      "action": "OUT",
+      "barcode": " 161964567241",
+      "fullName": "Spencer Renfro"
     }
   ]
 }
