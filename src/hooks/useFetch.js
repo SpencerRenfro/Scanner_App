@@ -16,15 +16,44 @@ export const useFetch = (url, method = "GET") => {
     });
   };
 
-  const putData = (putData) => {
-    setOptions({
+  // const putData = (putData) => {
+  //   setOptions({
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(putData),
+  //   });
+  // };
+
+  const putData = async (putData) => {
+    const setOptions = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(putData),
-    });
+    };
+
+    try {
+      setIsPending(true);
+      const res = await fetch(url, setOptions);
+      if (!res.ok) {
+        throw new Error(`Error ${res.status}: ${res.statusText}`);
+      }
+      const responseData = await res.json();
+      setData(responseData);
+      setError(null);
+      return responseData; // Explicitly return the updated data
+    } catch (err) {
+      console.error("PUT request failed:", err);
+      setError(err.message || "Failed to update data");
+      throw err; // Rethrow the error for the caller to handle
+    } finally {
+      setIsPending(false);
+    }
   };
+
 
   useEffect(() => {
     console.log(`useFetch ran with url: ${url}, method: ${method}, options: ${JSON.stringify(options)}`);
