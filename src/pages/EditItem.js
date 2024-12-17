@@ -49,7 +49,7 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
         navigate("/");
         setItemUpdateSuccess(true);
         setItemName(name);
-      } 
+      }
   }, [putDataResponse]);
 
   const deleteCollectionItem = (index) => {
@@ -93,7 +93,7 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
     putData(updatedItem);
 
     if (putError) {
-      console.log("Error updating item:", putError);
+      // console.log("Error updating item:", putError);
     }
   };
 

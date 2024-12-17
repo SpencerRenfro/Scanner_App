@@ -2,7 +2,7 @@ export default function FilterLogs({ filter, setFilter }) {
   // Handle change event for the select element
   const handleChange = (event) => {
     setFilter(event.target.value);
-    console.log('Filter:', event.target.value, 'Type:', typeof event.target.value);
+    // console.log('Filter:', event.target.value, 'Type:', typeof event.target.value);
   };
 
   return (
@@ -10,7 +10,7 @@ export default function FilterLogs({ filter, setFilter }) {
       <select
         className="select w-full"
         onChange={handleChange}
-        value={filter} 
+        value={filter}
       >
         <option value="" disabled> {/* Placeholder option */}
          Filter By

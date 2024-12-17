@@ -1,4 +1,4 @@
-export default function SignOutForm({ setNewCustomerData, handleSignOut }) {
+export default function SignOutForm({ handleSubmit, handleInputChange }) {
   return (
     <form>
       <label>
@@ -9,58 +9,31 @@ export default function SignOutForm({ setNewCustomerData, handleSignOut }) {
           type="text"
           placeholder="First Name"
           className="input input-bordered w-full my-6"
-          onChange={(e) =>
-            setNewCustomerData((prevData) => ({
-              ...prevData,
-              firstName: e.target.value,
-            }))
-          }
+          onChange={handleInputChange}
           required
         />
         <input
           type="text"
           placeholder="Last Name"
           className="input input-bordered w-full mb-6"
-          onChange={(e) =>
-            setNewCustomerData((prevData) => ({
-              ...prevData,
-              lastName: e.target.value,
-            }))
-          }
+          onChange={handleInputChange}
           required
         />
         <input
           type="email"
           placeholder="Email"
           className="input input-bordered w-full mb-6"
-          onChange={(e) =>
-            setNewCustomerData((prevData) => ({
-              ...prevData,
-              email: e.target.value,
-            }))
-          }
+          onChange={handleInputChange}
           required
         />
         <input
           type="text"
           placeholder="Phone Number"
           className="input input-bordered w-full mb-6"
-          onChange={(e) =>
-            setNewCustomerData((prevData) => ({
-              ...prevData,
-              phone: e.target.value,
-            }))
-          }
+          onChange={handleInputChange}
           required
         />
       </div>
-      <button
-        className="btn bg-indigo-950 text-white mt-5"
-        type="submit"
-        onClick={handleSignOut}
-      >
-        Submit
-      </button>
     </form>
   );
 }

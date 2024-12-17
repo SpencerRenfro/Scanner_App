@@ -46,13 +46,28 @@ function App() {
   };
 
   //useEffect to hide navbar on select pages
+  // useEffect(() => {
+  //   if (location.pathname.includes("/:id/sign-out")) {
+  //     setHideNavbar(true);
+  //   }
+  //   else if (location.pathname.includes("/add-item")) {
+  //     setHideNavbar(true);
+  //   }
+  // }, [location.pathname]);
   useEffect(() => {
-    if (location.pathname.includes("/sign-out")) {
+    console.log('location.pathname:', location.pathname);
+    if (location.pathname.startsWith("/add-item") || location.pathname.startsWith("/inventory/")
+       || location.pathname.endsWith("/sign-out") ) {
+      console.log('add-item or inventory or sign-out');
+      console.log('location.pathname:', location.pathname);
       setHideNavbar(true);
-    } else if (location.pathname.includes("/add-item")) {
-      setHideNavbar(true);
+    } else {
+      console.log('false');
+      console.log('location.pathname:', location.pathname);
+      setHideNavbar(false);
     }
-  }, [location.pathname]);
+  }, [location.pathname, hideNavbar]);
+
   useEffect(() => {
     if (itemCreationSuccess) {
       setBannerType("success");
@@ -145,7 +160,9 @@ function App() {
           <Route path="/" element={<InventoryPage />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/check-in" element={<CheckIn />} />
-          <Route run json-server
+          <Route
+            run
+            json-server
             path="/add-item"
             element={
               <AddItemPage
@@ -177,7 +194,17 @@ function App() {
               />
             }
           />
-          <Route path="/:id/sign-out" element={<SignOut handleHideNavbar={handleHideNavbar}/>}  />
+          <Route
+            path="/:id/sign-out"
+            element={
+              <SignOut
+                setHideNavbar={setHideNavbar}
+                handleHideNavbar={handleHideNavbar}
+                setItemSignOutSuccess={setItemSignOutSuccess}
+                setItemSignOutFailure={setItemSignOutFailure}
+              />
+            }
+          />
           <Route path="/item-management" element={<ItemManagement />} />
         </Routes>
       </div>

@@ -96,7 +96,7 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
     }
 
     //print entire form data
-    console.log("Form Data:", formData);
+    // console.log("Form Data:", formData);
   };
 
   const handleCategoryCheckBox = () => {
@@ -131,12 +131,11 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
     const date = new Date().toLocaleString(undefined, {
       hour: "numeric",
       minute: "numeric",
-     
+
     });
     const parts = date.split(/[:\s]+/);
-    console.log('hoursMinutesMeridian:', parts[0] + ":" + parts[1] + " " + parts[2]);
 
-    
+
 
 
     setFormData((prevFormData) => ({
@@ -172,7 +171,7 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
       console.log("Category Submitted");
     }
     if (categoryError) {
-      console.log("Category Error:", categoryError);
+      // console.log("Category Error:", categoryError);
     }
     if (inventoryData && logsData) {
       // navigate("/item-creation-successful");
@@ -182,9 +181,9 @@ export default function AddItem({setItemCreationSuccess, setItemCreationFailure}
       setItemCreationFailure(true);
     }
     if (logsError || inventoryError) {
-      console.log("Error creating item.");
-      console.log("Inventory Error:", inventoryError);
-      console.log("Logs Error:", logsError);
+      // console.log("Error creating item.");
+      // console.log("Inventory Error:", inventoryError);
+      // console.log("Logs Error:", logsError);
       navigate("/item-creation-failure");
     }
   }, [inventoryData, logsData]);

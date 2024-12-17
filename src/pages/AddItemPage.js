@@ -205,7 +205,6 @@ export default function AddItem({
     <div>
       <div className="flex items-center justify-between p-6 shadow-lg">
         <h1>New Item</h1>
-        <button onClick={handleHideNavbar}>
           <NavLink
             to="/"
             onClick={() => {
@@ -215,7 +214,6 @@ export default function AddItem({
           >
             <img src={close} width={25} alt="close" />
           </NavLink>
-        </button>
       </div>
       <div className="mx-40 pb-40 grid grid-cols-12 mt-7 gap-4">
         <form className="col-start-4 col-span-6 p-4" onSubmit={handleSubmit}>

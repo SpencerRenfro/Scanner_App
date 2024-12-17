@@ -51,7 +51,7 @@ export default function CheckIn() {
 
   useEffect(() => {
     if (itemCheckedIn) {
-      console.log("Item checked in:", itemCheckedIn);
+      // console.log("Item checked in:", itemCheckedIn);
     }
     if (putItemError) {
       console.error("Error checking in item:", putItemError);

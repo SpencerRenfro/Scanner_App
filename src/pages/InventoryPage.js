@@ -36,7 +36,7 @@ function InventoryPage(props) {
           filter: category.categoryFilter,
         },
       ];
-      console.log('inventory:', inventory);
+      // console.log('inventory:', inventory);
     }
   }, [data, category.categoryFilter]);
 
@@ -55,7 +55,6 @@ function InventoryPage(props) {
         </div>
       )}
       {!data && !isPending && <InventorySkeleton />}
-      {console.log("CATEGORY FROM USECONTEXT:", category)}
     </div>
   );
 }

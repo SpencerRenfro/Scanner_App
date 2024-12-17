@@ -7,15 +7,11 @@ export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, t
       return;
     }
 
-    console.log("Search term:", term);
-
     const lowerCaseTerm = term ? term.toLowerCase() : ""; // Safeguard for term
 
     const results = inventoryItems.filter((item) => {
       const itemName = item.name ? item.name.toLowerCase() : "";
       const itemId = item.barcode ? item.barcode.toString() : "";
-      console.log('itemName:', itemName);
-      console.log('itemId:', itemId);
       return itemName.includes(lowerCaseTerm) || itemId.includes(lowerCaseTerm);
     });
 
@@ -23,8 +19,8 @@ export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, t
     if(isInventoryData){
       setFilteredItems(results);
     }
-     
-    console.log("Filtered items:", results);
+
+    // console.log("Filtered items:", results);
   }, [term, inventoryItems, setFilteredItems]); // Effect runs when term or inventoryItems updates
 
   return (

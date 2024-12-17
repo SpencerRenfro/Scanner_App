@@ -8,9 +8,9 @@ export default function Form() {
             <p>Item Name</p>
             <input
                 type="text"
-                onChange={(e) =>
-                console.log('value' + e.target.value)
-                }
+                // onChange={(e) =>
+                // console.log('value' + e.target.value)
+                // }
             required
             />
             </label>
@@ -19,9 +19,9 @@ export default function Form() {
                 <p>Item Category</p>
                 <input
                 type="text"
-                onChange={(e) => {
-                    console.log('$', + e.target.value)
-                }}
+                // onChange={(e) => {
+                //     console.log('$', + e.target.value)
+                // }}
                 />
             </span>
             </label>
@@ -29,9 +29,9 @@ export default function Form() {
                 <p>Item Price</p>
                 <input
                 type="text"
-                onChange={(e) => {
-                    console.log('$', + e.target.value)
-                }}
+                // onChange={(e) => {
+                //     console.log('$', + e.target.value)
+                // }}
                 />
             </label>
         </form>

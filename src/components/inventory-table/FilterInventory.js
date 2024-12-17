@@ -2,7 +2,7 @@ export default function FilterInventory({ filter, setFilter, categories }) {
   // Handle change event for the select element
   const handleChange = (event) => {
     setFilter(event.target.value);
-    console.log('Filter:', event.target.value, 'Type:', typeof event.target.value);
+    // console.log('Filter:', event.target.value, 'Type:', typeof event.target.value);
 
   };
 
@@ -23,7 +23,7 @@ export default function FilterInventory({ filter, setFilter, categories }) {
             </option>
           ))
         ) : (
-          <option value="">No categories available</option> 
+          <option value="">No categories available</option>
         )}
         <option value="IN">Items In</option>
         <option value="OUT">Items Out</option>

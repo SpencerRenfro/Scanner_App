@@ -28,7 +28,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "2bdc",
@@ -43,7 +43,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "c897",
@@ -58,7 +58,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "fe27",
@@ -73,7 +73,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "ef02",
@@ -844,15 +844,29 @@
       "dayOfWeek": "Monday",
       "time": "6:55 AM",
       "category": "Heavy Equipment"
+    },
+    {
+      "id": "c897",
+      "name": "TowTruck",
+      "action": "OUT",
+      "date": "12/16/2024",
+      "barcode": "756663036678",
+      "dayOfWeek": "Monday",
+      "time": "6:57:45 PM",
+      "category": "Transport"
+    },
+    {
+      "id": "fe27",
+      "name": "Socket Wrench",
+      "action": "OUT",
+      "date": "12/16/2024",
+      "barcode": "030189894638",
+      "dayOfWeek": "Monday",
+      "time": "6:58:23 PM",
+      "category": "Tools"
     }
   ],
   "customers": [
-    {
-      "id": "1",
-      "name": "John Doe",
-      "email": "",
-      "phone": ""
-    },
     {
       "id": "b0f1",
       "firstName": "Spencer",
@@ -865,7 +879,7 @@
     },
     {
       "id": "b0bb",
-      "firstName": "Spencer",
+      "firstName": "Tyler",
       "lastName": "Renfro",
       "email": "spencer.renfro13@gmail.com",
       "phone": "2173134416",
