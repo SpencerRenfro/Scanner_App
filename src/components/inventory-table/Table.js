@@ -21,13 +21,16 @@ export default function Table({ categoryFilter, filteredItems }) {
                 key={item.id}
               >
                 <td className="w-1/6">
-                  <NavLink to={`/inventory/${item.id}`}>
+                  <NavLink to={`/inventory/${item.id}/editItemPage`}>
                     <p>{item.name}</p>
                   </NavLink>
                 </td>
                 <td className="w-1/6">
-                  <p>{item.description.length > 15 ? item.description.slice(0, 15) + '...'
-                  : item.description}</p>
+                  <p>
+                    {item.description.length > 15
+                      ? item.description.slice(0, 15) + "..."
+                      : item.description}
+                  </p>
                 </td>
                 <td className="w-1/6">
                   <p>{item.category}</p>
@@ -52,7 +55,9 @@ export default function Table({ categoryFilter, filteredItems }) {
                   <p>{item.price}</p>
                 </td>
                 <td className="w-1/6">
-                  <p>{item.barcode}</p>
+                  <NavLink to={`/inventory/${item.id}`}>
+                    <p>{item.barcode}</p>
+                  </NavLink>
                 </td>
                 <td className="w-1/6">
                   <details className="dropdown">

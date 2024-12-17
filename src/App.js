@@ -3,12 +3,14 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 // Pages
 import EditItem from "./pages/EditItem";
+//new edit page
+import EditItemPage from "./pages/EditItemPage";
 import AddItem from "./pages/AddItem";
 import Checkout from "./pages/Checkout";
 import InventoryPage from "./pages/InventoryPage";
 import CheckIn from "./pages/CheckIn";
-import SingleItemInfo from "./pages/ItemInfo";
-import ItemManagement from "./pages/ItemManagement";
+import BarcodePage from "./pages/BarcodePage";
+
 
 //
 import AddItemPage from "./pages/AddItemPage";
@@ -183,7 +185,7 @@ function App() {
             }
           />
           <Route path="/logs" element={<Logs />} />
-          <Route path="/inventory/:id" element={<SingleItemInfo />} />
+          <Route path="/inventory/:id" element={<BarcodePage />} />
           <Route
             path="/inventory/:id/edit"
             element={
@@ -191,6 +193,16 @@ function App() {
                 setItemName={setItemName}
                 setItemUpdateSuccess={setItemUpdateSuccess}
                 setItemUpdateFailure={setItemUpdateFailure}
+              />
+            }
+          />
+          <Route
+            path="/inventory/:id/editItemPage"
+            element={
+              <EditItemPage
+                setItemUpdateSuccess={setItemUpdateSuccess}
+                setItemUpdateFailure={setItemUpdateFailure}
+                setItemName={setItemName}
               />
             }
           />
@@ -205,7 +217,6 @@ function App() {
               />
             }
           />
-          <Route path="/item-management" element={<ItemManagement />} />
         </Routes>
       </div>
     </div>
