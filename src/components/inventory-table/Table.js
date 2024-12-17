@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 
 // Images
 import next from "../../assets/icons/next.svg"; // Ensure this path is correct
@@ -6,7 +6,59 @@ import next from "../../assets/icons/next.svg"; // Ensure this path is correct
 // Components
 import TableHead from "./TableHead";
 
-export default function Table({ categoryFilter, filteredItems }) {
+//hooks
+import { useFetch } from "../../hooks/useFetch";
+
+export default function Table({ categoryFilter, filteredItems, setFilteredItems }) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const url = "http://localhost:8000";
+  //PUT Request
+  const {
+    putData: putItemIn,
+    error: putItemInError,
+    isPending: putItemInisPending,
+  } = useFetch(url, "PUT");
+
+const handleSignItemIn = async (e, id, item) => {
+  e.preventDefault();
+  console.log("Signing in item with ID:", id);
+
+  const updatedItem = { ...item, status: "IN" };
+
+  try {
+    const response = await fetch(`http://localhost:8000/inventory/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedItem),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to sign in item: ${response.statusText}`);
+    }
+
+    const responseData = await response.json();
+    console.log("Item signed in successfully:", responseData);
+    fetchItems();
+  } catch (error) {
+    console.error("PUT request failed:", error);
+  }
+};
+
+const fetchItems = async () => {
+  try{
+    const response = await fetch("http://localhost:8000/inventory");
+    if(!response.ok){
+      throw new Error(`Failed to fetch data: ${response.statusText}`);
+    }
+    const data = await response.json();
+    setFilteredItems(data);
+  } catch (error) {
+    console.error("GET request failed:", error);
+  }
+};
   return (
     <div>
       <table className="table min-w-full text-black">
@@ -36,19 +88,40 @@ export default function Table({ categoryFilter, filteredItems }) {
                   <p>{item.category}</p>
                 </td>
                 <td className="w-1/6">
+                  {putItemInError && (
+                    <div className="error">{putItemInError}</div>
+                  )}
+                  {putItemInisPending && (
+                    <span className="loading loading-spinner loading-lg"></span>
+                  )}
+
                   <div className="flex">
                     {item.status === "IN" ? (
-                      <div className="badge badge-success badge-outline badge-lg w-14 mr-2">
-                        IN
+                      <div className="flex items-center">
+                        <div className="badge badge-success badge-outline badge-lg w-14 mr-2">
+                          IN
+                        </div>
+                        <div>
+                          <NavLink to={`/${item.id}/sign-out`}>
+                            Sign Out
+                          </NavLink>
+                        </div>
                       </div>
                     ) : (
-                      <div className="badge badge-error badge-outline badge-lg w-14 mr-2">
-                        OUT
+                      <div className="flex items-center">
+                        <div className="badge badge-error badge-outline badge-lg w-14 mr-2">
+                          OUT
+                        </div>
+                        <div>
+                          <button 
+                          className="btn btn-sm "
+                          onClick={(e) => handleSignItemIn(e, item.id, item)}>Sign In</button>
+                        </div>
                       </div>
                     )}
-                    <div>
+                    {/* <div>
                       <NavLink to={`/inventory/${item.id}/edit`}>EDIT</NavLink>
-                    </div>
+                    </div> */}
                   </div>
                 </td>
                 <td className="w-1/6">
@@ -58,28 +131,6 @@ export default function Table({ categoryFilter, filteredItems }) {
                   <NavLink to={`/inventory/${item.id}`}>
                     <p>{item.barcode}</p>
                   </NavLink>
-                </td>
-                <td className="w-1/6">
-                  <details className="dropdown">
-                    <summary className="btn btn-ghost m-1 cursor-pointer flex items-center">
-                      <img
-                        src={next}
-                        alt="chevron"
-                        width={25}
-                        className="rotate-90"
-                      />
-                      <span className="ml-2">Options</span>{" "}
-                    </summary>
-                    <ul className="menu dropdown-content bg-base-100 rounded-box z-50 w-52 p-2 shadow">
-                      <li>
-                        <NavLink to={`/inventory/${item.id}/edit`}>
-                          Edit
-                        </NavLink>
-                      </li>
-                      <li>Sign In</li>
-                      <NavLink to={`/${item.id}/sign-out`}>Sign Out</NavLink>
-                    </ul>
-                  </details>
                 </td>
               </tr>
             ) : null

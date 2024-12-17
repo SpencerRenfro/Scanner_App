@@ -146,6 +146,17 @@ export default function EditItemPage({
             />
           </div>
           <div className="col-start-4 col-span-5 gap-5">
+            <div className="flex items-center gap-5">
+              <input
+                type="text"
+                placeholder="Add collection of subitems"
+                className="input input-bordered  my-6 py-7 w-full"
+                value={itemData.serialNumber}
+              />
+              <button className="btn">Add</button>
+            </div>
+          </div>
+          <div className="mx-2 col-start-4 col-span-5 gap-5">
             {itemData.collection ? (
               <div>
                 <h2>Collection</h2>
@@ -186,6 +197,14 @@ export default function EditItemPage({
                 />
               </div>
             )}
+          </div>
+          <div className="col-start-4 mt-7 mb-20">
+            <button
+              className="btn bg-indigo-900 text-white hover:bg-indigo-700 w-3/4"
+              type="submit"
+            >
+              Submit
+            </button>
           </div>
         </form>
       )}

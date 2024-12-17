@@ -104,6 +104,7 @@ export default function Inventory({ inventoryItems, categoryItems }) {
             categoryFilter={filter}
             term={term}
             filteredItems={filteredItems}
+            setFilteredItems={setFilteredItems}
           />
           <Pagination />
         </div>

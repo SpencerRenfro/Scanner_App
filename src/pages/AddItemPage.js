@@ -7,6 +7,8 @@ import deleteIcon from "../assets/icons/delete.svg";
 
 //icons
 import close from "../assets/close.svg";
+//custom-hooks
+import useFormattedDate from "../hooks/useFormattedDate";
 
 export default function AddItem({
   setItemCreationSuccess,
@@ -18,6 +20,7 @@ export default function AddItem({
   const [customCategory, setCustomCategory] = useState(false);
   const [tempItem, setTempItem] = useState("");
   const [barcodeState, setBarcodeState] = useState();
+  const { date, dayOfWeek, time } = useFormattedDate();
   const navigate = useNavigate();
 
   const {
@@ -151,24 +154,13 @@ export default function AddItem({
     handleHideNavbar(); // Hide the navbar after submission
   };
 
-  // Initialize date and time in the form data (with `.split`)
   useEffect(() => {
-    // setHideNavbar(true); // Hide the navbar on this page
-    const now = new Date();
-    const formattedTime = now.toLocaleString(undefined, {
-      hour: "numeric",
-      minute: "numeric",
-    });
-
-    // Split the formatted time into components (hour, minute, AM/PM)
-    const parts = formattedTime.split(/[:\s]+/); // Splits on `:` and whitespace
-    const time = `${parts[0]}:${parts[1]} ${parts[2]}`;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      date: now.toLocaleString(),
-      dayOfWeek: now.toLocaleString(undefined, { weekday: "long" }),
-      time, // Use the reconstructed time
+      date: date,
+      dayOfWeek: dayOfWeek,
+      time: time,
       barcode: barcodeState,
       barcodeCombinedName: `${barcodeState}_${prevFormData.name}`,
     }));
@@ -177,9 +169,9 @@ export default function AddItem({
       name: formData.name,
       barcode: barcodeState,
       id: `${barcodeState}_${formData.name}`,
-      date: now.toLocaleString(),
-      dayOfWeek: now.toLocaleString(undefined, { weekday: "long" }),
-      time: parts[0] + ":" + parts[1] + " " + parts[2],
+      date: date,
+      dayOfWeek: dayOfWeek,
+      time: time,
       category: formData.category,
     }));
     setCategoriesDataForm((prevCategoriesDataForm) => ({
@@ -205,15 +197,15 @@ export default function AddItem({
     <div>
       <div className="flex items-center justify-between p-6 shadow-lg">
         <h1>New Item</h1>
-          <NavLink
-            to="/"
-            onClick={() => {
-              setHideNavbar(false);
-              console.log("hideNavbar: false");
-            }}
-          >
-            <img src={close} width={25} alt="close" />
-          </NavLink>
+        <NavLink
+          to="/"
+          onClick={() => {
+            setHideNavbar(false);
+            console.log("hideNavbar: false");
+          }}
+        >
+          <img src={close} width={25} alt="close" />
+        </NavLink>
       </div>
       <div className="mx-40 pb-40 grid grid-cols-12 mt-7 gap-4">
         <form className="col-start-4 col-span-6 p-4" onSubmit={handleSubmit}>
@@ -322,7 +314,10 @@ export default function AddItem({
               </li>
             ))}
           </ul>
-          <button className="btn bg-indigo-900 text-white hover:bg-indigo-700" type="submit">
+          <button
+            className="btn bg-indigo-900 text-white hover:bg-indigo-700"
+            type="submit"
+          >
             Submit
           </button>
         </form>

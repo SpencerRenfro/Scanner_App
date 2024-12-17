@@ -2,18 +2,18 @@
   "inventory": [
     {
       "id": "4a1f",
-      "date": "06/28/2024, 11:35:39 AM",
       "name": "JBL_Stereo",
       "category": "Electronics",
-      "price": 150,
-      "serialNumber": "N/A",
+      "price": 300,
       "description": "Beats By Dr. Dre",
-      "barcode": " 161964567241",
-      "barcodeCombinedName": "161964567241_JBL_Stereo",
-      "itemCollection": [],
+      "barcode": "847284097363",
+      "barcodeCombinedName": "847284097363_Stereo",
+      "itemCollection": [
+        "aux cord"
+      ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "60de",
@@ -28,7 +28,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "2bdc",
@@ -43,7 +43,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "c897",
@@ -58,7 +58,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "fe27",
@@ -73,7 +73,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "ef02",
@@ -92,7 +92,7 @@
       ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "7bd3",
@@ -107,7 +107,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "2969",
@@ -122,7 +122,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "853c",
@@ -137,7 +137,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "aabe",
@@ -428,6 +428,23 @@
       "description": "test description",
       "barcode": "225576457377",
       "barcodeCombinedName": "225576457377_test item",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "5538",
+      "date": "12/17/2024, 1:22:49 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:22 PM",
+      "name": "test 12/17",
+      "category": "Art_Supplies",
+      "price": 0,
+      "serialNumber": "N/A",
+      "description": "TEST ",
+      "barcode": "700977352126",
+      "barcodeCombinedName": "700977352126_test 12/17",
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
@@ -864,6 +881,16 @@
       "dayOfWeek": "Monday",
       "time": "6:58:23 PM",
       "category": "Tools"
+    },
+    {
+      "id": "700977352126_test 12/17",
+      "name": "test 12/17",
+      "action": "CREATED",
+      "date": "12/17/2024, 1:22:49 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:22 PM",
+      "barcode": "700977352126",
+      "category": "Art_Supplies"
     }
   ],
   "customers": [
@@ -886,6 +913,15 @@
       "action": "OUT",
       "barcode": " 161964567241",
       "fullName": "Tyler Renfro"
+    },
+    {
+      "id": "464f",
+      "firstName": "Tyler",
+      "lastName": "Renfro",
+      "email": "spencer.renfro13@gmail.com",
+      "phone": "2173134416",
+      "fullName": "Tyler Renfro",
+      "barcode": "78440592Renfro"
     }
   ]
 }
