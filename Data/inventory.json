@@ -1,0 +1,30 @@
+{
+    "4a1f": {
+      "name": "JBL_Stereo",
+      "category": "Electronics",
+      "price": 300,
+      "description": "Beats By Dr. Dre",
+      "barcode": "847284097363",
+      "barcodeCombinedName": "847284097363_Stereo",
+      "itemCollection": [
+        "aux cord"
+      ],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    "60de": {
+      "date": "06/28/2024, 11:35:39 AM",
+      "name": "Impact Drill",
+      "category": "Tools",
+      "price": 150,
+      "serialNumber": "N/A",
+      "description": "Dewalt 30Amp",
+      "barcode": "228081559021",
+      "barcodeCombinedName": "228081559021_Impact Drill",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    }
+  }
