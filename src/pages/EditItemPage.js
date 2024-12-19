@@ -7,7 +7,7 @@ import { useFetch } from "../hooks/useFetch";
 //images
 import deleteIcon from "../assets/icons/delete.svg";
 import editIcon from "../assets/icons/edit2.svg";
-import close from "../assets/close.svg";
+import close from "../assets/icons/close.svg";
 
 export default function EditItemPage({
   setItemUpdateSuccess,
