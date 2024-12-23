@@ -11,7 +11,8 @@ import FilterInventory from "./FilterInventory";
 import Pagination from "../../ui/pagination/Pagination";
 import AddItem from "./AddItem";
 
-export default function Inventory({ inventoryItems, categoryItems }) {
+export default function Inventory({ inventoryItems, categoryItems, setItemSignInSuccess, setItemSignInFailure }) {
+
   //inventory data states
   const [totalAssetValue, setTotalAssetValue] = useState(0);
   const [checkedIn, setCheckedIn] = useState(0);
@@ -105,6 +106,8 @@ export default function Inventory({ inventoryItems, categoryItems }) {
             term={term}
             filteredItems={filteredItems}
             setFilteredItems={setFilteredItems}
+            setItemSignInSuccess={setItemSignInSuccess}
+            setItemSignInFailure={setItemSignInFailure}
           />
           <Pagination />
         </div>

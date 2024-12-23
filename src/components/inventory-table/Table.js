@@ -9,7 +9,13 @@ import TableHead from "./TableHead";
 //hooks
 import { useFetch } from "../../hooks/useFetch";
 
-export default function Table({ categoryFilter, filteredItems, setFilteredItems }) {
+export default function Table({
+  categoryFilter,
+  filteredItems,
+  setFilteredItems,
+  setItemSignInSuccess,
+  setItemSignInFailure,
+}) {
   const navigate = useNavigate();
   const { id } = useParams();
   const url = "http://localhost:8000";
@@ -20,45 +26,47 @@ export default function Table({ categoryFilter, filteredItems, setFilteredItems 
     isPending: putItemInisPending,
   } = useFetch(url, "PUT");
 
-const handleSignItemIn = async (e, id, item) => {
-  e.preventDefault();
-  console.log("Signing in item with ID:", id);
+  const handleSignItemIn = async (e, id, item) => {
+    e.preventDefault();
+    console.log("Signing in item with ID:", id);
 
-  const updatedItem = { ...item, status: "IN" };
+    const updatedItem = { ...item, status: "IN" };
 
-  try {
-    const response = await fetch(`http://localhost:8000/inventory/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedItem),
-    });
+    try {
+      const response = await fetch(`http://localhost:8000/inventory/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedItem),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to sign in item: ${response.statusText}`);
+      if (!response.ok) {
+        throw new Error(`Failed to sign in item: ${response.statusText}`);
+      }
+
+      const responseData = await response.json();
+      console.log("Item signed in successfully:", responseData);
+      fetchItems();
+    } catch (error) {
+      console.error("PUT request failed:", error);
     }
+  };
 
-    const responseData = await response.json();
-    console.log("Item signed in successfully:", responseData);
-    fetchItems();
-  } catch (error) {
-    console.error("PUT request failed:", error);
-  }
-};
-
-const fetchItems = async () => {
-  try{
-    const response = await fetch("http://localhost:8000/inventory");
-    if(!response.ok){
-      throw new Error(`Failed to fetch data: ${response.statusText}`);
+  const fetchItems = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/inventory");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setFilteredItems(data);
+      setItemSignInSuccess(true);
+    } catch (error) {
+      console.error("GET request failed:", error);
+      setItemSignInFailure(true);
     }
-    const data = await response.json();
-    setFilteredItems(data);
-  } catch (error) {
-    console.error("GET request failed:", error);
-  }
-};
+  };
   return (
     <div>
       <table className="table min-w-full text-black">
@@ -113,15 +121,15 @@ const fetchItems = async () => {
                           OUT
                         </div>
                         <div>
-                          <button 
-                          className="btn btn-sm "
-                          onClick={(e) => handleSignItemIn(e, item.id, item)}>Sign In</button>
+                          <button
+                            className="btn btn-sm "
+                            onClick={(e) => handleSignItemIn(e, item.id, item)}
+                          >
+                            Sign In
+                          </button>
                         </div>
                       </div>
                     )}
-                    {/* <div>
-                      <NavLink to={`/inventory/${item.id}/edit`}>EDIT</NavLink>
-                    </div> */}
                   </div>
                 </td>
                 <td className="w-1/6">

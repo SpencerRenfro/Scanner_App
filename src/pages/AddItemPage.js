@@ -6,7 +6,7 @@ import { useNavigate, NavLink } from "react-router-dom";
 import deleteIcon from "../assets/icons/delete.svg";
 
 //icons
-import close from "../assets/close.svg";
+import close from "../assets/icons/close.svg";
 //custom-hooks
 import useFormattedDate from "../hooks/useFormattedDate";
 

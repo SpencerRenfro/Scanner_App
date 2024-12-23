@@ -6,7 +6,7 @@ import SaveCustomerModal from "../components/sign-out/SaveCustomerModal";
 import SignOutForm from "../components/sign-out/SignOutForm";
 import ReturningCustomerSignout from "../components/sign-out/ReturningCustomerSignout";
 // Images
-import close from "../assets/close.svg";
+import close from "../assets/icons/close.svg";
 import dollarSign from "../assets/icons/dollar-sign.svg";
 
 export default function SignOut({

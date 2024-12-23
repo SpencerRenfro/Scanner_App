@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 //Barcode
 import BarcodeGenerator from "../components/BarcodeGenerator";
 //images
-import close from "../assets/close.svg";
+import close from "../assets/icons/close.svg";
 
 export default function BarcodePage() {
   const navigate = useNavigate();
@@ -57,7 +57,15 @@ export default function BarcodePage() {
           <div className="col-start-4 col-span-4 ">
             <div className="flex justify-between py-5">
               <h1 className="">{item.name}</h1>
-              <p>{item.status}</p>
+              {item.status === "IN" ? (
+                <p className="text-center w-8 rounded-md bg-green-500 px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-green-600/20">
+                  IN
+                </p>
+              ) : (
+                <p className="text-center w-8 rounded-md bg-red-500  py-1 text-xs font-medium text-white ring-1 ring-inset ring-red-600/20">
+                  OUT
+                </p>
+              )}
             </div>
             <BarcodeGenerator barcodeState={barcodeState} />
           </div>

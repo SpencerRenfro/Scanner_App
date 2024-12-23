@@ -11,7 +11,6 @@ import InventoryPage from "./pages/InventoryPage";
 import CheckIn from "./pages/CheckIn";
 import BarcodePage from "./pages/BarcodePage";
 
-
 //
 import AddItemPage from "./pages/AddItemPage";
 
@@ -47,25 +46,19 @@ function App() {
     setHideNavbar(false);
   };
 
-  //useEffect to hide navbar on select pages
-  // useEffect(() => {
-  //   if (location.pathname.includes("/:id/sign-out")) {
-  //     setHideNavbar(true);
-  //   }
-  //   else if (location.pathname.includes("/add-item")) {
-  //     setHideNavbar(true);
-  //   }
-  // }, [location.pathname]);
   useEffect(() => {
-    console.log('location.pathname:', location.pathname);
-    if (location.pathname.startsWith("/add-item") || location.pathname.startsWith("/inventory/")
-       || location.pathname.endsWith("/sign-out") ) {
-      console.log('add-item or inventory or sign-out');
-      console.log('location.pathname:', location.pathname);
+    console.log("location.pathname:", location.pathname);
+    if (
+      location.pathname.startsWith("/add-item") ||
+      location.pathname.startsWith("/inventory/") ||
+      location.pathname.endsWith("/sign-out")
+    ) {
+      console.log("add-item or inventory or sign-out");
+      console.log("location.pathname:", location.pathname);
       setHideNavbar(true);
     } else {
-      console.log('false');
-      console.log('location.pathname:', location.pathname);
+      console.log("false");
+      console.log("location.pathname:", location.pathname);
       setHideNavbar(false);
     }
   }, [location.pathname, hideNavbar]);
@@ -159,7 +152,15 @@ function App() {
         {bannerMessage && <Banner message={bannerMessage} type={bannerType} />}
 
         <Routes>
-          <Route path="/" element={<InventoryPage />} />
+          <Route
+            path="/"
+            element={
+              <InventoryPage
+                setItemSignInSuccess={setItemSignInSuccess}
+                setItemSignInFailure={setItemSignInFailure}
+              />
+            }
+          />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/check-in" element={<CheckIn />} />
           <Route
