@@ -1,6 +1,19 @@
 # Getting Started with Create React App
 This project was bootstrapped with Create React App.
 
+## Prerequisites
+Make sure you have the following installed on your machine:
+
+Node.js (v16 or higher recommended)
+
+## Installation
+## 1 Clone the repository
+git clone https://github.com/SpencerRenfro/Scanner_App.git
+cd Scanner_App
+
+## 2 Install project dependencies
+npm install
+
 ## Available Scripts
 In the project directory, you can run:
 
