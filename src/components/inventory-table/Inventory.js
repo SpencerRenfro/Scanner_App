@@ -27,6 +27,11 @@ export default function Inventory({ inventoryItems, categoryItems }) {
   const [filteredItems, setFilteredItems] = useState([]);
   const [term, setTerm] = useState("");
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [paginatedItems, setPaginatedItems] = useState([]);
+
   // Helper function to update counts and total price
   const updateCounts = (item, counters) => {
     if (!isNaN(parseFloat(item.price))) {
@@ -75,37 +80,67 @@ export default function Inventory({ inventoryItems, categoryItems }) {
     setItemCount(counters.totalItems);
   }, [inventoryItems, filter]);
 
+  // Handle pagination
+  useEffect(() => {
+    if (filteredItems.length > 0) {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setPaginatedItems(filteredItems.slice(startIndex, endIndex));
+    } else {
+      setPaginatedItems([]);
+    }
+  }, [filteredItems, currentPage, itemsPerPage]);
+
+  // Function to handle item updates (status changes)
+  const handleItemUpdated = () => {
+    // This will trigger a re-fetch of the inventory data in the parent component
+    // We'll implement this by adding a key to force a re-render
+    window.location.reload();
+  };
+
   return (
-    <div>
-      <div className="flex flex-grow justify-between my-10 mx-40">
-        <h1 className="font-bold text-3xl">Inventory</h1>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row justify-between items-center my-6 sm:my-10">
+        <h1 className="font-bold text-2xl sm:text-3xl mb-4 sm:mb-0">Inventory</h1>
         <AddItem />
       </div>
-      <div className="grid grid-cols-12 mx-40 mt-10">
-        <div className="col-span-7 mr-10">
+      <div className="grid grid-cols-1 gap-4 mt-6">
+        <div className="w-full">
           <Searchbar inventoryItems={inventoryItems} setTerm={setTerm} term={term} setFilteredItems={setFilteredItems} isInventoryData={true}/>
         </div>
-        <FilterInventory
-          filter={filter}
-          setFilter={setFilter}
-          categories={categoryItems}
-        />
-        <div className="col-span-12 h-20">
-          <div className="flex gap-7 mt-5">
+        <div className="w-full mt-4">
+          <FilterInventory
+            filter={filter}
+            setFilter={setFilter}
+            categories={categoryItems}
+          />
+        </div>
+        <div className="col-span-full mt-8">
+          <div className="flex flex-wrap gap-4 sm:gap-7">
             <Results itemCount={itemCount} />
             <CheckedIn checkedIn={checkedIn} />
             <CheckedOut checkedOut={checkedOut} />
             <TotalAssetValue totalAssetValue={totalAssetValue} />
           </div>
         </div>
-        <div className="col-span-12">
+        <div className="col-span-full mt-4 overflow-x-auto">
           <Table
             inventoryItems={inventoryItems}
             categoryFilter={filter}
             term={term}
-            filteredItems={filteredItems}
+            filteredItems={paginatedItems}
+            onItemUpdated={handleItemUpdated}
           />
-          <Pagination />
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+            totalItems={filteredItems.length}
+            onPageChange={(page, perPage) => {
+              // This will be handled by the useEffect
+            }}
+          />
         </div>
       </div>
     </div>

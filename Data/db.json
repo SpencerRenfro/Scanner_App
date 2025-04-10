@@ -415,6 +415,23 @@
       "barcodeUrl": "",
       "qrCode": "",
       "status": "IN"
+    },
+    {
+      "id": "0e34",
+      "date": "2/22/2025, 2:38:44 AM",
+      "dayOfWeek": "Saturday",
+      "time": "2:38 AM",
+      "name": "penis",
+      "category": "rhjkeakjfea",
+      "price": 900000,
+      "serialNumber": "5987987098",
+      "description": "big dick",
+      "barcode": "708519235726",
+      "barcodeCombinedName": "708519235726_penis",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
     }
   ],
   "categories": [
@@ -465,6 +482,12 @@
       "name": "Heavy Equipment",
       "barcode": "980204226991",
       "barcodeCombinedName": "980204226991_Dumpt Truck"
+    },
+    {
+      "id": "1266",
+      "name": "rhjkeakjfea",
+      "barcode": "708519235726",
+      "barcodeCombinedName": "708519235726_penis"
     }
   ],
   "itemLogs": [

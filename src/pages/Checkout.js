@@ -3,8 +3,6 @@ import React, { useState } from "react";
 import checkout from "../assets/icons/checkout.svg";
 
 //components
-import ScanInput from "../components/ScanInput";
-
 import ItemFoundCard from "../components/ItemFoundCard";
 
 //hooks
@@ -90,15 +88,25 @@ function Checkout() {
                 className="w-full border-2 rounded-lg p-2"
               />
             </div>
-            <div >
+            <div>
               <label>
                 <h2>Scan Barcode</h2>
-                <ScanInput
-                  handleChange={handleChange}
-                  handleSubmit={handleScannerSubmit}
-                  inputText={inputText}
-                  displayText={displayText}
-                />
+                <form onSubmit={handleScannerSubmit} className="w-full">
+                  <input
+                    type="text"
+                    value={inputText}
+                    onChange={handleChange}
+                    placeholder="Enter barcode"
+                    className="w-full rounded-lg mb-3"
+                  />
+                  <button
+                    className="btn mx-5 bg-slate-900 text-white"
+                    onClick={handleScannerSubmit}
+                  >
+                    Search
+                  </button>
+                  {displayText && <p className="mt-2">You entered: {displayText}</p>}
+                </form>
               </label>
 
               <div>

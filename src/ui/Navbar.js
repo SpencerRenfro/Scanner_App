@@ -12,9 +12,9 @@ export default function Example() {
   return (
     <div className="navbar w-full h-32 flex items-center bg-slate-100 text-black shadow-xl">
       <div className="flex items-center gap-1 ml-5 grow">
-        <img src={scan} width={40} height={20} alt="barcode" />
-        <NavLink className="text-center" to="check-in">
-          Scanner
+        <NavLink className="flex items-center gap-1" to="/">
+          <img src={scan} width={40} height={20} alt="barcode" />
+          <span className="text-center">Scanner</span>
         </NavLink>
       </div>
       <div className="justify-center mx-10">
@@ -54,9 +54,6 @@ export default function Example() {
             </li>
             <li>
               <NavLink to="/checkout">Check-out</NavLink>
-            </li>
-            <li>
-              <NavLink to="/check-in">Scan</NavLink>
             </li>
           </ul>
         </div>

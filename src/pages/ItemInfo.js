@@ -1,9 +1,9 @@
 import SingleItemData from './SingleItemData'
 
-function ItemInfo() {
+function ItemInfo({ setHideNavbar }) {
   return (
     <div>
-      <SingleItemData />
+      <SingleItemData setHideNavbar={setHideNavbar} />
     </div>
   )
 }

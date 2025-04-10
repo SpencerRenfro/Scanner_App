@@ -6,7 +6,6 @@ import EditItem from "./pages/EditItem";
 import AddItem from "./pages/AddItem";
 import Checkout from "./pages/Checkout";
 import InventoryPage from "./pages/InventoryPage";
-import CheckIn from "./pages/CheckIn";
 import SingleItemInfo from "./pages/ItemInfo";
 import ItemManagement from "./pages/ItemManagement";
 
@@ -47,11 +46,14 @@ function App() {
 
   //useEffect to hide navbar on select pages
   useEffect(() => {
+    // Only handle sign-out and add-item pages here
+    // The inventory item page is handled in the SingleItemData component
     if (location.pathname.includes("/sign-out")) {
       setHideNavbar(true);
     } else if (location.pathname.includes("/add-item")) {
       setHideNavbar(true);
     }
+    // Don't set hideNavbar to false here, as it would override the setting in SingleItemData
   }, [location.pathname]);
   useEffect(() => {
     if (itemCreationSuccess) {
@@ -144,7 +146,6 @@ function App() {
         <Routes>
           <Route path="/" element={<InventoryPage />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/check-in" element={<CheckIn />} />
           <Route
             path="/add-item"
             element={
@@ -165,7 +166,10 @@ function App() {
             }
           />
           <Route path="/logs" element={<Logs />} />
-          <Route path="/inventory/:id" element={<SingleItemInfo />} />
+          <Route
+            path="/inventory/:id"
+            element={<SingleItemInfo setHideNavbar={setHideNavbar} />}
+          />
           <Route
             path="/inventory/:id/edit"
             element={
