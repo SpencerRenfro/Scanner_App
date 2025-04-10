@@ -1,26 +1,86 @@
-export default function FilterLogs({ filter, setFilter }) {
-  // Handle change event for the select element
-  const handleChange = (event) => {
-    setFilter(event.target.value);
-    console.log('Filter:', event.target.value, 'Type:', typeof event.target.value);
+import { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './DatePickerStyles.css'; // Import custom styles
+
+export default function FilterLogs({ statusFilter, setStatusFilter, dateFilter, setDateFilter, logs }) {
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  // Handle change event for the status select element
+  const handleStatusChange = (event) => {
+    setStatusFilter(event.target.value);
+  };
+
+  // Handle date change from the DatePicker
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+
+    if (date) {
+      // Format the date as MM/DD/YYYY to match your log format
+      const formattedDate = date.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      });
+      setDateFilter(formattedDate);
+    } else {
+      // If date is cleared, reset the filter
+      setDateFilter('');
+    }
+  };
+
+  // Clear date filter
+  const clearDateFilter = () => {
+    setSelectedDate(null);
+    setDateFilter('');
   };
 
   return (
-    <div className="flex items-center">
-      <select
-        className="select w-full"
-        onChange={handleChange}
-        value={filter} 
-      >
-        <option value="" disabled> {/* Placeholder option */}
-         Filter By
-        </option>
-        <option value="CREATED">Created</option>
-        <option value="OUT">Out</option>
-        <option value="IN">In</option>
-        <option value="DELETED">Deleted</option>
-        <option value="">Show All</option>
-      </select>
+    <div className="col-span-5 flex flex-col sm:flex-row gap-4">
+      {/* Status Filter */}
+      <div className="flex-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+        <select
+          className="select w-full"
+          onChange={handleStatusChange}
+          value={statusFilter}
+        >
+          <option value="">All Statuses</option>
+          <option value="CREATED">Created</option>
+          <option value="OUT">Out</option>
+          <option value="IN">In</option>
+          <option value="DELETED">Deleted</option>
+        </select>
+      </div>
+
+      {/* Date Filter */}
+      <div className="flex-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Date</label>
+        <div className="relative">
+          <DatePicker
+            selected={selectedDate}
+            onChange={handleDateChange}
+            className="select w-full"
+            placeholderText="Select a date"
+            dateFormat="MM/dd/yyyy"
+            isClearable
+            showYearDropdown
+            scrollableYearDropdown
+            yearDropdownItemNumber={10}
+          />
+          {dateFilter && (
+            <div className="mt-2">
+              <span className="badge badge-info mr-2">{dateFilter}</span>
+              <button
+                onClick={clearDateFilter}
+                className="text-xs text-red-500 hover:text-red-700"
+              >
+                Clear
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

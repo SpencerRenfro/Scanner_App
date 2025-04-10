@@ -12,7 +12,8 @@ import Pagination from "../ui/pagination/Pagination";
 export default function LogsTwo() {
   const [filteredLogs, setFilteredLogs] = useState([]); // Store filtered logs here
   const { data: logs, isPending, error } = useFetch('http://localhost:8000/itemLogs');
-  const [filter, setFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
   const [term, setTerm] = useState(""); // Add state for search term
 
   // Filtering logs based on filter and search term
@@ -20,8 +21,15 @@ export default function LogsTwo() {
     if (logs) {
       let filtered = logs;
 
-      if (filter !== "") {
-        filtered = filtered.filter((item) => item.action === filter);
+      if (statusFilter !== "") {
+        filtered = filtered.filter((item) => item.action === statusFilter);
+      }
+
+      if (dateFilter !== "") {
+        filtered = filtered.filter((item) => {
+          // Compare dates regardless of format differences
+          return item.date === dateFilter;
+        });
       }
 
       if (term !== "") {
@@ -35,7 +43,7 @@ export default function LogsTwo() {
 
       setFilteredLogs(filtered);
     }
-  }, [logs, filter, term]);
+  }, [logs, statusFilter, dateFilter, term]);
 
   return (
     <div>
@@ -51,7 +59,13 @@ export default function LogsTwo() {
             setFilteredItems={setFilteredLogs} // Ensure it updates filtered logs
           />
         </div>
-        <FilterLogs filter={filter} setFilter={setFilter} />
+        <FilterLogs
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          dateFilter={dateFilter}
+          setDateFilter={setDateFilter}
+          logs={logs}
+        />
         <div className="col-span-12 -4 h-20">
           <div className="flex gap-7 mt-5">
             <Results itemCount={filteredLogs.length} /> {/* Update based on filtered logs */}
@@ -62,7 +76,7 @@ export default function LogsTwo() {
 
         {filteredLogs && (
           <div className="col-span-12">
-            <Table logs={filteredLogs} filter={filter} />
+            <Table logs={filteredLogs} filter={statusFilter} dateFilter={dateFilter} />
             <Pagination />
           </div>
         )}

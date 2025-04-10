@@ -1,12 +1,13 @@
 import TableHead from "./TableHead";
 
-function Table({ logs, filter }) {
+function Table({ logs, filter, dateFilter }) {
   return (
 <table className="table min-w-full text-black table-fixed">
   <TableHead />
   <tbody>
     {logs.map((item) =>
-      filter === "" || item.action === filter ? (
+      (filter === "" || item.action === filter) &&
+      (dateFilter === "" || item.date === dateFilter) ? (
         <tr
           key={`${item.id}-${item.date}-${item.action}`}
           className="py-4 border-b-2 border-slate-200 cursor-pointer"

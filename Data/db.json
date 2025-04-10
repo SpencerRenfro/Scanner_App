@@ -13,7 +13,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "60de",
@@ -317,7 +317,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "b45e",
