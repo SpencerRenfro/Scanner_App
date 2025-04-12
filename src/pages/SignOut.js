@@ -24,6 +24,18 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
+  // For debugging - log when customer info changes
+  useEffect(() => {
+    if (customerFirstName || customerLastName || customerEmail || customerPhone) {
+      console.log('Customer info updated:', {
+        firstName: customerFirstName,
+        lastName: customerLastName,
+        email: customerEmail,
+        phone: customerPhone
+      });
+    }
+  }, [customerFirstName, customerLastName, customerEmail, customerPhone]);
+
   // Derive full name from first and last name
   const customerName = `${customerFirstName} ${customerLastName}`.trim();
 
