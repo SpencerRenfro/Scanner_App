@@ -169,6 +169,10 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
             setCustomerLastName={setCustomerLastName}
             setCustomerEmail={setCustomerEmail}
             setCustomerPhone={setCustomerPhone}
+            customerFirstName={customerFirstName}
+            customerLastName={customerLastName}
+            customerEmail={customerEmail}
+            customerPhone={customerPhone}
             url={url}
             handleSignOut={handleSignOut}
           />
