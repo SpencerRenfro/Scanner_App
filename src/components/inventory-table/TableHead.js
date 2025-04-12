@@ -8,7 +8,7 @@ export default function TableHead() {
         <th className="font-semibold">Status</th>
         <th className="font-semibold hidden md:table-cell">Value</th>
         <th className="font-semibold hidden lg:table-cell">ID</th>
-        <th className="font-semibold">Actions</th>
+        <th className="font-semibold sm:hidden">Actions</th>
       </tr>
     </thead>
   );

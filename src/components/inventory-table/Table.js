@@ -1,24 +1,36 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { useFetch } from "../../hooks/useFetch";
 
 // Images
 import next from "../../assets/icons/next.svg"; // Ensure this path is correct
 
 // Components
 import TableHead from "./TableHead";
+import CopyableId from "./CopyableId";
+import StatusChangeDialog from "../dialogs/StatusChangeDialog";
 
-export default function Table({ categoryFilter, filteredItems, onItemUpdated }) {
+export default function Table({
+  categoryFilter,
+  filteredItems,
+  onItemUpdated,
+  setItemName,
+  setItemSignInSuccess,
+  setItemSignInFailure,
+  setItemSignOutSuccess,
+  setItemSignOutFailure
+}) {
   const [updatingItemId, setUpdatingItemId] = useState(null);
+  const [openDropdownId, setOpenDropdownId] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [dialogAction, setDialogAction] = useState(null); // 'IN' or 'OUT'
 
-  // Function to show confirmation dialog
+  // Function to handle status change actions
   const confirmStatusChange = (item, newStatus) => {
-    const action = newStatus === "IN" ? "sign in" : "sign out";
-    const confirmed = window.confirm(`Are you sure you want to ${action} this item?`);
-
-    if (confirmed) {
-      handleStatusChange(item, newStatus);
-    }
+    // Set the selected item and action for the dialog
+    setSelectedItem(item);
+    setDialogAction(newStatus);
+    setDialogOpen(true);
   };
 
   // Setup PUT request for updating item status
@@ -27,6 +39,10 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
     if (updatingItemId) return;
 
     setUpdatingItemId(item.id);
+    // Set the item name for the banner
+    if (setItemName) {
+      setItemName(item.name);
+    }
 
     try {
       const response = await fetch(`http://localhost:8000/inventory/${item.id}`, {
@@ -49,9 +65,25 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
         onItemUpdated();
       }
 
+      // Show success banner based on the action
+      if (newStatus === 'IN' && setItemSignInSuccess) {
+        setItemSignInSuccess(true);
+      } else if (newStatus === 'OUT' && setItemSignOutSuccess) {
+        setItemSignOutSuccess(true);
+      }
+
     } catch (error) {
       console.error('Error updating item status:', error);
-      alert('Failed to update item status. Please try again.');
+
+      // Show failure banner based on the action
+      if (newStatus === 'IN' && setItemSignInFailure) {
+        setItemSignInFailure(true);
+      } else if (newStatus === 'OUT' && setItemSignOutFailure) {
+        setItemSignOutFailure(true);
+      } else {
+        // Fallback to alert if banner props aren't available
+        alert('Failed to update item status. Please try again.');
+      }
     } finally {
       setUpdatingItemId(null);
     }
@@ -86,11 +118,10 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
                     {item.status === "IN" ? (
                       <button
                         onClick={() => confirmStatusChange(item, "OUT")}
-                        disabled={updatingItemId === item.id}
-                        className="badge badge-success badge-outline badge-lg w-14 mb-2 sm:mb-0 sm:mr-2 cursor-pointer hover:bg-green-100 transition-colors"
+                        className="badge badge-success badge-outline badge-lg w-14 mb-2 sm:mb-0 sm:mr-2 cursor-pointer hover:bg-green-100 transition-colors flex items-center justify-center"
                         title="Click to sign out"
                       >
-                        {updatingItemId === item.id ? '...' : 'IN'}
+                        IN
                       </button>
                     ) : (
                       <button
@@ -111,10 +142,25 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
                   <p>${item.price}</p>
                 </td>
                 <td className="hidden lg:table-cell">
-                  <p>{item.barcode}</p>
+                  <CopyableId text={item.barcode} />
                 </td>
-                <td>
-                  <details className="dropdown dropdown-end">
+                <td className="sm:hidden">
+                  <details
+                    className="dropdown dropdown-end sm:hidden"
+                    open={openDropdownId === item.id}
+                    onClick={(e) => {
+                      // Prevent the default toggle behavior
+                      if (e.target.tagName.toLowerCase() === 'summary') {
+                        e.preventDefault();
+                        // Toggle the dropdown
+                        if (openDropdownId === item.id) {
+                          setOpenDropdownId(null);
+                        } else {
+                          setOpenDropdownId(item.id);
+                        }
+                      }
+                    }}
+                  >
                     <summary className="btn btn-ghost btn-sm m-1 cursor-pointer flex items-center">
                       <img
                         src={next}
@@ -122,7 +168,7 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
                         width={20}
                         className="rotate-90"
                       />
-                      <span className="ml-2 hidden sm:inline">Options</span>
+                      <span className="ml-2">Options</span>
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-50 w-52 p-2 shadow">
                       <li>
@@ -133,7 +179,10 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
                       {item.status === "OUT" && (
                         <li>
                           <button
-                            onClick={() => confirmStatusChange(item, "IN")}
+                            onClick={() => {
+                              setOpenDropdownId(null); // Close dropdown after action
+                              confirmStatusChange(item, "IN");
+                            }}
                             disabled={updatingItemId === item.id}
                             className="text-left"
                           >
@@ -144,11 +193,13 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
                       {item.status === "IN" && (
                         <li>
                           <button
-                            onClick={() => confirmStatusChange(item, "OUT")}
-                            disabled={updatingItemId === item.id}
-                            className="text-left"
+                            onClick={() => {
+                              setOpenDropdownId(null); // Close dropdown after action
+                              confirmStatusChange(item, "OUT");
+                            }}
+                            className="text-left block w-full py-2"
                           >
-                            {updatingItemId === item.id ? 'Updating...' : 'Sign Out'}
+                            Sign Out
                           </button>
                         </li>
                       )}
@@ -160,6 +211,24 @@ export default function Table({ categoryFilter, filteredItems, onItemUpdated }) 
           )}
         </tbody>
       </table>
+
+      {/* Status Change Dialog */}
+      {dialogOpen && selectedItem && (
+        <StatusChangeDialog
+          isOpen={dialogOpen}
+          onClose={{
+            onCancel: () => setDialogOpen(false),
+            onConfirm: () => {
+              if (dialogAction === 'IN') {
+                handleStatusChange(selectedItem, 'IN');
+              }
+              setDialogOpen(false);
+            }
+          }}
+          item={selectedItem}
+          action={dialogAction}
+        />
+      )}
     </div>
   );
 }

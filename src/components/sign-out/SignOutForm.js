@@ -1,10 +1,6 @@
-import { useFetch } from "../../hooks/useFetch";
-
 export default function SignOutForm({url, setCustomerFirstName, setCustomerLastName, setCustomerEmail, setCustomerPhone, handleSignOut}) {
-
-    
     return (
-    <form>
+    <form onSubmit={handleSignOut}>
       <label>
         <h1 className="font-bold">Customer Information</h1>
       </label>
@@ -13,7 +9,7 @@ export default function SignOutForm({url, setCustomerFirstName, setCustomerLastN
           type="text"
           placeholder="First Name"
           className="input input-bordered w-full my-6"
-          onChange={(e) => setCustomerFirstName(e.target.value)} 
+          onChange={(e) => setCustomerFirstName(e.target.value)}
           required
         />
         <input
@@ -38,7 +34,7 @@ export default function SignOutForm({url, setCustomerFirstName, setCustomerLastN
           required
         />
       </div>
-      <button className="btn bg-indigo-950 text-white mt-5" type="submit" onClick={handleSignOut}>
+      <button className="btn bg-indigo-950 text-white mt-5" type="submit">
         Submit
       </button>
     </form>

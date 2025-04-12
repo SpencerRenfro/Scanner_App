@@ -16,6 +16,11 @@ export default function LogsTwo() {
   const [dateFilter, setDateFilter] = useState("");
   const [term, setTerm] = useState(""); // Add state for search term
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [paginatedLogs, setPaginatedLogs] = useState([]);
+
   // Filtering logs based on filter and search term
   useEffect(() => {
     if (logs) {
@@ -44,6 +49,17 @@ export default function LogsTwo() {
       setFilteredLogs(filtered);
     }
   }, [logs, statusFilter, dateFilter, term]);
+
+  // Handle pagination
+  useEffect(() => {
+    if (filteredLogs.length > 0) {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      setPaginatedLogs(filteredLogs.slice(startIndex, endIndex));
+    } else {
+      setPaginatedLogs([]);
+    }
+  }, [filteredLogs, currentPage, itemsPerPage]);
 
   return (
     <div>
@@ -76,8 +92,17 @@ export default function LogsTwo() {
 
         {filteredLogs && (
           <div className="col-span-12">
-            <Table logs={filteredLogs} filter={statusFilter} dateFilter={dateFilter} />
-            <Pagination />
+            <Table logs={paginatedLogs} filter={statusFilter} dateFilter={dateFilter} />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              itemsPerPage={itemsPerPage}
+              setItemsPerPage={setItemsPerPage}
+              totalItems={filteredLogs.length}
+              onPageChange={(page, perPage) => {
+                // This will be handled by the useEffect
+              }}
+            />
           </div>
         )}
       </div>

@@ -9,7 +9,14 @@ import Inventory from "../components/inventory-table/Inventory";
 //reducers
 import { CategoryContext } from "../reducers/CategoryContext";
 
-function InventoryPage(props) {
+function InventoryPage({
+  setItemName,
+  setItemSignInSuccess,
+  setItemSignInFailure,
+  setItemSignOutSuccess,
+  setItemSignOutFailure,
+  ...props
+}) {
   const { data, isPending, error } = useFetch(
     "http://localhost:8000/inventory"
   );
@@ -43,7 +50,6 @@ function InventoryPage(props) {
   return (
     <div className="bg-slate-100">
       {error && <div>{error}</div>}
-      {isPending && <div>Loading...</div>}
       {data && categories && (
         <div>
           <Inventory
@@ -51,6 +57,11 @@ function InventoryPage(props) {
             categoryItems={categories}
             setShowModal={props.setShowModal}
             modalHandler={props.modalHandler}
+            setItemName={setItemName}
+            setItemSignInSuccess={setItemSignInSuccess}
+            setItemSignInFailure={setItemSignInFailure}
+            setItemSignOutSuccess={setItemSignOutSuccess}
+            setItemSignOutFailure={setItemSignOutFailure}
           />
         </div>
       )}

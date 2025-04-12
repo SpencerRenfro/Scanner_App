@@ -28,7 +28,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "2bdc",
@@ -167,7 +167,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT"
     },
     {
       "id": "20ec",

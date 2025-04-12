@@ -144,7 +144,13 @@ function App() {
         {bannerMessage && <Banner message={bannerMessage} type={bannerType} />}
 
         <Routes>
-          <Route path="/" element={<InventoryPage />} />
+          <Route path="/" element={<InventoryPage
+            setItemName={setItemName}
+            setItemSignInSuccess={setItemSignInSuccess}
+            setItemSignInFailure={setItemSignInFailure}
+            setItemSignOutSuccess={setItemSignOutSuccess}
+            setItemSignOutFailure={setItemSignOutFailure}
+          />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route
             path="/add-item"
@@ -180,7 +186,12 @@ function App() {
               />
             }
           />
-          <Route path="/:id/sign-out" element={<SignOut />} handleHideNavbar={handleHideNavbar} />
+          <Route path="/:id/sign-out" element={<SignOut
+            handleHideNavbar={() => setHideNavbar(false)}
+            setItemName={setItemName}
+            setItemSignOutSuccess={setItemSignOutSuccess}
+            setItemSignOutFailure={setItemSignOutFailure}
+          />} />
           <Route path="/item-management" element={<ItemManagement />} />
         </Routes>
       </div>
