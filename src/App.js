@@ -49,11 +49,14 @@ function App() {
     // Only handle sign-out and add-item pages here
     // The inventory item page is handled in the SingleItemData component
     if (location.pathname.includes("/sign-out")) {
+      console.log('Setting hideNavbar to true for sign-out page');
       setHideNavbar(true);
     } else if (location.pathname.includes("/add-item")) {
       setHideNavbar(true);
+    } else {
+      // For other pages, show the navbar
+      setHideNavbar(false);
     }
-    // Don't set hideNavbar to false here, as it would override the setting in SingleItemData
   }, [location.pathname]);
   useEffect(() => {
     if (itemCreationSuccess) {
@@ -187,7 +190,7 @@ function App() {
             }
           />
           <Route path="/:id/sign-out" element={<SignOut
-            handleHideNavbar={() => setHideNavbar(false)}
+            handleHideNavbar={handleHideNavbar}
             setItemName={setItemName}
             setItemSignOutSuccess={setItemSignOutSuccess}
             setItemSignOutFailure={setItemSignOutFailure}

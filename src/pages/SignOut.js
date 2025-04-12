@@ -32,14 +32,7 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
     console.log('Item data:', item);
     console.log('Is pending:', isPending);
     console.log('Error:', error);
-
-    // When the component unmounts, set hideNavbar to false
-    return () => {
-      if (handleHideNavbar) {
-        handleHideNavbar();
-      }
-    };
-  }, [handleHideNavbar, item, isPending, error]);
+  }, [item, isPending, error]);
 
   // Function to process the form submission with item data
   const processFormSubmission = async (itemData) => {
