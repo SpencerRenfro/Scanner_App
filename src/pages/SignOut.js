@@ -142,7 +142,16 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
         }
       }
 
-      // Update the item status to OUT
+      // Create customer info object
+      const customerInfo = {
+        firstName: customerFirstName,
+        lastName: customerLastName,
+        email: customerEmail,
+        phone: customerPhone,
+        fullName: `${customerFirstName} ${customerLastName}`.trim()
+      };
+
+      // Update the item status to OUT and include customer info
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -150,7 +159,9 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
         },
         body: JSON.stringify({
           ...itemData,
-          status: "OUT"
+          status: "OUT",
+          signedOutTo: customerInfo,
+          lastUpdated: new Date().toISOString()
         })
       });
 

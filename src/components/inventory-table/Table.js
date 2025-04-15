@@ -90,15 +90,20 @@ export default function Table({
       }
 
       // Update the item status
+      const updatedItem = { ...item, status: newStatus };
+
+      // If signing in, clear the customer information
+      if (newStatus === 'IN') {
+        updatedItem.signedOutTo = null;
+        updatedItem.lastUpdated = new Date().toISOString();
+      }
+
       const response = await fetch(`http://localhost:8000/inventory/${item.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...item,
-          status: newStatus
-        })
+        body: JSON.stringify(updatedItem)
       });
 
       if (!response.ok) {

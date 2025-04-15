@@ -28,7 +28,15 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "OUT",
+      "signedOutTo": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "555-123-4567",
+        "fullName": "John Doe"
+      },
+      "lastUpdated": "2024-07-15T14:30:00.000Z"
     },
     {
       "id": "2bdc",
@@ -347,9 +355,17 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN",
+      "status": "OUT",
       "dayOfWeek": "Monday",
-      "time": "6:55"
+      "time": "6:55",
+      "signedOutTo": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "555-123-4567",
+        "fullName": "John Doe"
+      },
+      "lastUpdated": "2025-04-15T17:58:07.097Z"
     },
     {
       "id": "d010",
@@ -369,7 +385,15 @@
       ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT",
+      "signedOutTo": {
+        "firstName": "Spencer",
+        "lastName": "Renfro",
+        "email": "spencer.renfro13@gmail.com",
+        "phone": "2173134416",
+        "fullName": "Spencer Renfro"
+      },
+      "lastUpdated": "2025-04-15T17:19:09.604Z"
     },
     {
       "id": "1e67",
@@ -389,7 +413,22 @@
       ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT",
+      "signOutTo": {
+        "firstName": "Michael",
+        "lastName": "Johnson",
+        "email": "michael.johnson@example.com",
+        "phone": "555-456-7890",
+        "fullName": "Michael Johnson"
+      },
+      "lastUpdated": "2025-04-15T17:56:55.698Z",
+      "signedOutTo": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "555-123-4567",
+        "fullName": "John Doe"
+      }
     },
     {
       "id": "da75",
@@ -406,7 +445,15 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT",
+      "signedOutTo": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "email": "john.doe@example.com",
+        "phone": "555-123-4567",
+        "fullName": "John Doe"
+      },
+      "lastUpdated": "2025-04-15T17:56:36.715Z"
     }
   ],
   "categories": [
@@ -849,6 +896,86 @@
       "dayOfWeek": "Tuesday",
       "time": "10:33 AM",
       "category": ""
+    },
+    {
+      "id": "963196845021_Alexa",
+      "name": "Alexa",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "963196845021",
+      "dayOfWeek": "Tuesday",
+      "time": "10:55 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "063841795706_PS5",
+      "name": "PS5",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "063841795706",
+      "dayOfWeek": "Tuesday",
+      "time": "11:11 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "012999116295_test item",
+      "name": "test item",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "012999116295",
+      "dayOfWeek": "Tuesday",
+      "time": "11:19 AM",
+      "category": "Education"
+    },
+    {
+      "id": "963196845021_Alexa",
+      "name": "Alexa",
+      "action": "IN",
+      "date": "04/15/2025",
+      "barcode": "963196845021",
+      "dayOfWeek": "Tuesday",
+      "time": "11:54 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "063841795706_PS5",
+      "name": "PS5",
+      "action": "IN",
+      "date": "04/15/2025",
+      "barcode": "063841795706",
+      "dayOfWeek": "Tuesday",
+      "time": "11:54 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "963196845021_Alexa",
+      "name": "Alexa",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "963196845021",
+      "dayOfWeek": "Tuesday",
+      "time": "11:56 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "063841795706_PS5",
+      "name": "PS5",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "063841795706",
+      "dayOfWeek": "Tuesday",
+      "time": "11:56 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": "980204226991_Dumpt Truck",
+      "name": "Dumpt Truck",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "980204226991",
+      "dayOfWeek": "Tuesday",
+      "time": "11:58 AM",
+      "category": "Heavy Equipment"
     }
   ],
   "customers": [
@@ -886,6 +1013,13 @@
       "lastName": "Brown",
       "email": "robert.brown@example.com",
       "phone": "555-234-5678"
+    },
+    {
+      "id": "72ca",
+      "firstName": "Spencer",
+      "lastName": "Renfro",
+      "email": "spencer.renfro13@gmail.com",
+      "phone": "2173134416"
     }
   ]
 }

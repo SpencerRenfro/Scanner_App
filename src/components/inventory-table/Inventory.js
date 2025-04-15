@@ -32,6 +32,8 @@ export default function Inventory({
   const [filter, setFilter] = useState("");
   const [activeCategory, setActiveCategory] = useState("");
   const [activeStatus, setActiveStatus] = useState("");
+  const [activeCustomer, setActiveCustomer] = useState("");
+  const [customers, setCustomers] = useState([]);
 
   //searchbar useStates
   const [filteredItems, setFilteredItems] = useState([]);
@@ -41,6 +43,26 @@ export default function Inventory({
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
   const [paginatedItems, setPaginatedItems] = useState([]);
+
+  // Extract unique customers from inventory items
+  useEffect(() => {
+    // Extract unique customers from inventory items
+    const uniqueCustomers = inventoryItems.reduce((acc, item) => {
+      if (item.signedOutTo && item.status === 'OUT') {
+        const fullName = item.signedOutTo.fullName;
+        if (fullName && !acc.some(customer => customer.fullName === fullName)) {
+          acc.push({
+            ...item.signedOutTo,
+            id: item.signedOutTo.email // Use email as ID
+          });
+        }
+      }
+      return acc;
+    }, []);
+
+    console.log('Extracted customers:', uniqueCustomers);
+    setCustomers(uniqueCustomers);
+  }, [inventoryItems]);
 
   // Helper function to update counts and total price
   const updateCounts = (item, counters) => {
@@ -120,10 +142,28 @@ export default function Inventory({
       }
     }
 
-    // Apply status filter if active
+    // Apply customer filter if active
+    if (activeCustomer) {
+      console.log('Filtering by customer:', activeCustomer);
+      console.log('Items before customer filter:', filtered.length);
+      filtered = filtered.filter(item => {
+        const match = item.signedOutTo && item.signedOutTo.fullName === activeCustomer;
+        if (match) {
+          console.log('Matched item:', item.name, 'signedOutTo:', item.signedOutTo);
+        }
+        return match;
+      });
+      console.log('Items after customer filter:', filtered.length);
+    }
+
+    // Apply status filter if active (not empty string)
+    // This needs to come after customer filter to ensure customer items show up
+    // regardless of status when no status filter is applied
     if (activeStatus) {
       filtered = filtered.filter(item => item.status === activeStatus);
     }
+    // Note: When activeStatus is an empty string, we don't apply any status filter,
+    // which means we show all statuses (IN and OUT) for the current category/customer selection
 
     // Apply search term if present
     if (term) {
@@ -143,7 +183,7 @@ export default function Inventory({
     setFilteredItems(filtered);
     // Reset to first page when filters change
     setCurrentPage(1);
-  }, [inventoryItems, activeCategory, activeStatus, term]);
+  }, [inventoryItems, activeCategory, activeStatus, activeCustomer, term]);
 
   // Handle pagination
   useEffect(() => {
@@ -182,9 +222,75 @@ export default function Inventory({
             setActiveCategory={setActiveCategory}
             activeStatus={activeStatus}
             setActiveStatus={setActiveStatus}
+            customers={customers}
+            activeCustomer={activeCustomer}
+            setActiveCustomer={setActiveCustomer}
           />
         </div>
         <div className="col-span-full mt-8">
+          {/* Debug buttons - remove in production */}
+          <div className="flex gap-2 mb-4">
+            <button
+              onClick={() => {
+                console.log('All inventory items:', inventoryItems);
+                console.log('Filtered items:', filteredItems);
+                console.log('Active customer:', activeCustomer);
+                console.log('Active category:', activeCategory);
+                console.log('Active status:', activeStatus);
+              }}
+              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            >
+              Debug: Log State
+            </button>
+            <button
+              onClick={() => {
+                // Find the Impact Drill item
+                const drillItem = inventoryItems.find(item => item.name === 'Impact Drill');
+                console.log('Impact Drill item:', drillItem);
+
+                // Check if it has signedOutTo property
+                if (drillItem) {
+                  console.log('signedOutTo property:', drillItem.signedOutTo);
+
+                  // Test the filter condition
+                  if (drillItem.signedOutTo && drillItem.signedOutTo.fullName === 'John Doe') {
+                    console.log('Filter condition would match!');
+                  } else {
+                    console.log('Filter condition would NOT match!');
+                    console.log('Reasons:');
+                    if (!drillItem.signedOutTo) console.log('- signedOutTo is null or undefined');
+                    else if (drillItem.signedOutTo.fullName !== 'John Doe') {
+                      console.log(`- fullName is "${drillItem.signedOutTo.fullName}" not "John Doe"`);
+                    }
+                  }
+                }
+              }}
+              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            >
+              Debug: Check Drill Item
+            </button>
+            <button
+              onClick={() => {
+                // Set active customer to John Doe
+                setActiveCustomer('John Doe');
+
+                // Force a re-filter
+                setTimeout(() => {
+                  // Get all items with signedOutTo.fullName === 'John Doe'
+                  const johnDoeItems = inventoryItems.filter(item =>
+                    item.signedOutTo && item.signedOutTo.fullName === 'John Doe'
+                  );
+                  console.log('Items signed out to John Doe:', johnDoeItems);
+
+                  // Log the current filtered items
+                  console.log('Current filtered items:', filteredItems);
+                }, 100);
+              }}
+              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+            >
+              Filter by John Doe
+            </button>
+          </div>
           <div className="flex flex-wrap gap-4 sm:gap-7">
             <Results itemCount={itemCount} />
             <CheckedIn checkedIn={checkedIn} />

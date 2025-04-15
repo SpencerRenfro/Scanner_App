@@ -19,6 +19,7 @@ import Navbar from "./ui/Navbar";
 import Banner from "./components/Banner";
 import PrintPreview from "./components/PrintPreview";
 import CategoryManagement from "./pages/CategoryManagement";
+import CustomerManagement from "./pages/CustomerManagement";
 
 // Import print styles
 import "./styles/printPreview.css";
@@ -57,6 +58,7 @@ function App() {
     if (location.pathname.includes("/sign-out") ||
         location.pathname.includes("/add-item") ||
         location.pathname.includes("/categories/manage") ||
+        location.pathname.includes("/customers/manage") ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/edit")) ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/print"))) {
       console.log('Setting hideNavbar to true for:', location.pathname);
@@ -224,6 +226,7 @@ function App() {
           <Route path="/item-management" element={<ItemManagement />} />
           <Route path="/inventory/:id/print" element={<PrintPreview />} />
           <Route path="/categories/manage" element={<CategoryManagement />} />
+          <Route path="/customers/manage" element={<CustomerManagement />} />
         </Routes>
       </div>
     </div>
