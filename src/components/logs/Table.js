@@ -2,7 +2,7 @@ import TableHead from "./TableHead";
 
 function Table({ logs, filter, dateFilter }) {
   return (
-<table className="table min-w-full text-black table-fixed">
+<table className="table min-w-full text-black table-fixed bg-slate-100">
   <TableHead />
   <tbody>
     {logs.map((item) =>
@@ -10,7 +10,7 @@ function Table({ logs, filter, dateFilter }) {
       (dateFilter === "" || item.date === dateFilter) ? (
         <tr
           key={`${item.id}-${item.date}-${item.action}`}
-          className="py-4 border-b-2 border-slate-200 cursor-pointer"
+          className="py-4 border-b-2 border-slate-200"
         >
           <td className="w-1/4">
             <p>{item.name}</p>

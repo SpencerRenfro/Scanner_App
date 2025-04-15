@@ -19,9 +19,9 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
   };
 
   // Determine colors based on action
-  const headerBgColor = action === 'OUT' ? 'bg-amber-600' : 'bg-green-600';
-  const buttonBgColor = action === 'OUT' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-green-600 hover:bg-green-700';
-  const iconColor = action === 'OUT' ? 'text-amber-600' : 'text-green-600';
+  const headerBgColor = action === 'OUT' ? 'bg-red-600' : 'bg-green-600';
+  const buttonBgColor = action === 'OUT' ? 'bg-red-600 hover:bg-red-400' : 'bg-green-600 hover:bg-green-700';
+  const iconColor = action === 'OUT' ? 'text-red-600' : 'text-green-600';
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 animate-fadeIn">
@@ -54,7 +54,7 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
         {/* Content */}
         <div className="p-6">
           <div className="flex items-center mb-6">
-            <div className={`rounded-full p-3 ${action === 'OUT' ? 'bg-amber-100' : 'bg-green-100'} mr-4`}>
+            <div className={`rounded-full p-3 ${action === 'OUT' ? 'bg-red-100' : 'bg-green-100'} mr-4`}>
               {action === 'OUT' ? (
                 <svg xmlns="http://www.w3.org/2000/svg" className={`h-8 w-8 ${iconColor}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />

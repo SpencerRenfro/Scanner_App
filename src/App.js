@@ -18,6 +18,7 @@ import Logs from "./pages/Logs";
 import Navbar from "./ui/Navbar";
 import Banner from "./components/Banner";
 import PrintPreview from "./components/PrintPreview";
+import CategoryManagement from "./pages/CategoryManagement";
 
 // Import print styles
 import "./styles/printPreview.css";
@@ -36,6 +37,8 @@ function App() {
   const [itemSignInFailure, setItemSignInFailure] = useState(false);
   const [itemSignOutSuccess, setItemSignOutSuccess] = useState(false);
   const [itemSignOutFailure, setItemSignOutFailure] = useState(false);
+  const [itemDeleteSuccess, setItemDeleteSuccess] = useState(false);
+  const [itemDeleteFailure, setItemDeleteFailure] = useState(false);
 
   // hide navbar for select pages
   const location = useLocation();
@@ -53,6 +56,7 @@ function App() {
     // Hide navbar on specific pages
     if (location.pathname.includes("/sign-out") ||
         location.pathname.includes("/add-item") ||
+        location.pathname.includes("/categories/manage") ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/print"))) {
       console.log('Setting hideNavbar to true for:', location.pathname);
       setHideNavbar(true);
@@ -104,6 +108,16 @@ function App() {
         `There was a problem signing out ${itemName}. Please try again.`
       );
     }
+    if (itemDeleteSuccess) {
+      setBannerType("success");
+      setBannerMessage(`${itemName} has been deleted successfully.`);
+    }
+    if (itemDeleteFailure) {
+      setBannerType("failure");
+      setBannerMessage(
+        `There was a problem deleting ${itemName}. Please try again.`
+      );
+    }
 
     const timer = setTimeout(() => {
       if (
@@ -114,7 +128,9 @@ function App() {
         itemSignInSuccess ||
         itemSignInFailure ||
         itemSignOutSuccess ||
-        itemSignOutFailure
+        itemSignOutFailure ||
+        itemDeleteSuccess ||
+        itemDeleteFailure
       ) {
         setItemCreationSuccess(false);
         setItemCreationFailure(false);
@@ -124,6 +140,8 @@ function App() {
         setItemSignInFailure(false);
         setItemSignOutSuccess(false);
         setItemSignOutFailure(false);
+        setItemDeleteSuccess(false);
+        setItemDeleteFailure(false);
         setBannerType("");
         setBannerMessage("");
       }
@@ -139,6 +157,8 @@ function App() {
     itemSignInFailure,
     itemSignOutSuccess,
     itemSignOutFailure,
+    itemDeleteSuccess,
+    itemDeleteFailure,
     itemName,
   ]);
 
@@ -189,6 +209,8 @@ function App() {
                 setItemName={setItemName}
                 setItemUpdateSuccess={setItemUpdateSuccess}
                 setItemUpdateFailure={setItemUpdateFailure}
+                setItemDeleteSuccess={setItemDeleteSuccess}
+                setItemDeleteFailure={setItemDeleteFailure}
               />
             }
           />
@@ -200,6 +222,7 @@ function App() {
           />} />
           <Route path="/item-management" element={<ItemManagement />} />
           <Route path="/inventory/:id/print" element={<PrintPreview />} />
+          <Route path="/categories/manage" element={<CategoryManagement />} />
         </Routes>
       </div>
     </div>

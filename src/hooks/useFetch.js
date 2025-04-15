@@ -26,6 +26,12 @@ export const useFetch = (url, method = "GET") => {
     });
   };
 
+  const deleteData = () => {
+    setOptions({
+      method: "DELETE",
+    });
+  };
+
   useEffect(() => {
     console.log(`useFetch ran with url: ${url}, method: ${method}, options: ${JSON.stringify(options)}`);
 
@@ -56,7 +62,7 @@ export const useFetch = (url, method = "GET") => {
 
     if (method === "GET") {
       fetchData();
-    } else if ((method === "POST" || method === "PUT") && options) {
+    } else if ((method === "POST" || method === "PUT" || method === "DELETE") && options) {
       fetchData(options);
     }
 
@@ -65,5 +71,5 @@ export const useFetch = (url, method = "GET") => {
     };
   }, [url, options, method]);
 
-  return { data, isPending, error, postData, putData };
+  return { data, isPending, error, postData, putData, deleteData };
 };

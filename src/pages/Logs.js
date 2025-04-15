@@ -21,10 +21,17 @@ export default function LogsTwo() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [paginatedLogs, setPaginatedLogs] = useState([]);
 
-  // Filtering logs based on filter and search term
+  // Helper function to parse dates in MM/DD/YYYY format
+  const parseDate = (dateString) => {
+    if (!dateString) return null;
+    const [month, day, year] = dateString.split('/');
+    return new Date(year, month - 1, day);
+  };
+
+  // Filtering and sorting logs based on filter and search term
   useEffect(() => {
     if (logs) {
-      let filtered = logs;
+      let filtered = [...logs]; // Create a copy to avoid mutating the original
 
       if (statusFilter !== "") {
         filtered = filtered.filter((item) => item.action === statusFilter);
@@ -46,9 +53,42 @@ export default function LogsTwo() {
         );
       }
 
+      // Sort logs by date (newest first)
+      filtered.sort((a, b) => {
+        const dateA = parseDate(a.date);
+        const dateB = parseDate(b.date);
+
+        // If dates are the same, sort by time
+        if (dateA && dateB && dateA.getTime() === dateB.getTime()) {
+          // Convert 12-hour time format to 24-hour for comparison
+          const timeA = a.time ? convertTo24Hour(a.time) : '';
+          const timeB = b.time ? convertTo24Hour(b.time) : '';
+          return timeB.localeCompare(timeA); // Newest first
+        }
+
+        // Sort by date if different
+        return dateB - dateA; // Newest first
+      });
+
       setFilteredLogs(filtered);
     }
   }, [logs, statusFilter, dateFilter, term]);
+
+  // Helper function to convert 12-hour time format to 24-hour for sorting
+  const convertTo24Hour = (time12h) => {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+
+    if (hours === '12') {
+      hours = '00';
+    }
+
+    if (modifier === 'PM') {
+      hours = parseInt(hours, 10) + 12;
+    }
+
+    return `${hours}:${minutes}`;
+  };
 
   // Handle pagination
   useEffect(() => {
@@ -62,7 +102,7 @@ export default function LogsTwo() {
   }, [filteredLogs, currentPage, itemsPerPage]);
 
   return (
-    <div>
+    <div className="bg-slate-100 min-h-screen pb-20">
       <div className="grid grid-cols-12 mx-10 lg:mx-40 mt-10">
         <h1 className="col-start-1 col-span-12 font-bold text-3xl text-black my-10">
           Logs
@@ -91,18 +131,22 @@ export default function LogsTwo() {
         {error && <div>{error}</div>}
 
         {filteredLogs && (
-          <div className="col-span-12">
-            <Table logs={paginatedLogs} filter={statusFilter} dateFilter={dateFilter} />
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              itemsPerPage={itemsPerPage}
-              setItemsPerPage={setItemsPerPage}
-              totalItems={filteredLogs.length}
-              onPageChange={(page, perPage) => {
-                // This will be handled by the useEffect
-              }}
-            />
+          <div className="col-span-12 bg-slate-100">
+            <div className="bg-slate-100">
+              <Table logs={paginatedLogs} filter={statusFilter} dateFilter={dateFilter} />
+              <div className="bg-slate-100">
+                <Pagination
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  itemsPerPage={itemsPerPage}
+                  setItemsPerPage={setItemsPerPage}
+                  totalItems={filteredLogs.length}
+                  onPageChange={(page, perPage) => {
+                    // This will be handled by the useEffect
+                  }}
+                />
+              </div>
+            </div>
           </div>
         )}
       </div>

@@ -5,11 +5,12 @@ import { useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 //components
 import BarcodeGenerator from "../components/BarcodeGenerator";
+import ConfirmationDialog from "../components/ConfirmationDialog";
 //images
 import deleteIcon from "../assets/icons/delete.svg";
 import editIcon from "../assets/icons/edit2.svg";
 
-export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, setItemName}) {
+export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, setItemName, setItemDeleteSuccess}) {
   const navigate = useNavigate();
   const { id } = useParams();
   const url = `http://localhost:8000/inventory/${id}`;
@@ -23,12 +24,21 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
     isPending: putIsPending,
   } = useFetch(url, "PUT");
 
+  // DELETE Request
+  const {
+    deleteData,
+    data: deleteDataResponse,
+    error: deleteError,
+    isPending: deleteIsPending,
+  } = useFetch(url, "DELETE");
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [status, setStatus] = useState("");
   const [price, setPrice] = useState(0.0);
   const [collection, setCollection] = useState([]);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [barcodeState, setBarcodeState] = useState("");
 
   useEffect(() => {
@@ -49,8 +59,18 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
         navigate("/");
         setItemUpdateSuccess(true);
         setItemName(name);
-      } 
-  }, [putDataResponse]);
+      }
+  }, [putDataResponse, navigate, setItemUpdateSuccess, setItemName, name]);
+
+  useEffect(() => {
+    if (deleteDataResponse) {
+        navigate("/");
+        if (setItemDeleteSuccess) {
+          setItemDeleteSuccess(true);
+          setItemName(name);
+        }
+      }
+  }, [deleteDataResponse, navigate, setItemDeleteSuccess, setItemName, name]);
 
   const deleteCollectionItem = (index) => {
     setCollection(collection.filter((_, i) => i !== index));
@@ -97,6 +117,8 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
     }
   };
 
+
+
   return (
     <div className="flex justify-center">
       {error && <div className="error">{error}</div>}
@@ -107,7 +129,7 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
         <span className="loading loading-spinner loading-lg"></span>
       ) : (
         item && (
-          <form onSubmit={handleSubmit} className="w-1/3 mt-10 ">
+          <form onSubmit={handleSubmit} className="w-1/3 mt-10 pb-10">
             <div className="card border shadow-lg ">
               <div className="card-body ">
                 <div className="form-group">
@@ -185,13 +207,21 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
                     <option value="OUT">OUT</option>
                   </select>
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center gap-4 mt-6">
                   <button
                     type="submit"
-                    className="btn btn-outline mt-6 flex "
-                    disabled={putIsPending}
+                    className="btn btn-outline flex"
+                    disabled={putIsPending || deleteIsPending}
                   >
                     Update Item
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-error flex"
+                    onClick={() => setShowDeleteDialog(true)}
+                    disabled={putIsPending || deleteIsPending}
+                  >
+                    Delete Item
                   </button>
                 </div>
               </div>
@@ -202,6 +232,19 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
           </form>
         )
       )}
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        isOpen={showDeleteDialog}
+        title="Delete Item"
+        message={`Are you sure you want to delete ${name}? This action cannot be undone.`}
+        onConfirm={() => {
+          deleteData();
+          if (deleteError) {
+            console.log("Error deleting item:", deleteError);
+          }
+        }}
+        onCancel={() => setShowDeleteDialog(false)}
+      />
     </div>
   );
 }

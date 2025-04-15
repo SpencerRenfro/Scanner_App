@@ -57,17 +57,47 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
     setIsSubmitting(true);
 
     try {
+      // Get current date and time for the log
+      const now = new Date();
+      const dateString = now.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      });
+      const timeString = now.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+      const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
+
       // Create log entry for the sign-out action
-      const signOutFormData = {
-        name: customerName,
-        email: customerEmail,
-        phone: customerPhone,
+      const logEntry = {
+        id: `${itemData.barcode}_${itemData.name}`,
+        name: itemData.name,
         action: "OUT",
+        date: dateString,
         barcode: itemData.barcode || 'Unknown',
+        dayOfWeek: dayOfWeek,
+        time: timeString,
+        category: itemData.category || ''
       };
 
       // Log the sign-out data
-      console.log(signOutFormData);
+      console.log('Creating log entry:', logEntry);
+
+      // Post the log entry to the itemLogs collection
+      const logResponse = await fetch('http://localhost:8000/itemLogs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(logEntry)
+      });
+
+      if (!logResponse.ok) {
+        console.error('Failed to create log entry');
+      }
 
       // Update the item status to OUT
       const response = await fetch(url, {

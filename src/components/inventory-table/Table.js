@@ -45,6 +45,51 @@ export default function Table({
     }
 
     try {
+      // Create a log entry for the status change
+      if (newStatus === 'IN') {
+        // Get current date and time for the log
+        const now = new Date();
+        const dateString = now.toLocaleDateString('en-US', {
+          month: '2-digit',
+          day: '2-digit',
+          year: 'numeric'
+        });
+        const timeString = now.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
+
+        // Create log entry for the sign-in action
+        const logEntry = {
+          id: `${item.barcode}_${item.name}`,
+          name: item.name,
+          action: "IN",
+          date: dateString,
+          barcode: item.barcode || 'Unknown',
+          dayOfWeek: dayOfWeek,
+          time: timeString,
+          category: item.category || ''
+        };
+
+        console.log('Creating sign-in log entry:', logEntry);
+
+        // Post the log entry to the itemLogs collection
+        const logResponse = await fetch('http://localhost:8000/itemLogs', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(logEntry)
+        });
+
+        if (!logResponse.ok) {
+          console.error('Failed to create log entry for sign-in');
+        }
+      }
+
+      // Update the item status
       const response = await fetch(`http://localhost:8000/inventory/${item.id}`, {
         method: 'PUT',
         headers: {
@@ -95,10 +140,11 @@ export default function Table({
         <tbody>
           {filteredItems.map((item) =>
             categoryFilter === "" ||
+            (categoryFilter === "Uncategorized" && (!item.category || item.category === "")) ||
             item.category === categoryFilter ||
             item.status === categoryFilter ? (
               <tr
-                className="py-4 border-b-2 border-slate-200 cursor-pointer hover:bg-slate-50"
+                className="py-4 border-b-2 border-slate-200  hover:bg-slate-50"
                 key={item.id}
               >
                 <td className="whitespace-nowrap py-2 sm:py-4">
@@ -111,7 +157,7 @@ export default function Table({
                   : item.description}</p>
                 </td>
                 <td className="hidden md:table-cell">
-                  <p>{item.category}</p>
+                  <p>{item.category ? item.category : "Uncategorized"}</p>
                 </td>
                 <td>
                   <div className="flex flex-col sm:flex-row items-start sm:items-center">

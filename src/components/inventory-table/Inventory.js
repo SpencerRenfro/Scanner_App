@@ -39,7 +39,7 @@ export default function Inventory({
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
   const [paginatedItems, setPaginatedItems] = useState([]);
 
   // Helper function to update counts and total price
@@ -93,13 +93,31 @@ export default function Inventory({
     setItemCount(counters.totalItems);
   }, [inventoryItems, filter, activeCategory, activeStatus]);
 
+  // Helper function to parse dates
+  const parseDate = (dateStr) => {
+    if (!dateStr) return new Date(0); // Default to epoch if no date
+
+    try {
+      // Handle different date formats
+      return new Date(dateStr);
+    } catch (e) {
+      console.error("Error parsing date:", dateStr, e);
+      return new Date(0); // Default to epoch on error
+    }
+  };
+
   // Update filtered items based on category and status
   useEffect(() => {
     let filtered = [...inventoryItems];
 
     // Apply category filter if active
     if (activeCategory) {
-      filtered = filtered.filter(item => item.category === activeCategory);
+      if (activeCategory === "Uncategorized") {
+        // Filter for items with empty or null category
+        filtered = filtered.filter(item => !item.category || item.category === "");
+      } else {
+        filtered = filtered.filter(item => item.category === activeCategory);
+      }
     }
 
     // Apply status filter if active
@@ -114,6 +132,13 @@ export default function Inventory({
         item.barcode.toLowerCase().includes(term.toLowerCase())
       );
     }
+
+    // Sort items by date (newest first)
+    filtered.sort((a, b) => {
+      const dateA = parseDate(a.date);
+      const dateB = parseDate(b.date);
+      return dateB - dateA; // Descending order (newest first)
+    });
 
     setFilteredItems(filtered);
     // Reset to first page when filters change

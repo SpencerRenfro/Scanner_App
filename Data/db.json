@@ -13,7 +13,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "60de",
@@ -49,7 +49,7 @@
       "id": "c897",
       "date": "07/08/2024",
       "name": "TowTruck",
-      "category": "Transport",
+      "category": "",
       "price": 20,
       "serialNumber": "VIN:8675309",
       "description": "Diesel Tow Truck",
@@ -167,7 +167,7 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "IN"
     },
     {
       "id": "20ec",
@@ -350,21 +350,6 @@
       "status": "IN"
     },
     {
-      "id": "a887",
-      "date": "10/03/2024",
-      "name": "fdsaf",
-      "category": "",
-      "price": 32,
-      "serialNumber": "232",
-      "description": "",
-      "barcode": "924035239217",
-      "barcodeCombinedName": "924035239217_fdsaf",
-      "itemCollection": [],
-      "barcodeUrl": "",
-      "qrCode": "",
-      "status": "IN"
-    },
-    {
       "id": "fc3f",
       "date": "10/03/2024",
       "name": "dsadsa",
@@ -417,17 +402,37 @@
       "status": "IN"
     },
     {
-      "id": "0e34",
-      "date": "2/22/2025, 2:38:44 AM",
-      "dayOfWeek": "Saturday",
-      "time": "2:38 AM",
-      "name": "penis",
-      "category": "rhjkeakjfea",
-      "price": 900000,
-      "serialNumber": "5987987098",
-      "description": "big dick",
-      "barcode": "708519235726",
-      "barcodeCombinedName": "708519235726_penis",
+      "id": "1e67",
+      "date": "4/15/2025, 10:13:51 AM",
+      "dayOfWeek": "Tuesday",
+      "time": "10:13 AM",
+      "name": "PS5",
+      "category": "Electronics",
+      "price": 0,
+      "serialNumber": "1651151321321",
+      "description": "Sony Playstation",
+      "barcode": "063841795706",
+      "barcodeCombinedName": "063841795706_PS5",
+      "itemCollection": [
+        "PS5 controller",
+        "Red Dead Redemption"
+      ],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "da75",
+      "date": "4/15/2025, 10:16:58 AM",
+      "dayOfWeek": "Tuesday",
+      "time": "10:16 AM",
+      "name": "Alexa",
+      "category": "Electronics",
+      "price": 100,
+      "serialNumber": "N/A",
+      "description": "Amazon Alexa Device",
+      "barcode": "963196845021",
+      "barcodeCombinedName": "963196845021_Alexa",
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
@@ -452,18 +457,8 @@
       "name": "Tools"
     },
     {
-      "id": "Transport",
-      "name": "Transport"
-    },
-    {
       "id": "Other",
       "name": "Other"
-    },
-    {
-      "id": "4c46",
-      "name": "Electronics",
-      "barcode": "952757878824",
-      "barcodeCombinedName": "952757878824_Ore"
     },
     {
       "id": "63c1",
@@ -482,12 +477,6 @@
       "name": "Heavy Equipment",
       "barcode": "980204226991",
       "barcodeCombinedName": "980204226991_Dumpt Truck"
-    },
-    {
-      "id": "1266",
-      "name": "rhjkeakjfea",
-      "barcode": "708519235726",
-      "barcodeCombinedName": "708519235726_penis"
     }
   ],
   "itemLogs": [
@@ -850,6 +839,36 @@
       "dayOfWeek": "Monday",
       "time": "6:55 AM",
       "category": "Heavy Equipment"
+    },
+    {
+      "id": " 161964567241_JBL_Stereo",
+      "name": "JBL_Stereo",
+      "action": "IN",
+      "date": "04/15/2025",
+      "barcode": " 161964567241",
+      "dayOfWeek": "Tuesday",
+      "time": "9:44 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": " 161964567241_JBL_Stereo",
+      "name": "JBL_Stereo",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": " 161964567241",
+      "dayOfWeek": "Tuesday",
+      "time": "9:59 AM",
+      "category": "Electronics"
+    },
+    {
+      "id": " 161964567241_JBL_Stereo",
+      "name": "JBL_Stereo",
+      "action": "IN",
+      "date": "04/15/2025",
+      "barcode": " 161964567241",
+      "dayOfWeek": "Tuesday",
+      "time": "9:59 AM",
+      "category": "Electronics"
     }
   ]
 }

@@ -70,7 +70,9 @@ const BarcodeCard = ({ item }) => {
         <div className="mt-6 grid grid-cols-3 gap-4">
           <div className="text-center p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-500 mb-1">Category</p>
-            <p className="font-medium text-sm sm:text-base">{item.category}</p>
+            <p className="font-medium text-sm sm:text-base">
+              {item.category ? item.category : "Uncategorized"}
+            </p>
           </div>
           <div className="text-center p-3 bg-gray-50 rounded-lg">
             <p className="text-xs text-gray-500 mb-1">Price</p>
@@ -114,7 +116,7 @@ const BarcodeCard = ({ item }) => {
               <div className="bg-gray-50 rounded-lg shadow-md p-3">
                 <NavLink
                   to={`/${item.id}/sign-out`}
-                  className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-amber-600 text-sm font-medium rounded-md hover:bg-amber-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 shadow-sm"
+                  className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-red-600 text-sm font-medium rounded-md hover:bg-amber-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 shadow-sm"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
