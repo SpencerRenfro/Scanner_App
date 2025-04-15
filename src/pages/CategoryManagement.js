@@ -2,6 +2,47 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import close from '../assets/close.svg';
 
+// Dialog component for confirming category deletion
+const DeleteConfirmationDialog = ({ isOpen, onClose, categoryName, onConfirm }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      {/* Overlay */}
+      <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
+
+      {/* Dialog */}
+      <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md z-10 relative">
+        <div className="bg-red-600 px-4 py-3">
+          <h3 className="text-lg font-medium text-white">Delete Category</h3>
+        </div>
+
+        <div className="p-6">
+          <p className="mb-4 text-gray-700">
+            Are you sure you want to delete the category <span className="font-semibold">{categoryName}</span>?
+            This action cannot be undone.
+          </p>
+
+          <div className="flex justify-end gap-3 mt-6">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={onConfirm}
+              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Dialog component for reassigning items
 const ReassignDialog = ({ isOpen, onClose, categoryName, categories, onReassign }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -69,7 +110,8 @@ export default function CategoryManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState('');
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [reassignDialogOpen, setReassignDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   // Fetch categories and inventory items on component mount
@@ -152,12 +194,11 @@ export default function CategoryManagement() {
     if (categoryInUse) {
       // If category is in use, show reassignment dialog
       setSelectedCategory(category);
-      setDialogOpen(true);
+      setReassignDialogOpen(true);
     } else {
-      // If category is not in use, confirm and delete directly
-      if (window.confirm(`Are you sure you want to delete the category "${category.name}"?`)) {
-        deleteCategory(category.id);
-      }
+      // If category is not in use, show delete confirmation dialog
+      setSelectedCategory(category);
+      setDeleteDialogOpen(true);
     }
   };
 
@@ -221,7 +262,7 @@ export default function CategoryManagement() {
       setTimeout(() => setSuccessMessage(''), 3000);
 
       // Close the dialog
-      setDialogOpen(false);
+      setReassignDialogOpen(false);
       setSelectedCategory(null);
     } catch (err) {
       setError(err.message);
@@ -316,16 +357,33 @@ export default function CategoryManagement() {
       </div>
 
       {/* Reassignment Dialog */}
-      {dialogOpen && selectedCategory && (
+      {reassignDialogOpen && selectedCategory && (
         <ReassignDialog
-          isOpen={dialogOpen}
+          isOpen={reassignDialogOpen}
           onClose={() => {
-            setDialogOpen(false);
+            setReassignDialogOpen(false);
             setSelectedCategory(null);
           }}
           categoryName={selectedCategory.name}
           categories={categories}
           onReassign={handleReassignAndDelete}
+        />
+      )}
+
+      {/* Delete Confirmation Dialog */}
+      {deleteDialogOpen && selectedCategory && (
+        <DeleteConfirmationDialog
+          isOpen={deleteDialogOpen}
+          onClose={() => {
+            setDeleteDialogOpen(false);
+            setSelectedCategory(null);
+          }}
+          categoryName={selectedCategory.name}
+          onConfirm={() => {
+            deleteCategory(selectedCategory.id);
+            setDeleteDialogOpen(false);
+            setSelectedCategory(null);
+          }}
         />
       )}
     </div>

@@ -23,6 +23,7 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
   const [customerPhone, setCustomerPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fetchError, setFetchError] = useState(null);
+  const [saveCustomer, setSaveCustomer] = useState(false);
 
   // For debugging - log when customer info changes
   useEffect(() => {
@@ -97,6 +98,48 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
 
       if (!logResponse.ok) {
         console.error('Failed to create log entry');
+      }
+
+      // Save customer if checkbox is checked
+      if (saveCustomer) {
+        try {
+          // Check if customer already exists by email
+          const customersResponse = await fetch('http://localhost:8000/customers');
+          const existingCustomers = await customersResponse.json();
+
+          const customerExists = existingCustomers.some(
+            customer => customer.email.toLowerCase() === customerEmail.toLowerCase()
+          );
+
+          if (!customerExists) {
+            // Create a new customer object
+            const newCustomer = {
+              firstName: customerFirstName,
+              lastName: customerLastName,
+              email: customerEmail,
+              phone: customerPhone
+            };
+
+            // Post the new customer to the customers endpoint
+            const saveCustomerResponse = await fetch('http://localhost:8000/customers', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(newCustomer)
+            });
+
+            if (!saveCustomerResponse.ok) {
+              console.error('Failed to save customer');
+            } else {
+              console.log('Customer saved successfully');
+            }
+          } else {
+            console.log('Customer already exists, not saving');
+          }
+        } catch (err) {
+          console.error('Error saving customer:', err);
+        }
       }
 
       // Update the item status to OUT
@@ -194,18 +237,32 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
           </div>
         )}
         <div className="col-span-5 col-start-4 mt-12 mb-6">
-          <SignOutForm
-            setCustomerFirstName={setCustomerFirstName}
-            setCustomerLastName={setCustomerLastName}
-            setCustomerEmail={setCustomerEmail}
-            setCustomerPhone={setCustomerPhone}
-            customerFirstName={customerFirstName}
-            customerLastName={customerLastName}
-            customerEmail={customerEmail}
-            customerPhone={customerPhone}
-            url={url}
-            handleSignOut={handleSignOut}
-          />
+          <div>
+            <SignOutForm
+              setCustomerFirstName={setCustomerFirstName}
+              setCustomerLastName={setCustomerLastName}
+              setCustomerEmail={setCustomerEmail}
+              setCustomerPhone={setCustomerPhone}
+              customerFirstName={customerFirstName}
+              customerLastName={customerLastName}
+              customerEmail={customerEmail}
+              customerPhone={customerPhone}
+              url={url}
+              handleSignOut={handleSignOut}
+            />
+            <div className="flex items-center mt-4 mb-2">
+              <input
+                type="checkbox"
+                id="saveCustomer"
+                checked={saveCustomer}
+                onChange={() => setSaveCustomer(!saveCustomer)}
+                className="form-checkbox h-5 w-5 text-indigo-600 transition duration-150 ease-in-out"
+              />
+              <label htmlFor="saveCustomer" className="ml-2 block text-sm leading-5 text-gray-700">
+                Save customer information for future sign-outs
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

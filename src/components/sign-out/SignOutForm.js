@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import savedCustomers from '../../data/savedCustomers';
+import { useState, useEffect } from 'react';
+import { useFetch } from '../../hooks/useFetch';
 
 export default function SignOutForm({url, setCustomerFirstName, setCustomerLastName, setCustomerEmail, setCustomerPhone, handleSignOut, customerFirstName, customerLastName, customerEmail, customerPhone}) {
     const [showSavedCustomers, setShowSavedCustomers] = useState(false);
+    const { data: savedCustomers, isPending, error } = useFetch('http://localhost:8000/customers');
 
     const handleCustomerSelect = (customer) => {
         setCustomerFirstName(customer.firstName);
@@ -38,7 +39,22 @@ export default function SignOutForm({url, setCustomerFirstName, setCustomerLastN
                 <h3 className="text-sm font-medium text-indigo-700">Select a Saved Customer</h3>
               </div>
               <ul className="py-1 max-h-60 overflow-y-auto">
-                {savedCustomers.map(customer => (
+                {isPending && (
+                  <div className="p-4 text-center">
+                    <div className="animate-pulse flex space-x-4">
+                      <div className="flex-1 space-y-4 py-1">
+                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {error && (
+                  <div className="p-4 text-center text-red-500">
+                    Error loading customers
+                  </div>
+                )}
+                {savedCustomers && savedCustomers.map(customer => (
                   <li
                     key={customer.id}
                     className="px-4 py-3 hover:bg-indigo-50 cursor-pointer flex flex-col border-b border-gray-100 last:border-b-0 transition-colors"
@@ -61,7 +77,7 @@ export default function SignOutForm({url, setCustomerFirstName, setCustomerLastN
                   </li>
                 ))}
               </ul>
-              {savedCustomers.length === 0 && (
+              {savedCustomers && savedCustomers.length === 0 && (
                 <div className="p-4 text-center text-gray-500">
                   No saved customers found
                 </div>

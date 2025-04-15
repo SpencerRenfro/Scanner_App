@@ -57,6 +57,7 @@ function App() {
     if (location.pathname.includes("/sign-out") ||
         location.pathname.includes("/add-item") ||
         location.pathname.includes("/categories/manage") ||
+        (location.pathname.includes("/inventory/") && location.pathname.includes("/edit")) ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/print"))) {
       console.log('Setting hideNavbar to true for:', location.pathname);
       setHideNavbar(true);

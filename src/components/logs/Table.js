@@ -27,6 +27,8 @@ function Table({ logs, filter, dateFilter }) {
                   ? "badge-success"
                   : item.action === "OUT"
                   ? "badge-error"
+                  : item.action === "DELETED"
+                  ? "badge-warning"
                   : ""
               }`}
             >

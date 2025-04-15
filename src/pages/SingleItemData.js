@@ -59,7 +59,7 @@ function SingleItemData({ setHideNavbar }) {
   return (
     <div className="bg-slate-100 min-h-screen">
       {/* Navbar similar to Add New Item page */}
-      <div className="flex items-center justify-between p-6 shadow-lg bg-white">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-slate-100">
         <div className="flex items-center gap-3">
           <img src={scan} width={28} height={28} alt="barcode" className="opacity-80" />
           <h1 className="text-xl font-semibold">{item ? item.name : 'Item Details'}</h1>

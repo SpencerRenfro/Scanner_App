@@ -1,26 +1,14 @@
 import React, { useState } from "react";
-//images
-import checkout from "../assets/icons/checkout.svg";
 
 //components
-import ItemFoundCard from "../components/ItemFoundCard";
 
 //hooks
 import { useFindItem } from "../hooks/useFindItem";
 
 function Checkout() {
-  const [startDate, setStartDate] = useState(new Date());
   const [inputText, setInputText] = useState("");
   const [displayText, setDisplayText] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const [signOutFormData, setSignOutFormData] = useState({
-    name: "",
-    date: "",
-    item: "",
-    action: "OUT",
-    barcode: "",
-  });
 
   const handleChange = (e) => {
     setInputText(e.target.value);
@@ -132,13 +120,15 @@ function Checkout() {
                   </div>
                 )}
                 {singleItem && (
-                  <article>
-                    <ItemFoundCard
-                      name={singleItem.name}
-                      description={singleItem.description}
-                      category={singleItem.category}
-                      status={singleItem.status}
-                    />
+                  <article className="p-4 border rounded-lg bg-white shadow-sm mt-4">
+                    <h3 className="font-bold text-lg">{singleItem.name}</h3>
+                    <p className="text-sm text-gray-600 mt-1">{singleItem.description}</p>
+                    <div className="flex gap-2 mt-2">
+                      <span className="badge badge-outline">{singleItem.category || 'Uncategorized'}</span>
+                      <span className={`badge ${singleItem.status === 'IN' ? 'badge-success' : 'badge-error'}`}>
+                        {singleItem.status}
+                      </span>
+                    </div>
                   </article>
                 )}
               </div>

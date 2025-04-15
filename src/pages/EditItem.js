@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 //custom-hooks
 import { useFetch } from "../hooks/useFetch";
 //components
@@ -9,8 +10,15 @@ import ConfirmationDialog from "../components/ConfirmationDialog";
 //images
 import deleteIcon from "../assets/icons/delete.svg";
 import editIcon from "../assets/icons/edit2.svg";
+import close from "../assets/close.svg";
+import scan from "../assets/icons/scan.svg";
 
-export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, setItemName, setItemDeleteSuccess}) {
+export default function EditItem({
+  setItemUpdateFailure,
+  setItemUpdateSuccess,
+  setItemName,
+  setItemDeleteSuccess,
+}) {
   const navigate = useNavigate();
   const { id } = useParams();
   const url = `http://localhost:8000/inventory/${id}`;
@@ -56,20 +64,20 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
 
   useEffect(() => {
     if (putDataResponse) {
-        navigate("/");
-        setItemUpdateSuccess(true);
-        setItemName(name);
-      }
+      navigate("/");
+      setItemUpdateSuccess(true);
+      setItemName(name);
+    }
   }, [putDataResponse, navigate, setItemUpdateSuccess, setItemName, name]);
 
   useEffect(() => {
     if (deleteDataResponse) {
-        navigate("/");
-        if (setItemDeleteSuccess) {
-          setItemDeleteSuccess(true);
-          setItemName(name);
-        }
+      navigate("/");
+      if (setItemDeleteSuccess) {
+        setItemDeleteSuccess(true);
+        setItemName(name);
       }
+    }
   }, [deleteDataResponse, navigate, setItemDeleteSuccess, setItemName, name]);
 
   const deleteCollectionItem = (index) => {
@@ -117,134 +125,208 @@ export default function EditItem({setItemUpdateFailure, setItemUpdateSuccess, se
     }
   };
 
-
-
   return (
-    <div className="flex justify-center">
-      {error && <div className="error">{error}</div>}
-      {isPending && (
-        <span className="loading loading-spinner loading-lg"></span>
-      )}
-      {putIsPending ? (
-        <span className="loading loading-spinner loading-lg"></span>
-      ) : (
-        item && (
-          <form onSubmit={handleSubmit} className="w-1/3 mt-10 pb-10">
-            <div className="card border shadow-lg ">
-              <div className="card-body ">
-                <div className="form-group">
-                  <label className="font-bold">Name:</label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="input input-bordered w-full bg-inherit"
-                    required
-                  />
+    <div>
+      <div className="w-full">
+        <div className="flex items-center justify-between p-6 shadow-lg bg-slate-100">
+          <div className="flex items-center gap-3">
+            <img
+              src={scan}
+              width={28}
+              height={28}
+              alt="barcode"
+              className="opacity-80"
+            />
+            <h1 className="text-xl font-semibold">
+              {item ? item.name : "Item Details"}
+            </h1>
+          </div>
+          <NavLink
+            to="/"
+            className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+          >
+            <img src={close} width={24} alt="close" />
+          </NavLink>
+        </div>
+      </div>
+      <div className="flex justify-center">
+        {error && <div className="error">{error}</div>}
+        {isPending && (
+          <span className="loading loading-spinner loading-lg"></span>
+        )}
+        {putIsPending ? (
+          <span className="loading loading-spinner loading-lg"></span>
+        ) : (
+          item && (
+            <form onSubmit={handleSubmit} className="w-1/3 mt-10 pb-10">
+              <div className="card border shadow-lg ">
+                <div className="card-body ">
+                  <div className="form-group">
+                    <label className="font-bold">Name:</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="input input-bordered w-full bg-inherit"
+                      required
+                    />
+                  </div>
+                  <div className="form-group mt-4">
+                    <label className="font-bold">Description:</label>
+                    <textarea
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="textarea textarea-bordered w-full bg-inherit max-h-72"
+                      required
+                    />
+                  </div>
+                  <div className="form-group mt-4">
+                    <label className="font-bold">Category:</label>
+                    <input
+                      type="text"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="input input-bordered w-full bg-inherit"
+                      required
+                    />
+                  </div>
+                  <div className="form-group mt-4">
+                    <label className="font-bold">Price:</label>
+                    <input
+                      type="text"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                      className="input input-bordered w-full bg-inherit"
+                      required
+                    />
+                  </div>
+                  <div className="form-group mt-4">
+                    <label className="font-bold">Collections:</label>
+                    <ul>
+                      {collection.map((item, index) => (
+                        <li key={index} className="flex items-center">
+                          <span>{item}</span>
+                          <button
+                            type="button"
+                            className="ml-4 text-red-600"
+                            onClick={() => deleteCollectionItem(index)}
+                          >
+                            <img src={deleteIcon} alt="Delete" />
+                          </button>
+                          <button
+                            type="button"
+                            className="ml-4 text-blue-600"
+                            onClick={() => editCollectionItem(index)}
+                          >
+                            <img src={editIcon} width={25} alt="Edit" />
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="form-group mt-4">
+                    <label className="font-bold">Status:</label>
+                    <select
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                      className="select select-bordered w-full bg-inherit"
+                      required
+                    >
+                      <option value="IN">IN</option>
+                      <option value="OUT">OUT</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-center gap-4 mt-6">
+                    <button
+                      type="submit"
+                      className="btn btn-outline flex"
+                      disabled={putIsPending || deleteIsPending}
+                    >
+                      Update Item
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline btn-error flex"
+                      onClick={() => setShowDeleteDialog(true)}
+                      disabled={putIsPending || deleteIsPending}
+                    >
+                      Delete Item
+                    </button>
+                  </div>
                 </div>
-                <div className="form-group mt-4">
-                  <label className="font-bold">Description:</label>
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="textarea textarea-bordered w-full bg-inherit"
-                    required
-                  />
-                </div>
-                <div className="form-group mt-4">
-                  <label className="font-bold">Category:</label>
-                  <input
-                    type="text"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="input input-bordered w-full bg-inherit"
-                    required
-                  />
-                </div>
-                <div className="form-group mt-4">
-                  <label className="font-bold">Price:</label>
-                  <input
-                    type="text"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    className="input input-bordered w-full bg-inherit"
-                    required
-                  />
-                </div>
-                <div className="form-group mt-4">
-                  <label className="font-bold">Collections:</label>
-                  <ul>
-                    {collection.map((item, index) => (
-                      <li key={index} className="flex items-center">
-                        <span>{item}</span>
-                        <button
-                          type="button"
-                          className="ml-4 text-red-600"
-                          onClick={() => deleteCollectionItem(index)}
-                        >
-                          <img src={deleteIcon} alt="Delete" />
-                        </button>
-                        <button
-                          type="button"
-                          className="ml-4 text-blue-600"
-                          onClick={() => editCollectionItem(index)}
-                        >
-                          <img src={editIcon} width={25} alt="Edit" />
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="form-group mt-4">
-                  <label className="font-bold">Status:</label>
-                  <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                    className="select select-bordered w-full bg-inherit"
-                    required
-                  >
-                    <option value="IN">IN</option>
-                    <option value="OUT">OUT</option>
-                  </select>
-                </div>
-                <div className="flex justify-center gap-4 mt-6">
-                  <button
-                    type="submit"
-                    className="btn btn-outline flex"
-                    disabled={putIsPending || deleteIsPending}
-                  >
-                    Update Item
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-outline btn-error flex"
-                    onClick={() => setShowDeleteDialog(true)}
-                    disabled={putIsPending || deleteIsPending}
-                  >
-                    Delete Item
-                  </button>
+                <div className="flex justify-center my-2 mb-5">
+                  <BarcodeGenerator barcodeState={barcodeState} />
                 </div>
               </div>
-              <div className="flex justify-center my-2 mb-5">
-                <BarcodeGenerator barcodeState={barcodeState} />
-              </div>
-            </div>
-          </form>
-        )
-      )}
-      {/* Delete Confirmation Dialog */}
-      <ConfirmationDialog
-        isOpen={showDeleteDialog}
-        title="Delete Item"
-        message={`Are you sure you want to delete ${name}? This action cannot be undone.`}
-        onConfirm={() => {
-          deleteData();
-          if (deleteError) {
-            console.log("Error deleting item:", deleteError);
-          }
-        }}
-        onCancel={() => setShowDeleteDialog(false)}
-      />
+            </form>
+          )
+        )}
+        {/* Delete Confirmation Dialog */}
+        <ConfirmationDialog
+          isOpen={showDeleteDialog}
+          title="Delete Item"
+          message={`Are you sure you want to delete ${name}? This action cannot be undone.`}
+          onConfirm={async () => {
+            try {
+              // Get current date and time for the log
+              const now = new Date();
+              const dateString = now.toLocaleDateString("en-US", {
+                month: "2-digit",
+                day: "2-digit",
+                year: "numeric",
+              });
+              const timeString = now.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              });
+              const dayOfWeek = now.toLocaleDateString("en-US", {
+                weekday: "long",
+              });
+
+              // Create log entry for the delete action
+              const logEntry = {
+                id: `${item.barcode}_${name}_${dateString}`,
+                name: name,
+                action: "DELETED",
+                date: dateString,
+                barcode: item.barcode || "Unknown",
+                dayOfWeek: dayOfWeek,
+                time: timeString,
+                category: category || "",
+              };
+
+              console.log("Creating delete log entry:", logEntry);
+
+              // Post the log entry to the itemLogs collection
+              const logResponse = await fetch(
+                "http://localhost:8000/itemLogs",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(logEntry),
+                }
+              );
+
+              if (!logResponse.ok) {
+                console.error("Failed to create log entry for delete");
+              }
+
+              // Delete the item
+              deleteData();
+
+              if (deleteError) {
+                console.log("Error deleting item:", deleteError);
+              }
+            } catch (error) {
+              console.error("Error in delete process:", error);
+            }
+          }}
+          onCancel={() => setShowDeleteDialog(false)}
+        />
+      </div>
     </div>
   );
 }
