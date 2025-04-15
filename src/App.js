@@ -23,6 +23,7 @@ import CustomerManagement from "./pages/CustomerManagement";
 
 // Import print styles
 import "./styles/printPreview.css";
+import SingleItemLogInformation from "./pages/SingleItemLogInformation";
 // Banner Components
 
 function App() {
@@ -201,6 +202,7 @@ function App() {
             }
           />
           <Route path="/logs" element={<Logs />} />
+          <Route path="/logs/:id" element={<SingleItemLogInformation setHideNavbar={setHideNavbar} />} />
           <Route
             path="/inventory/:id"
             element={<SingleItemInfo setHideNavbar={setHideNavbar} />}
@@ -227,6 +229,7 @@ function App() {
           <Route path="/inventory/:id/print" element={<PrintPreview />} />
           <Route path="/categories/manage" element={<CategoryManagement />} />
           <Route path="/customers/manage" element={<CustomerManagement />} />
+          <Route path="/logs/:id" element={<SingleItemLogInformation />} />
         </Routes>
       </div>
     </div>

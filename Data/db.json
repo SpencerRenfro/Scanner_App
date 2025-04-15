@@ -445,15 +445,9 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT",
-      "signedOutTo": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "phone": "555-123-4567",
-        "fullName": "John Doe"
-      },
-      "lastUpdated": "2025-04-15T17:56:36.715Z"
+      "status": "IN",
+      "signedOutTo": null,
+      "lastUpdated": "2025-04-15T18:40:20.450Z"
     }
   ],
   "categories": [
@@ -976,6 +970,16 @@
       "dayOfWeek": "Tuesday",
       "time": "11:58 AM",
       "category": "Heavy Equipment"
+    },
+    {
+      "id": "963196845021_Alexa",
+      "name": "Alexa",
+      "action": "IN",
+      "date": "04/15/2025",
+      "barcode": "963196845021",
+      "dayOfWeek": "Tuesday",
+      "time": "12:40 PM",
+      "category": "Electronics"
     }
   ],
   "customers": [

@@ -265,10 +265,11 @@ export default function CustomerManagement() {
   // Handle adding a new customer
   const addCustomer = async (customerData) => {
     try {
-      // Generate a unique ID (simple implementation)
+      // Let the server generate the ID (don't include an ID in the request)
       const newCustomer = {
         ...customerData,
-        id: Math.random().toString(36).substring(2, 6), // Simple ID generation
+        // Remove id if it exists but is undefined
+        ...(customerData.id === undefined && { id: undefined })
       };
 
       const response = await fetch('http://localhost:8000/customers', {
@@ -334,13 +335,26 @@ export default function CustomerManagement() {
   // Handle actual customer deletion
   const deleteCustomer = async (id) => {
     try {
-      console.log('Deleting customer with ID:', id);
+      console.log('Deleting customer with ID:', id, 'Type:', typeof id);
+      console.log('All customers:', customers);
 
       // Check if the customer exists before trying to delete
-      const customerExists = customers.some(customer => customer.id === id);
-      if (!customerExists) {
-        console.error('Customer not found with ID:', id);
-        throw new Error('Customer not found');
+      const customerToDelete = customers.find(customer => customer.id === id);
+      if (!customerToDelete) {
+        // Try with numeric ID if the original ID is a string
+        const numericId = parseInt(id, 10);
+        const customerWithNumericId = customers.find(customer => customer.id === numericId);
+
+        if (customerWithNumericId) {
+          console.log('Found customer with numeric ID:', numericId);
+          // Use the numeric ID for deletion
+          id = numericId;
+        } else {
+          console.error('Customer not found with ID:', id);
+          throw new Error(`Customer not found with ID: ${id}`);
+        }
+      } else {
+        console.log('Found customer to delete:', customerToDelete);
       }
 
       const response = await fetch(`http://localhost:8000/customers/${id}`, {
@@ -453,6 +467,9 @@ export default function CustomerManagement() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      ID
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Name
                     </th>
                     <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -474,6 +491,11 @@ export default function CustomerManagement() {
                     const itemCount = hasActiveItems(customer);
                     return (
                       <tr key={customer.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {customer.id} ({typeof customer.id})
+                          </div>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-medium text-gray-900">
                             {customer.firstName} {customer.lastName}
@@ -532,7 +554,13 @@ export default function CustomerManagement() {
           }}
           customerName={`${selectedCustomer.firstName} ${selectedCustomer.lastName}`}
           onConfirm={() => {
-            deleteCustomer(selectedCustomer.id);
+            // Convert ID to number if it's stored as a string but is actually a number
+            const id = typeof selectedCustomer.id === 'string' && !isNaN(Number(selectedCustomer.id))
+              ? Number(selectedCustomer.id)
+              : selectedCustomer.id;
+
+            console.log('Confirming delete with ID:', id, 'Original ID:', selectedCustomer.id);
+            deleteCustomer(id);
             setDeleteDialogOpen(false);
             setSelectedCustomer(null);
           }}
