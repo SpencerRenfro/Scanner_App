@@ -133,9 +133,7 @@ export default function Table({
                         {updatingItemId === item.id ? '...' : 'OUT'}
                       </button>
                     )}
-                    <div className="hidden sm:block">
-                      <NavLink to={`/inventory/${item.id}/edit`} className="hover:text-indigo-700">EDIT</NavLink>
-                    </div>
+
                   </div>
                 </td>
                 <td className="hidden md:table-cell">
@@ -171,11 +169,7 @@ export default function Table({
                       <span className="ml-2">Options</span>
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-50 w-52 p-2 shadow">
-                      <li>
-                        <NavLink to={`/inventory/${item.id}/edit`}>
-                          Edit
-                        </NavLink>
-                      </li>
+
                       {item.status === "OUT" && (
                         <li>
                           <button

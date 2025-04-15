@@ -17,6 +17,10 @@ import Logs from "./pages/Logs";
 // Components
 import Navbar from "./ui/Navbar";
 import Banner from "./components/Banner";
+import PrintPreview from "./components/PrintPreview";
+
+// Import print styles
+import "./styles/printPreview.css";
 // Banner Components
 
 function App() {
@@ -196,6 +200,7 @@ function App() {
             setItemSignOutFailure={setItemSignOutFailure}
           />} />
           <Route path="/item-management" element={<ItemManagement />} />
+          <Route path="/inventory/:id/print" element={<PrintPreview />} />
         </Routes>
       </div>
     </div>

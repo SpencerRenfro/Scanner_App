@@ -1,0 +1,125 @@
+/* Print Preview Styles */
+
+/* Default styles for the print preview page */
+.print-preview-page {
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+.print-content {
+  background-color: white;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Styles for printing */
+@media print {
+  /* Hide everything except the print content */
+  body * {
+    visibility: hidden;
+  }
+
+  .print-content,
+  .print-content * {
+    visibility: visible !important;
+  }
+
+  /* Hide elements with no-print class when printing */
+  .no-print {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Position the print content in the center of the page */
+  .print-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+  }
+
+  /* Maintain the card styling */
+  .print-content .bg-white {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden !important;
+    max-width: 350px !important;
+    width: 100% !important;
+  }
+
+  /* Keep the header styling */
+  .print-content .bg-indigo-600 {
+    background-color: #4f46e5 !important;
+    color: white !important;
+    padding: 1rem !important;
+  }
+
+  /* Style the item name */
+  .print-content h1 {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    color: white !important;
+    margin: 0 !important;
+  }
+
+  /* Style the content area */
+  .print-content .p-6 {
+    padding: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+
+  /* Style the barcode container */
+  .print-content .bg-gray-50 {
+    background-color: #f9fafb !important;
+    border-radius: 0.5rem !important;
+    padding: 2rem !important;
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+    overflow: visible !important;
+  }
+
+  /* Ensure the canvas container is properly centered */
+  .print-content .bg-gray-50 > div {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    overflow: visible !important;
+    padding: 1rem 0 !important;
+  }
+
+  /* Make sure the canvas itself is not constrained */
+  .print-content canvas {
+    max-width: none !important;
+    overflow: visible !important;
+  }
+
+  /* Style the ID text */
+  .print-content p {
+    font-size: 12px !important;
+    color: #6b7280 !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Style the hint text */
+  .print-content .text-xs {
+    font-size: 10px !important;
+    color: #9ca3af !important;
+  }
+
+  /* Remove any page margins */
+  @page {
+    margin: 0;
+    size: auto;
+  }
+}

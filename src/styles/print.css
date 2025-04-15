@@ -1,0 +1,80 @@
+/* Print styles for barcode printing */
+
+@media print {
+  /* Hide everything by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the print view container and its children */
+  .print-view-container,
+  .print-view-container * {
+    visibility: visible !important;
+  }
+
+  /* Hide the buttons in print view */
+  .print-view-container button,
+  .print-view-container .flex button {
+    display: none !important;
+  }
+
+  /* Hide the Print Preview heading */
+  .print-view-container h2 {
+    display: none !important;
+  }
+
+  /* Center the content on the page */
+  .print-view-container {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: white !important;
+  }
+
+  /* Ensure canvas is visible and properly sized */
+  .print-view-container .barcode-container,
+  .print-view-container .w-full.overflow-hidden {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    overflow: hidden !important; /* Keep content within bounds */
+  }
+
+  .print-view-container canvas {
+    display: block !important;
+    visibility: visible !important;
+    margin: 0 auto !important;
+    max-width: none !important; /* Allow canvas to be its natural size */
+    height: auto !important;
+    transform: scale(1) !important; /* No additional scaling when printing */
+    transform-origin: center !important;
+  }
+
+  /* Style the item name */
+  .print-view-container h3 {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    margin-bottom: 5px !important;
+    color: black !important;
+  }
+
+  /* Style the item ID */
+  .print-view-container p {
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+    color: #333 !important;
+  }
+
+  /* Remove any page margins */
+  @page {
+    margin: 0 !important;
+    padding: 0 !important;
+    size: auto !important;
+  }
+}
