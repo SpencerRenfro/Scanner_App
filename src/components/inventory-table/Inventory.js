@@ -30,6 +30,8 @@ export default function Inventory({
   // and the on change event is handling the value change.
   // "" is the default value for no filter
   const [filter, setFilter] = useState("");
+  const [activeCategory, setActiveCategory] = useState("");
+  const [activeStatus, setActiveStatus] = useState("");
 
   //searchbar useStates
   const [filteredItems, setFilteredItems] = useState([]);
@@ -60,33 +62,63 @@ export default function Inventory({
       checkedOut: 0,
     };
 
-    if (filter === "") {
-      inventoryItems.forEach((item) => {
-        counters.totalItems++;
-        updateCounts(item, counters);
-      });
-    } else if (filter === "IN" || filter === "OUT") {
-      let filteredItems = inventoryItems.filter(
-        (item) => item.status === filter
-      );
-      filteredItems.forEach((item) => {
-        counters.totalItems++;
-        updateCounts(item, counters);
-      });
-    } else {
-      let filteredItems = inventoryItems.filter(
-        (item) => item.category === filter
-      );
-      filteredItems.forEach((item) => {
-        counters.totalItems++;
-        updateCounts(item, counters);
-      });
+    // Parse the filter value to determine category and status
+    if (filter === "IN" || filter === "OUT") {
+      setActiveStatus(filter);
+    } else if (filter !== "") {
+      setActiveCategory(filter);
     }
+
+    // Apply filters based on activeCategory and activeStatus
+    let itemsToProcess = [...inventoryItems];
+
+    // Apply category filter if active
+    if (activeCategory) {
+      itemsToProcess = itemsToProcess.filter(item => item.category === activeCategory);
+    }
+
+    // Apply status filter if active
+    if (activeStatus) {
+      itemsToProcess = itemsToProcess.filter(item => item.status === activeStatus);
+    }
+
+    // Process the filtered items
+    itemsToProcess.forEach(item => {
+      counters.totalItems++;
+      updateCounts(item, counters);
+    });
     setTotalAssetValue(counters.totalPrice);
     setCheckedIn(counters.checkedIn);
     setCheckedOut(counters.checkedOut);
     setItemCount(counters.totalItems);
-  }, [inventoryItems, filter]);
+  }, [inventoryItems, filter, activeCategory, activeStatus]);
+
+  // Update filtered items based on category and status
+  useEffect(() => {
+    let filtered = [...inventoryItems];
+
+    // Apply category filter if active
+    if (activeCategory) {
+      filtered = filtered.filter(item => item.category === activeCategory);
+    }
+
+    // Apply status filter if active
+    if (activeStatus) {
+      filtered = filtered.filter(item => item.status === activeStatus);
+    }
+
+    // Apply search term if present
+    if (term) {
+      filtered = filtered.filter(item =>
+        item.name.toLowerCase().includes(term.toLowerCase()) ||
+        item.barcode.toLowerCase().includes(term.toLowerCase())
+      );
+    }
+
+    setFilteredItems(filtered);
+    // Reset to first page when filters change
+    setCurrentPage(1);
+  }, [inventoryItems, activeCategory, activeStatus, term]);
 
   // Handle pagination
   useEffect(() => {
@@ -121,6 +153,10 @@ export default function Inventory({
             filter={filter}
             setFilter={setFilter}
             categories={categoryItems}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            activeStatus={activeStatus}
+            setActiveStatus={setActiveStatus}
           />
         </div>
         <div className="col-span-full mt-8">

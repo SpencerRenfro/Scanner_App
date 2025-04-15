@@ -50,12 +50,11 @@ function App() {
 
   //useEffect to hide navbar on select pages
   useEffect(() => {
-    // Only handle sign-out and add-item pages here
-    // The inventory item page is handled in the SingleItemData component
-    if (location.pathname.includes("/sign-out")) {
-      console.log('Setting hideNavbar to true for sign-out page');
-      setHideNavbar(true);
-    } else if (location.pathname.includes("/add-item")) {
+    // Hide navbar on specific pages
+    if (location.pathname.includes("/sign-out") ||
+        location.pathname.includes("/add-item") ||
+        (location.pathname.includes("/inventory/") && location.pathname.includes("/print"))) {
+      console.log('Setting hideNavbar to true for:', location.pathname);
       setHideNavbar(true);
     } else {
       // For other pages, show the navbar

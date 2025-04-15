@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink } from "react-router-dom";
 import bwipjs from "bwip-js";
+
+// Images
+import scan from "../assets/icons/scan.svg";
+import close from "../assets/close.svg";
 
 const PrintPreview = () => {
   const navigate = useNavigate();
@@ -41,16 +45,118 @@ const PrintPreview = () => {
     }
   }, [item]);
 
-  // Auto-trigger print dialog after item is loaded
-  useEffect(() => {
-    if (item && !loading) {
-      const timer = setTimeout(() => {
-        window.print();
-      }, 500);
+  // Print function
+  const handlePrint = () => {
+    // Ensure the barcode is generated before printing
+    if (item?.barcode && canvasRef.current) {
+      try {
+        // Force regenerate the barcode
+        generateBarcode(item.barcode);
 
-      return () => clearTimeout(timer);
+        // Create a print-specific version
+        const printWindow = window.open('', '_blank');
+        if (!printWindow) {
+          alert('Please allow pop-ups to print the barcode');
+          return;
+        }
+
+        // Create the print content
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Print Barcode - ${item.name}</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  margin: 0;
+                  padding: 0;
+                }
+                .card {
+                  background-color: white;
+                  border-radius: 0.75rem;
+                  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                  overflow: hidden;
+                  max-width: 350px;
+                  width: 100%;
+                }
+                .card-header {
+                  background-color: #4f46e5;
+                  color: white;
+                  padding: 1rem;
+                }
+                .card-header h1 {
+                  font-size: 18px;
+                  font-weight: bold;
+                  text-align: center;
+                  margin: 0;
+                }
+                .card-body {
+                  padding: 1.5rem;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                }
+                .id-text {
+                  font-size: 12px;
+                  color: #6b7280;
+                  margin-bottom: 1rem;
+                }
+                .barcode-container {
+                  background-color: #f9fafb;
+                  border-radius: 0.5rem;
+                  padding: 1.5rem;
+                  width: 100%;
+                  margin-bottom: 1.5rem;
+                  display: flex;
+                  justify-content: center;
+                }
+                .hint-text {
+                  font-size: 10px;
+                  color: #9ca3af;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="card">
+                <div class="card-header">
+                  <h1>${item.name}</h1>
+                </div>
+                <div class="card-body">
+                  <p class="id-text">ID: ${item.id}</p>
+                  <div class="barcode-container">
+                    <img src="${canvasRef.current.toDataURL('image/png')}" alt="Barcode" />
+                  </div>
+                  <p class="hint-text">Scan this barcode to track the item</p>
+                </div>
+              </div>
+              <script>
+                window.onload = function() {
+                  setTimeout(function() {
+                    window.print();
+                    setTimeout(function() {
+                      window.close();
+                    }, 500);
+                  }, 300);
+                };
+              </script>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      } catch (error) {
+        console.error('Error preparing print:', error);
+        // Fallback to regular print
+        window.print();
+      }
+    } else {
+      // Fallback to regular print
+      window.print();
     }
-  }, [item, loading]);
+  };
 
   const generateBarcode = (barcodeText) => {
     try {
@@ -115,9 +221,26 @@ const PrintPreview = () => {
   }
 
   return (
-    <div className="print-preview-page">
+    <div className="print-preview-page bg-slate-100 min-h-screen">
+      {/* Navbar similar to SingleItemData page */}
+      <div className="flex items-center justify-between p-6 shadow-lg bg-white print:hidden">
+        <div className="flex items-center gap-3">
+          <img src={scan} width={28} height={28} alt="barcode" className="opacity-80" />
+          <h1 className="text-xl font-semibold">{item ? item.name : 'Item Details'}</h1>
+        </div>
+        <div className="flex items-center gap-3">
+
+          <NavLink
+            to="/"
+            className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+          >
+            <img src={close} width={24} alt="close" />
+          </NavLink>
+        </div>
+      </div>
+
       {/* This is what will be printed */}
-      <div className="print-content flex flex-col items-center justify-center min-h-screen p-8 gap-6">
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center gap-6 print:visible print:absolute print:inset-0 print:p-0 print:m-0 print:flex print:flex-col print:items-center print:justify-center print:bg-white">
         {/* Barcode Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-md w-full">
           <div className="bg-indigo-600 p-4 text-white">
@@ -134,8 +257,9 @@ const PrintPreview = () => {
               Scan this barcode to track the item
             </p>
           </div>
+
           {/* Action Buttons Card - This will be hidden when printing */}
-          <div className="no-print bg-white rounded-xl shadow-lg overflow-hidden max-w-md w-full">
+          <div className="no-print rounded-xl shadow-lg overflow-hidden max-w-md w-full mt-6">
             <div className="p-4 flex justify-center gap-4">
               <button
                 onClick={handleBackClick}
@@ -159,7 +283,7 @@ const PrintPreview = () => {
               </button>
 
               <button
-                onClick={() => window.print()}
+                onClick={handlePrint}
                 className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm"
               >
                 <svg

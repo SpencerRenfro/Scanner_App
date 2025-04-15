@@ -22,6 +22,7 @@
   .print-content,
   .print-content * {
     visibility: visible !important;
+    display: block !important;
   }
 
   /* Hide elements with no-print class when printing */
@@ -32,18 +33,24 @@
 
   /* Position the print content in the center of the page */
   .print-content {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: white !important;
+    z-index: 9999 !important;
+  }
+
+  /* Ensure the page background is white when printing */
+  .print-preview-page {
+    background-color: white !important;
   }
 
   /* Maintain the card styling */
@@ -102,6 +109,13 @@
   .print-content canvas {
     max-width: none !important;
     overflow: visible !important;
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure flex containers display properly */
+  .print-content .flex {
+    display: flex !important;
   }
 
   /* Style the ID text */
