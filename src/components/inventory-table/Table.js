@@ -73,7 +73,7 @@ export default function Table({
           category: item.category || ''
         };
 
-        console.log('Creating sign-in log entry:', logEntry);
+        // Create log entry for sign-in
 
         // Post the log entry to the itemLogs collection
         const logResponse = await fetch('http://localhost:8000/itemLogs', {

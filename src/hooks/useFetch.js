@@ -33,7 +33,7 @@ export const useFetch = (url, method = "GET") => {
   };
 
   useEffect(() => {
-    console.log(`useFetch ran with url: ${url}, method: ${method}, options: ${JSON.stringify(options)}`);
+    console.log(`useFetch ran with url: ${url}, method: ${method}, options:`, options);
 
     const controller = new AbortController();
 
@@ -41,11 +41,17 @@ export const useFetch = (url, method = "GET") => {
       setIsPending(true);
 
       try {
+        console.log(`Making ${method} request to ${url} with options:`, fetchOptions);
         const res = await fetch(url, { ...fetchOptions, signal: controller.signal });
+
         if (!res.ok) {
-          throw new Error(res.statusText);
+          const errorText = await res.text();
+          console.error(`Error response from ${url}:`, errorText);
+          throw new Error(res.statusText || `HTTP error ${res.status}`);
         }
+
         const data = await res.json();
+        console.log(`Successful ${method} response from ${url}:`, data);
 
         setIsPending(false);
         setData(data);
@@ -54,8 +60,9 @@ export const useFetch = (url, method = "GET") => {
         if (err.name === "AbortError") {
           console.log("The fetch was aborted");
         } else {
+          console.error(`Error in ${method} request to ${url}:`, err);
           setIsPending(false);
-          setError("Could not fetch the data");
+          setError(`Could not fetch the data: ${err.message}`);
         }
       }
     };

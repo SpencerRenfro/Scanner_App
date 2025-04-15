@@ -3,7 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 
 // Pages
 import EditItem from "./pages/EditItem";
-import AddItem from "./pages/AddItem";
+
 import Checkout from "./pages/Checkout";
 import InventoryPage from "./pages/InventoryPage";
 import SingleItemInfo from "./pages/ItemInfo";
@@ -20,6 +20,8 @@ import Banner from "./components/Banner";
 import PrintPreview from "./components/PrintPreview";
 import CategoryManagement from "./pages/CategoryManagement";
 import CustomerManagement from "./pages/CustomerManagement";
+import TestLogEndpoint from "./pages/TestLogEndpoint";
+import TestCustomersEndpoint from "./pages/TestCustomersEndpoint";
 
 // Import print styles
 import "./styles/printPreview.css";
@@ -192,15 +194,6 @@ function App() {
               />
             }
           />
-          <Route
-            path="/add-itemPage"
-            element={
-              <AddItem
-                setItemCreationSuccess={setItemCreationSuccess}
-                setItemCreationFailure={setItemCreationFailure}
-              />
-            }
-          />
           <Route path="/logs" element={<Logs />} />
           <Route path="/logs/:id" element={<SingleItemLogInformation setHideNavbar={setHideNavbar} />} />
           <Route
@@ -230,6 +223,8 @@ function App() {
           <Route path="/categories/manage" element={<CategoryManagement />} />
           <Route path="/customers/manage" element={<CustomerManagement />} />
           <Route path="/logs/:id" element={<SingleItemLogInformation />} />
+          <Route path="/test-logs" element={<TestLogEndpoint />} />
+          <Route path="/test-customers" element={<TestCustomersEndpoint />} />
         </Routes>
       </div>
     </div>

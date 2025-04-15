@@ -230,66 +230,6 @@ export default function Inventory({
         <div className="col-span-full mt-8">
           {/* Debug buttons - remove in production */}
           <div className="flex gap-2 mb-4">
-            <button
-              onClick={() => {
-                console.log('All inventory items:', inventoryItems);
-                console.log('Filtered items:', filteredItems);
-                console.log('Active customer:', activeCustomer);
-                console.log('Active category:', activeCategory);
-                console.log('Active status:', activeStatus);
-              }}
-              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-            >
-              Debug: Log State
-            </button>
-            <button
-              onClick={() => {
-                // Find the Impact Drill item
-                const drillItem = inventoryItems.find(item => item.name === 'Impact Drill');
-                console.log('Impact Drill item:', drillItem);
-
-                // Check if it has signedOutTo property
-                if (drillItem) {
-                  console.log('signedOutTo property:', drillItem.signedOutTo);
-
-                  // Test the filter condition
-                  if (drillItem.signedOutTo && drillItem.signedOutTo.fullName === 'John Doe') {
-                    console.log('Filter condition would match!');
-                  } else {
-                    console.log('Filter condition would NOT match!');
-                    console.log('Reasons:');
-                    if (!drillItem.signedOutTo) console.log('- signedOutTo is null or undefined');
-                    else if (drillItem.signedOutTo.fullName !== 'John Doe') {
-                      console.log(`- fullName is "${drillItem.signedOutTo.fullName}" not "John Doe"`);
-                    }
-                  }
-                }
-              }}
-              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-            >
-              Debug: Check Drill Item
-            </button>
-            <button
-              onClick={() => {
-                // Set active customer to John Doe
-                setActiveCustomer('John Doe');
-
-                // Force a re-filter
-                setTimeout(() => {
-                  // Get all items with signedOutTo.fullName === 'John Doe'
-                  const johnDoeItems = inventoryItems.filter(item =>
-                    item.signedOutTo && item.signedOutTo.fullName === 'John Doe'
-                  );
-                  console.log('Items signed out to John Doe:', johnDoeItems);
-
-                  // Log the current filtered items
-                  console.log('Current filtered items:', filteredItems);
-                }, 100);
-              }}
-              className="px-3 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-            >
-              Filter by John Doe
-            </button>
           </div>
           <div className="flex flex-wrap gap-4 sm:gap-7">
             <Results itemCount={itemCount} />

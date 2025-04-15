@@ -29,14 +29,7 @@
       "barcodeUrl": "",
       "qrCode": "",
       "status": "OUT",
-      "signedOutTo": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "phone": "555-123-4567",
-        "fullName": "John Doe"
-      },
-      "lastUpdated": "2024-07-15T14:30:00.000Z"
+      "signOutTo": "c001"
     },
     {
       "id": "2bdc",
@@ -355,17 +348,9 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT",
+      "status": "IN",
       "dayOfWeek": "Monday",
-      "time": "6:55",
-      "signedOutTo": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "phone": "555-123-4567",
-        "fullName": "John Doe"
-      },
-      "lastUpdated": "2025-04-15T17:58:07.097Z"
+      "time": "6:55"
     },
     {
       "id": "d010",
@@ -385,15 +370,7 @@
       ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT",
-      "signedOutTo": {
-        "firstName": "Spencer",
-        "lastName": "Renfro",
-        "email": "spencer.renfro13@gmail.com",
-        "phone": "2173134416",
-        "fullName": "Spencer Renfro"
-      },
-      "lastUpdated": "2025-04-15T17:19:09.604Z"
+      "status": "IN"
     },
     {
       "id": "1e67",
@@ -413,22 +390,7 @@
       ],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT",
-      "signOutTo": {
-        "firstName": "Michael",
-        "lastName": "Johnson",
-        "email": "michael.johnson@example.com",
-        "phone": "555-456-7890",
-        "fullName": "Michael Johnson"
-      },
-      "lastUpdated": "2025-04-15T17:56:55.698Z",
-      "signedOutTo": {
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "phone": "555-123-4567",
-        "fullName": "John Doe"
-      }
+      "status": "IN"
     },
     {
       "id": "da75",
@@ -445,9 +407,92 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN",
-      "signedOutTo": null,
-      "lastUpdated": "2025-04-15T18:40:20.450Z"
+      "status": "IN"
+    },
+    {
+      "id": "994d",
+      "date": "4/15/2025, 1:41:40 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:41 PM",
+      "name": "Tile Cutter",
+      "category": "Tools",
+      "price": 5,
+      "serialNumber": "146546546546546",
+      "description": "Diamond Edge ",
+      "barcode": "635208271640",
+      "barcodeCombinedName": "635208271640_Tile Cutter",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "584d",
+      "date": "4/15/2025, 1:48:11 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:48 PM",
+      "name": "Breaker Bar",
+      "category": "Tools",
+      "price": 75,
+      "serialNumber": "13241651321",
+      "description": "Snap-on Breaker Bar",
+      "barcode": "012853885945",
+      "barcodeCombinedName": "012853885945_Breaker Bar",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "e30e",
+      "date": "4/15/2025, 1:52:14 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:52 PM",
+      "name": "Torque Wrench",
+      "category": "Tools",
+      "price": 200,
+      "serialNumber": " ",
+      "description": " ",
+      "barcode": "891107974633",
+      "barcodeCombinedName": "891107974633_Torque Wrench",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "20d1",
+      "date": "4/15/2025, 1:58:41 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "1:58 PM",
+      "name": "Tire Iron",
+      "category": "Art_Supplies",
+      "price": 50,
+      "serialNumber": "",
+      "description": "",
+      "barcode": "627735072568",
+      "barcodeCombinedName": "627735072568_Tire Iron",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
+    },
+    {
+      "id": "b3ad",
+      "date": "4/15/2025, 2:53:09 PM",
+      "dayOfWeek": "Tuesday",
+      "time": "2:53 PM",
+      "name": "Tire Iron",
+      "category": "Tools",
+      "price": 0,
+      "serialNumber": "",
+      "description": "",
+      "barcode": "656752091507",
+      "barcodeCombinedName": "656752091507_Tire Iron",
+      "itemCollection": [],
+      "barcodeUrl": "",
+      "qrCode": "",
+      "status": "IN"
     }
   ],
   "categories": [
@@ -892,138 +937,82 @@
       "category": ""
     },
     {
-      "id": "963196845021_Alexa",
-      "name": "Alexa",
-      "action": "OUT",
-      "date": "04/15/2025",
-      "barcode": "963196845021",
+      "id": "test_log_1744746468340",
+      "name": "Test Item",
+      "action": "TEST",
+      "date": "4/15/2025",
       "dayOfWeek": "Tuesday",
-      "time": "10:55 AM",
-      "category": "Electronics"
+      "time": "1:47:48 PM",
+      "barcode": "TEST123456",
+      "category": "Test Category"
     },
     {
-      "id": "063841795706_PS5",
-      "name": "PS5",
-      "action": "OUT",
+      "id": "891107974633_Torque_Wrench_1744746757729",
+      "name": "Torque Wrench",
+      "action": "CREATED",
       "date": "04/15/2025",
-      "barcode": "063841795706",
       "dayOfWeek": "Tuesday",
-      "time": "11:11 AM",
-      "category": "Electronics"
+      "time": "1:52 PM",
+      "barcode": "891107974633",
+      "category": "Tools",
+      "description": " ",
+      "price": 200,
+      "serialNumber": " ",
+      "status": "IN"
     },
     {
-      "id": "012999116295_test item",
-      "name": "test item",
-      "action": "OUT",
+      "id": "627735072568_Tire_Iron_1744747126765",
+      "name": "Tire Iron",
+      "action": "CREATED",
       "date": "04/15/2025",
-      "barcode": "012999116295",
       "dayOfWeek": "Tuesday",
-      "time": "11:19 AM",
-      "category": "Education"
+      "time": "1:58 PM",
+      "barcode": "627735072568",
+      "category": "Art_Supplies",
+      "description": "",
+      "price": 50,
+      "serialNumber": "N/A",
+      "status": "IN"
     },
     {
-      "id": "963196845021_Alexa",
-      "name": "Alexa",
-      "action": "IN",
+      "id": "656752091507_Tire_Iron_1744750389890",
+      "name": "Tire Iron",
+      "action": "CREATED",
       "date": "04/15/2025",
-      "barcode": "963196845021",
       "dayOfWeek": "Tuesday",
-      "time": "11:54 AM",
-      "category": "Electronics"
-    },
-    {
-      "id": "063841795706_PS5",
-      "name": "PS5",
-      "action": "IN",
-      "date": "04/15/2025",
-      "barcode": "063841795706",
-      "dayOfWeek": "Tuesday",
-      "time": "11:54 AM",
-      "category": "Electronics"
-    },
-    {
-      "id": "963196845021_Alexa",
-      "name": "Alexa",
-      "action": "OUT",
-      "date": "04/15/2025",
-      "barcode": "963196845021",
-      "dayOfWeek": "Tuesday",
-      "time": "11:56 AM",
-      "category": "Electronics"
-    },
-    {
-      "id": "063841795706_PS5",
-      "name": "PS5",
-      "action": "OUT",
-      "date": "04/15/2025",
-      "barcode": "063841795706",
-      "dayOfWeek": "Tuesday",
-      "time": "11:56 AM",
-      "category": "Electronics"
-    },
-    {
-      "id": "980204226991_Dumpt Truck",
-      "name": "Dumpt Truck",
-      "action": "OUT",
-      "date": "04/15/2025",
-      "barcode": "980204226991",
-      "dayOfWeek": "Tuesday",
-      "time": "11:58 AM",
-      "category": "Heavy Equipment"
-    },
-    {
-      "id": "963196845021_Alexa",
-      "name": "Alexa",
-      "action": "IN",
-      "date": "04/15/2025",
-      "barcode": "963196845021",
-      "dayOfWeek": "Tuesday",
-      "time": "12:40 PM",
-      "category": "Electronics"
+      "time": "2:53 PM",
+      "barcode": "656752091507",
+      "category": "Tools",
+      "description": "",
+      "price": 0,
+      "serialNumber": "N/A",
+      "status": "IN"
     }
   ],
   "customers": [
     {
-      "id": 1,
+      "id": "c001",
       "firstName": "John",
       "lastName": "Doe",
+      "fullName": "John Doe",
       "email": "john.doe@example.com",
-      "phone": "555-123-4567"
+      "phone": "555-123-4567",
+      "company": "Acme Inc.",
+      "notes": "Regular customer",
+      "createdAt": "04/15/2025",
+      "lastCheckout": "04/15/2025"
     },
     {
-      "id": 2,
-      "firstName": "Jane",
-      "lastName": "Smith",
-      "email": "jane.smith@example.com",
-      "phone": "555-987-6543"
-    },
-    {
-      "id": 3,
-      "firstName": "Michael",
+      "id": "c003",
+      "firstName": "Bob",
       "lastName": "Johnson",
-      "email": "michael.johnson@example.com",
-      "phone": "555-456-7890"
-    },
-    {
-      "id": 4,
-      "firstName": "Emily",
-      "lastName": "Williams",
-      "email": "emily.williams@example.com",
-      "phone": "555-789-0123"
-    },
-    {
-      "id": 5,
-      "firstName": "Robert",
-      "lastName": "Brown",
-      "email": "robert.brown@example.com",
-      "phone": "555-234-5678"
-    },
-    {
-      "id": "72ca",
-      "firstName": "Spencer",
-      "lastName": "Renfro",
-      "email": "spencer.renfro13@gmail.com",
-      "phone": "2173134416"
+      "fullName": "Bob Johnson",
+      "email": "bob.johnson@example.com",
+      "phone": "555-555-5555",
+      "company": "Johnson & Sons",
+      "notes": "Has overdue items",
+      "createdAt": "04/15/2025",
+      "lastCheckout": "04/15/2025"
     }
   ]
 }

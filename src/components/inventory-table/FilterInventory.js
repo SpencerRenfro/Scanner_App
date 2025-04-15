@@ -21,34 +21,7 @@ export default function FilterInventory({
     error: customersError,
   } = useFetch("http://localhost:8000/customers");
 
-  // Debug: Log customers props
-  useEffect(() => {
-    console.log("Checked out customers:", checkedOutCustomers);
-    console.log("Saved customers:", savedCustomers);
-  }, [checkedOutCustomers, savedCustomers]);
 
-  // Debug function to check customer data
-  const debugCustomerData = () => {
-    console.log("Active customer:", activeCustomer);
-    console.log("All saved customers:", savedCustomers);
-    console.log("Checked out customers:", checkedOutCustomers);
-
-    // Find John Doe in saved customers
-    const johnDoe = savedCustomers?.find(
-      (c) =>
-        c.fullName === "John Doe" ||
-        (c.firstName === "John" && c.lastName === "Doe")
-    );
-    console.log("John Doe in saved customers:", johnDoe);
-
-    // Find John Doe in checked out customers
-    const johnDoeCheckedOut = checkedOutCustomers?.find(
-      (c) =>
-        c.fullName === "John Doe" ||
-        (c.firstName === "John" && c.lastName === "Doe")
-    );
-    console.log("John Doe in checked out customers:", johnDoeCheckedOut);
-  };
   const [activeTab, setActiveTab] = useState("all"); // 'all', 'categories', 'status', or 'customers'
 
   // Handle filter selection
@@ -99,14 +72,8 @@ export default function FilterInventory({
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-2">
+      <div className="mb-2">
         <h3 className="text-sm font-medium text-gray-700">Filter Inventory</h3>
-        <button
-          onClick={debugCustomerData}
-          className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-        >
-          Debug Customers
-        </button>
       </div>
       {/* Filter Tabs */}
       <div className="flex mb-2 border-b overflow-x-auto pb-1 scrollbar-hide">
@@ -235,7 +202,7 @@ export default function FilterInventory({
                 Error loading customers
               </div>
             ) : savedCustomers && savedCustomers.length > 0 ? (
-              <div className="flex flex-col gap-2"> 
+              <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap gap-2">
                   {savedCustomers.map((customer) => {
                     // Create fullName if it doesn't exist

@@ -19,14 +19,21 @@ export default function AddItem({
   const [barcodeState, setBarcodeState] = useState();
   const navigate = useNavigate();
 
-  const { postData: postInventoryData, data: inventoryData, error: inventoryError } = useFetch(
-    "http://localhost:8000/inventory",
-    "POST"
-  );
-  const { postData: postCategoryData, data: categorySubmission, error: categoryError } = useFetch(
-    "http://localhost:8000/categories",
-    "POST"
-  );
+  const {
+    postData: postInventoryData,
+    data: inventoryData,
+    error: inventoryError,
+  } = useFetch("http://localhost:8000/inventory", "POST");
+  const {
+    postData: postLogsData,
+    data: logsData,
+    error: logsError,
+  } = useFetch("http://localhost:8000/itemLogs", "POST");
+  const {
+    postData: postCategoryData,
+    data: categorySubmission,
+    error: categoryError,
+  } = useFetch("http://localhost:8000/categories", "POST");
   const { data: categories, error: categoryErrorFetch } = useFetch(
     "http://localhost:8000/categories",
     "GET"
@@ -49,7 +56,10 @@ export default function AddItem({
     status: "IN",
   });
 
-  const { canvasRef, barcode } = useBarcodeGenerator(formData.name, setBarcodeState);
+  const { canvasRef, barcode } = useBarcodeGenerator(
+    formData.name,
+    setBarcodeState
+  );
 
   // Check for duplicate categories
   const isDuplicateCategory = (categoryName) => {
@@ -84,16 +94,72 @@ export default function AddItem({
     e.preventDefault();
 
     // Check for duplicate category before submission
-    if (customCategory && formData.category && isDuplicateCategory(formData.category)) {
-      alert("The category name already exists. Please choose a different name.");
+    if (
+      customCategory &&
+      formData.category &&
+      isDuplicateCategory(formData.category)
+    ) {
+      alert(
+        "The category name already exists. Please choose a different name."
+      );
       return;
     }
 
-    // Post the form data
+    // Get current date and time for the log
+    const now = new Date();
+    const timestamp = now.getTime(); // Add timestamp for uniqueness
+
+    // Format date as MM/DD/YYYY
+    const dateStr = now.toLocaleDateString("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    });
+
+    // Format time as HH:MM AM/PM
+    const timeStr = now.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    // Get day of week
+    const dayOfWeek = now.toLocaleDateString("en-US", { weekday: "long" });
+
+    // Create a unique ID for the log
+    const logId = `${barcodeState}_${formData.name.replace(
+      /\s+/g,
+      "_"
+    )}_${timestamp}`;
+
+    // Create the log entry with complete information
+    const logEntry = {
+      id: logId,
+      name: formData.name,
+      action: "CREATED",
+      date: dateStr,
+      dayOfWeek: dayOfWeek,
+      time: timeStr,
+      barcode: barcodeState,
+      category: formData.category || "Uncategorized",
+      description: formData.description || "",
+      price: formData.price || 0.00,
+      serialNumber: formData.serialNumber || "N/A",
+      status: "IN",
+    };
+
+    // Post the inventory data
     postInventoryData(formData);
 
+    // Post the log entry
+    postLogsData(logEntry);
+
     // Add custom category if applicable
-    if (customCategory && formData.category && !isDuplicateCategory(formData.category)) {
+    if (
+      customCategory &&
+      formData.category &&
+      !isDuplicateCategory(formData.category)
+    ) {
       const newCategoryData = {
         name: formData.category,
         barcode: barcodeState,
@@ -103,6 +169,7 @@ export default function AddItem({
     }
 
     console.log("Form Data Submitted:", formData);
+    console.log("Log Entry Created:", logEntry);
     handleHideNavbar(); // Hide the navbar after submission
   };
 
@@ -130,14 +197,23 @@ export default function AddItem({
 
   // Handle submission success or failure
   useEffect(() => {
-    if (inventoryData) {
+    if (inventoryData && logsData) {
       navigate("/");
       setItemCreationSuccess(true);
-    } else if (inventoryError) {
+    } else if (inventoryError || logsError) {
       setItemCreationFailure(true);
+      console.error("Error creating item:", inventoryError || logsError);
       navigate("/item-creation-failure");
     }
-  }, [inventoryData, inventoryError]);
+  }, [
+    inventoryData,
+    inventoryError,
+    logsData,
+    logsError,
+    navigate,
+    setItemCreationSuccess,
+    setItemCreationFailure,
+  ]);
 
   return (
     <div>
@@ -174,10 +250,9 @@ export default function AddItem({
             onChange={(e) => {
               setFormData({ ...formData, description: e.target.value });
             }}
-            required
           />
 
-          {customCategory ? (
+          {customCategory && (
             <input
               type="text"
               placeholder="Custom Category"
@@ -187,24 +262,26 @@ export default function AddItem({
               }}
               required
             />
-          ) : (
-            <select
-              className="select select-bordered col-span-5 my-6 py-7 w-full"
-              value={formData.category}
-              onChange={(e) => {
-                setFormData({ ...formData, category: e.target.value });
-              }}
-              required
-            >
-              <option value="" disabled>
-                Select Category
-              </option>
-              {categories?.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
+          )}
+          {!customCategory && categories && categories.length > 0 && (
+            <div className=" my-4">
+              <label className="font-bold">Category: {formData.category}</label>
+              <select
+                defaultValue="Pick a color"
+                className="select select-bordered col-span-5  w-full"
+                onChange={(e) => {
+                  setFormData({ ...formData, category: e.target.value });
+                  console.log("Selected category:", e.target.value);
+                }}
+              >
+                <option disabled={true}>Select a category</option>
+                {categories?.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
 
           <div className="flex pl-5 gap-5">
@@ -223,7 +300,6 @@ export default function AddItem({
             onChange={(e) => {
               setFormData({ ...formData, price: parseFloat(e.target.value) });
             }}
-            required
           />
           <input
             type="text"
@@ -232,7 +308,6 @@ export default function AddItem({
             onChange={(e) => {
               setFormData({ ...formData, serialNumber: e.target.value });
             }}
-            required
           />
           <div className="col-span-4 flex items-center gap-5 my-6">
             <input
