@@ -649,6 +649,25 @@ export default function SystemSettings() {
                 </div>
               )}
             </div>
+
+            {/* Customer Management Section */}
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Customer Management</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Import sample customers to populate your database for testing and demonstration purposes.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="/import-customers"
+                  className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 dark:bg-purple-700 dark:hover:bg-purple-800 transition-colors inline-block text-center"
+                >
+                  Import Sample Customers
+                </a>
+                <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                  Current customers: {customersData ? customersData.length : '...'}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
+import CustomersPagination from "./CustomersPagination";
 
 export default function FilterInventory({
   filter,
@@ -23,6 +24,12 @@ export default function FilterInventory({
 
 
   const [activeTab, setActiveTab] = useState("all"); // 'all', 'categories', 'status', or 'customers'
+
+  // Pagination for customers and categories
+  const [currentCustomersPage, setCurrentCustomersPage] = useState(1);
+  const [currentCategoriesPage, setCurrentCategoriesPage] = useState(1);
+  const customersPerPage = 10; // Show 10 customers per page
+  const categoriesPerPage = 10; // Show 10 categories per page
 
   // Handle filter selection
   const handleFilterSelect = (value, type) => {
@@ -89,6 +96,9 @@ export default function FilterInventory({
             setActiveCategory("");
             setActiveStatus("");
             setActiveCustomer("");
+            // Reset pagination
+            setCurrentCustomersPage(1);
+            setCurrentCategoriesPage(1);
             // Use empty type to indicate resetting all filters
             handleFilterSelect("", "");
             console.log("Reset all filters");
@@ -102,7 +112,10 @@ export default function FilterInventory({
               ? "text-indigo-600 border-b-2 border-indigo-600"
               : "text-gray-500 hover:text-gray-700"
           }`}
-          onClick={() => setActiveTab("categories")}
+          onClick={() => {
+            setActiveTab("categories");
+            setCurrentCategoriesPage(1); // Reset to page 1 when switching to Categories tab
+          }}
         >
           Categories
         </button>
@@ -117,6 +130,8 @@ export default function FilterInventory({
             // When switching to Customers tab, automatically set status to OUT
             // since customers can only have checked out items
             setActiveStatus("OUT");
+            // Reset to page 1 when switching to Customers tab
+            setCurrentCustomersPage(1);
           }}
         >
           Customers
@@ -126,62 +141,93 @@ export default function FilterInventory({
       {/* Filter Content */}
       <div className="mt-2 overflow-x-auto pb-2">
         {activeTab === "categories" && (
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => handleFilterSelect("Uncategorized", "category")}
-              className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
-                activeCategory === "Uncategorized"
-                  ? "bg-indigo-100 text-indigo-800 font-medium shadow-sm"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              Uncategorized
-            </button>
-
-            {categories && categories.length > 0 ? (
-              <div className="flex items-center gap-2">
-                {categories.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => handleFilterSelect(item.name, "category")}
-                    className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
-                      activeCategory === item.name
-                        ? "bg-indigo-100 text-indigo-800 font-medium shadow-sm"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    {item.name}
-                  </button>
-                ))}
-                <NavLink
-                  to="/categories/manage"
-                  className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors flex items-center justify-center"
-                  title="Manage Categories"
+          <div className="flex flex-col gap-2">
+            {/* Header with category count and gear icon */}
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                {categories ? categories.length + 1 : 1} {(categories ? categories.length + 1 : 1) === 1 ? 'category' : 'categories'} found
+              </span>
+              <NavLink
+                to="/categories/manage"
+                className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-full transition-colors flex items-center justify-center"
+                title="Manage Categories"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </NavLink>
-              </div>
-            ) : (
-              <div className="text-gray-500 mt-2">No categories available</div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </NavLink>
+            </div>
+
+            {/* Category buttons with pagination */}
+            <div className="flex flex-wrap gap-2">
+              {/* Always show Uncategorized */}
+              <button
+                onClick={() => {
+                  handleFilterSelect("Uncategorized", "category");
+                  setCurrentCategoriesPage(1); // Reset to page 1 when selecting a category
+                }}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
+                  activeCategory === "Uncategorized"
+                    ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 font-medium shadow-sm"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                }`}
+              >
+                Uncategorized
+              </button>
+
+              {categories && categories.length > 0 ? (
+                // Show paginated categories
+                categories
+                  .slice(
+                    (currentCategoriesPage - 1) * categoriesPerPage,
+                    currentCategoriesPage * categoriesPerPage
+                  )
+                  .map((item) => (
+                    <button
+                      key={item.id}
+                      onClick={() => {
+                        handleFilterSelect(item.name, "category");
+                        setCurrentCategoriesPage(1); // Reset to page 1 when selecting a category
+                      }}
+                      className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
+                        activeCategory === item.name
+                          ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 font-medium shadow-sm"
+                          : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  ))
+              ) : (
+                <div className="text-gray-500 dark:text-gray-400 mt-2">No additional categories available</div>
+              )}
+            </div>
+
+            {/* Pagination component - only show if we have more than one page */}
+            {categories && categories.length > categoriesPerPage && (
+              <CustomersPagination
+                currentPage={currentCategoriesPage}
+                setCurrentPage={setCurrentCategoriesPage}
+                customersPerPage={categoriesPerPage}
+                totalCustomers={categories.length}
+              />
             )}
           </div>
         )}
@@ -203,44 +249,14 @@ export default function FilterInventory({
               </div>
             ) : savedCustomers && savedCustomers.length > 0 ? (
               <div className="flex flex-col gap-2">
-                <div className="flex flex-wrap gap-2">
-                  {savedCustomers.map((customer) => {
-                    // Create fullName if it doesn't exist
-                    const fullName =
-                      customer.fullName ||
-                      `${customer.firstName} ${customer.lastName}`.trim();
-                    return (
-                      <button
-                        key={customer.id || customer.email}
-                        onClick={() => {
-                          handleFilterSelect(fullName, "customer");
-                          handleFilterSelect("OUT", "status")
-                        }}
-                        className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
-                          activeCustomer === fullName
-                            ? "bg-purple-100 text-purple-800 font-medium shadow-sm"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {fullName}
-                        {/* Add a badge for customers with items checked out */}
-                        {checkedOutCustomers &&
-                          checkedOutCustomers.some(
-                            (c) =>
-                              c.fullName === fullName ||
-                              (c.email && c.email === customer.email)
-                          ) && (
-                            <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                              <div className="w-1.5 h-1.5 rounded-full bg-red-500 mr-1"></div>
-                            </span>
-                          )}
-                      </button>
-                    );
-                  })}
-                  {/* Gear icon for managing customers */}
+                {/* Header with customer count and gear icon */}
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {savedCustomers.length} {savedCustomers.length === 1 ? 'customer' : 'customers'} found
+                  </span>
                   <NavLink
                     to="/customers/manage"
-                    className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors flex items-center justify-center"
+                    className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-full transition-colors flex items-center justify-center"
                     title="Manage Customers"
                   >
                     <svg
@@ -265,9 +281,59 @@ export default function FilterInventory({
                     </svg>
                   </NavLink>
                 </div>
+
+                {/* Customer buttons with pagination */}
+                <div className="flex flex-wrap gap-2">
+                  {savedCustomers
+                    .slice(
+                      (currentCustomersPage - 1) * customersPerPage,
+                      currentCustomersPage * customersPerPage
+                    )
+                    .map((customer) => {
+                      // Create fullName if it doesn't exist
+                      const fullName =
+                        customer.fullName ||
+                        `${customer.firstName} ${customer.lastName}`.trim();
+                      return (
+                        <button
+                          key={customer.id || customer.email}
+                          onClick={() => {
+                            handleFilterSelect(fullName, "customer");
+                            handleFilterSelect("OUT", "status");
+                          }}
+                          className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
+                            activeCustomer === fullName
+                              ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 font-medium shadow-sm"
+                              : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                          }`}
+                        >
+                          {fullName}
+                          {/* Add a badge for customers with items checked out */}
+                          {checkedOutCustomers &&
+                            checkedOutCustomers.some(
+                              (c) =>
+                                c.fullName === fullName ||
+                                (c.email && c.email === customer.email)
+                            ) && (
+                              <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                                <div className="w-1.5 h-1.5 rounded-full bg-red-500 dark:bg-red-400 mr-1"></div>
+                              </span>
+                            )}
+                        </button>
+                      );
+                    })}
+                </div>
+
+                {/* Pagination component */}
+                <CustomersPagination
+                  currentPage={currentCustomersPage}
+                  setCurrentPage={setCurrentCustomersPage}
+                  customersPerPage={customersPerPage}
+                  totalCustomers={savedCustomers.length}
+                />
               </div>
             ) : (
-              <div className="text-gray-500 mt-2 p-3 bg-gray-50 rounded-md">
+              <div className="text-gray-500 dark:text-gray-400 mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
                 No saved customers found
               </div>
             )}
