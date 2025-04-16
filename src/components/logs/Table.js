@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function Table({ logs, filter, dateFilter }) {
   return (
-    <table className="table min-w-full text-black table-fixed bg-slate-100">
+    <table className="table min-w-full text-black dark:text-white table-fixed bg-slate-100 dark:bg-gray-800">
       <TableHead />
       <tbody>
         {logs.map((item) =>
@@ -11,12 +11,12 @@ function Table({ logs, filter, dateFilter }) {
           (dateFilter === "" || item.date === dateFilter) ? (
             <tr
               key={`${item.id}-${item.date}-${item.action}`}
-              className="py-4 border-b-2 border-slate-200 cursor-pointer"
+              className="py-4 border-b-2 border-slate-200 dark:border-gray-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-gray-700"
             >
               <td className="whitespace-nowrap py-2 sm:py-4">
                 <NavLink
                   to={`/logs/${item.id}`}
-                  className="hover:text-indigo-700"
+                  className="hover:text-indigo-700 dark:hover:text-indigo-400"
                 >
                   <p className="font-medium">{item.name}</p>
                 </NavLink>

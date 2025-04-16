@@ -216,23 +216,23 @@ export default function AddItem({
   ]);
 
   return (
-    <div>
-      <div className="flex items-center justify-between p-6 shadow-lg">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-white dark:bg-gray-800 dark:text-white">
         <h1>New Item</h1>
         <button onClick={handleHideNavbar}>
           <NavLink to="/">
-            <img src={close} width={25} alt="close" />
+            <img src={close} width={25} alt="close" className="dark:invert" />
           </NavLink>
         </button>
       </div>
       <div className="mx-40 pb-40 grid grid-cols-12 mt-7 gap-4">
-        <form className="col-start-4 col-span-6 p-4" onSubmit={handleSubmit}>
+        <form className="col-start-4 col-span-6 p-4 dark:text-white" onSubmit={handleSubmit}>
           <h1 className="font-bold">Add New Item</h1>
           <p>Add information about your item</p>
           <input
             type="text"
             placeholder="Item Name"
-            className="input input-bordered col-span-5 my-6 py-7 w-full"
+            className="input input-bordered col-span-5 my-6 py-7 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             onChange={(e) => {
               setFormData({
                 ...formData,
@@ -246,7 +246,7 @@ export default function AddItem({
           <textarea
             type="text"
             placeholder="Item Description"
-            className="input input-bordered col-span-5 my-6 pt-3 w-full min-h-48 max-h-72"
+            className="input input-bordered col-span-5 my-6 pt-3 w-full min-h-48 max-h-72 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             onChange={(e) => {
               setFormData({ ...formData, description: e.target.value });
             }}
@@ -256,7 +256,7 @@ export default function AddItem({
             <input
               type="text"
               placeholder="Custom Category"
-              className="input input-bordered col-span-5 my-6 py-7 w-full"
+              className="input input-bordered col-span-5 my-6 py-7 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
               onChange={(e) => {
                 setFormData({ ...formData, category: e.target.value });
               }}
@@ -268,7 +268,7 @@ export default function AddItem({
               <label className="font-bold">Category: {formData.category}</label>
               <select
                 defaultValue="Pick a color"
-                className="select select-bordered col-span-5  w-full"
+                className="select select-bordered col-span-5 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
                 onChange={(e) => {
                   setFormData({ ...formData, category: e.target.value });
                   console.log("Selected category:", e.target.value);
@@ -296,7 +296,7 @@ export default function AddItem({
           <input
             type="text"
             placeholder="Item Price"
-            className="input input-bordered col-span-5 my-6 py-7 w-full"
+            className="input input-bordered col-span-5 my-6 py-7 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             onChange={(e) => {
               setFormData({ ...formData, price: parseFloat(e.target.value) });
             }}
@@ -304,7 +304,7 @@ export default function AddItem({
           <input
             type="text"
             placeholder="Serial Number"
-            className="input input-bordered col-span-5 my-6 py-7 w-full"
+            className="input input-bordered col-span-5 my-6 py-7 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             onChange={(e) => {
               setFormData({ ...formData, serialNumber: e.target.value });
             }}
@@ -313,7 +313,7 @@ export default function AddItem({
             <input
               type="text"
               placeholder="Add collection of subitems"
-              className="input input-bordered col-span-5 my-6 py-7 w-full"
+              className="input input-bordered col-span-5 my-6 py-7 w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
               value={tempItem}
               onChange={(e) => setTempItem(e.target.value)}
             />
@@ -326,7 +326,7 @@ export default function AddItem({
               <li key={index} className="flex justify-between">
                 {item}
                 <button onClick={() => deleteCollectionItem(index)}>
-                  <img src={deleteIcon} alt="Delete" />
+                  <img src={deleteIcon} alt="Delete" className="dark:invert" />
                 </button>
               </li>
             ))}

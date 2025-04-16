@@ -71,12 +71,12 @@ export default function FilterInventory({
   }, [filter, setActiveCategory, setActiveStatus, setActiveCustomer]);
 
   return (
-    <div className="w-full">
+    <div className="w-full dark:text-white">
       <div className="mb-2">
-        <h3 className="text-sm font-medium text-gray-700">Filter Inventory</h3>
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Filter Inventory</h3>
       </div>
       {/* Filter Tabs */}
-      <div className="flex mb-2 border-b overflow-x-auto pb-1 scrollbar-hide">
+      <div className="flex mb-2 border-b dark:border-gray-700 overflow-x-auto pb-1 scrollbar-hide">
         <button
           className={`px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium whitespace-nowrap ${
             activeTab === "all"

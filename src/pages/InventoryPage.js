@@ -48,8 +48,8 @@ function InventoryPage({
   }, [data, category.categoryFilter]);
 
   return (
-    <div className="bg-slate-100">
-      {error && <div>{error}</div>}
+    <div className="bg-slate-100 dark:bg-gray-900 dark:text-white min-h-screen">
+      {error && <div className="text-red-600 dark:text-red-400 p-4">{error}</div>}
       {data && categories && (
         <div>
           <Inventory

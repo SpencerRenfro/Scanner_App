@@ -74,6 +74,14 @@ const PrintPreview = () => {
                   height: 100vh;
                   margin: 0;
                   padding: 0;
+                  background-color: white;
+                  color: black;
+                }
+                @media (prefers-color-scheme: dark) {
+                  body {
+                    background-color: white; /* Keep white for printing */
+                    color: black; /* Keep black for printing */
+                  }
                 }
                 .card {
                   background-color: white;
@@ -199,16 +207,16 @@ const PrintPreview = () => {
 
   // Show loading or error state
   if (loading) {
-    return <div className="text-center p-8">Loading...</div>;
+    return <div className="text-center p-8 dark:text-white">Loading...</div>;
   }
 
   if (error) {
     return (
-      <div className="text-center p-8">
-        <p className="text-red-500 mb-4">{error}</p>
+      <div className="text-center p-8 dark:text-white">
+        <p className="text-red-500 dark:text-red-400 mb-4">{error}</p>
         <button
           onClick={() => navigate(-1)}
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+          className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600"
         >
           Go Back
         </button>
@@ -217,53 +225,53 @@ const PrintPreview = () => {
   }
 
   if (!item) {
-    return <div className="text-center p-8">Item not found</div>;
+    return <div className="text-center p-8 dark:text-white">Item not found</div>;
   }
 
   return (
-    <div className="print-preview-page bg-slate-100 min-h-screen">
+    <div className="print-preview-page bg-slate-100 dark:bg-gray-900 min-h-screen">
       {/* Navbar similar to SingleItemData page */}
-      <div className="flex items-center justify-between p-6 shadow-lg bg-white print:hidden">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-white dark:bg-gray-800 dark:text-white print:hidden">
         <div className="flex items-center gap-3">
-          <img src={scan} width={28} height={28} alt="barcode" className="opacity-80" />
+          <img src={scan} width={28} height={28} alt="barcode" className="opacity-80 dark:invert" />
           <h1 className="text-xl font-semibold">{item ? item.name : 'Item Details'}</h1>
         </div>
         <div className="flex items-center gap-3">
 
           <NavLink
             to="/"
-            className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+            className="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors flex items-center justify-center"
           >
-            <img src={close} width={24} alt="close" />
+            <img src={close} width={24} alt="close" className="dark:invert" />
           </NavLink>
         </div>
       </div>
 
       {/* This is what will be printed */}
-      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center gap-6 print:visible print:absolute print:inset-0 print:p-0 print:m-0 print:flex print:flex-col print:items-center print:justify-center print:bg-white">
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center gap-6 dark:text-white print:visible print:absolute print:inset-0 print:p-0 print:m-0 print:flex print:flex-col print:items-center print:justify-center print:bg-white">
         {/* Barcode Card */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden max-w-md w-full">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden max-w-md w-full">
           <div className="bg-indigo-600 p-4 text-white">
             <h1 className="text-xl font-bold text-center">{item.name}</h1>
           </div>
           <div className="p-6 flex flex-col items-center">
-            <p className="text-sm text-gray-600 mb-4">ID: {item.id}</p>
-            <div className="bg-gray-50 p-6 rounded-lg w-full mb-4 overflow-visible">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">ID: {item.id}</p>
+            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg w-full mb-4 overflow-visible">
               <div className="flex justify-center">
                 <canvas ref={canvasRef} width="250" height="100" />
               </div>
             </div>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Scan this barcode to track the item
             </p>
           </div>
 
           {/* Action Buttons Card - This will be hidden when printing */}
-          <div className="no-print rounded-xl shadow-lg overflow-hidden max-w-md w-full mt-6">
+          <div className="no-print rounded-xl shadow-lg overflow-hidden max-w-md w-full mt-6 dark:bg-gray-800">
             <div className="p-4 flex justify-center gap-4">
               <button
                 onClick={handleBackClick}
-                className="flex items-center justify-center px-6 py-2 bg-gray-50 border border-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-100 transition-colors shadow-sm"
+                className="flex items-center justify-center px-6 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -284,7 +292,7 @@ const PrintPreview = () => {
 
               <button
                 onClick={handlePrint}
-                className="flex items-center justify-center px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm"
+                className="flex items-center justify-center px-6 py-2 bg-blue-600 dark:bg-blue-700 text-white text-sm font-medium rounded-md hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

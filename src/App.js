@@ -22,6 +22,8 @@ import CategoryManagement from "./pages/CategoryManagement";
 import CustomerManagement from "./pages/CustomerManagement";
 import TestLogEndpoint from "./pages/TestLogEndpoint";
 import TestCustomersEndpoint from "./pages/TestCustomersEndpoint";
+import CustomerInventoryView from "./pages/CustomerInventoryView";
+import SystemSettings from "./pages/SystemSettings";
 
 // Import print styles
 import "./styles/printPreview.css";
@@ -62,6 +64,7 @@ function App() {
         location.pathname.includes("/add-item") ||
         location.pathname.includes("/categories/manage") ||
         location.pathname.includes("/customers/manage") ||
+        location.pathname.includes("/system-settings") ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/edit")) ||
         (location.pathname.includes("/inventory/") && location.pathname.includes("/print"))) {
       console.log('Setting hideNavbar to true for:', location.pathname);
@@ -169,7 +172,7 @@ function App() {
   ]);
 
   return (
-    <div className="bg-slate-100 min-h-screen ">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
       {!hideNavbar && <Navbar />}
       <div className="relative w-full">
         {/* Display banners for appropriate CRUD operation */}
@@ -225,6 +228,8 @@ function App() {
           <Route path="/logs/:id" element={<SingleItemLogInformation />} />
           <Route path="/test-logs" element={<TestLogEndpoint />} />
           <Route path="/test-customers" element={<TestCustomersEndpoint />} />
+          <Route path="/customer-inventory" element={<CustomerInventoryView />} />
+          <Route path="/system-settings" element={<SystemSettings />} />
         </Routes>
       </div>
     </div>

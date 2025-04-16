@@ -2,7 +2,7 @@ import React from "react";
 
 export default function CheckedIn({checkedIn}) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center dark:text-white">
       <p className="text-sm sm:text-base mr-2 sm:mr-5">Checked In</p>
       <svg
         className="w-2 sm:w-3 fill-green-400 mx-1 sm:mx-2 self-center"

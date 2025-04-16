@@ -57,26 +57,26 @@ function SingleItemData({ setHideNavbar }) {
   }, [item]);
 
   return (
-    <div className="bg-slate-100 min-h-screen">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
       {/* Navbar similar to Add New Item page */}
-      <div className="flex items-center justify-between p-6 shadow-lg bg-slate-100">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-slate-100 dark:bg-gray-800 dark:text-white">
         <div className="flex items-center gap-3">
-          <img src={scan} width={28} height={28} alt="barcode" className="opacity-80" />
+          <img src={scan} width={28} height={28} alt="barcode" className="opacity-80 dark:invert" />
           <h1 className="text-xl font-semibold">{item ? item.name : 'Item Details'}</h1>
         </div>
         <NavLink
           to="/"
-          className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+          className="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors flex items-center justify-center"
         >
-          <img src={close} width={24} alt="close" />
+          <img src={close} width={24} alt="close" className="dark:invert" />
         </NavLink>
       </div>
 
       <div className="container mx-auto px-4 py-8">
-        {error && <div className="text-red-500 text-center p-4">{error}</div>}
+        {error && <div className="text-red-500 dark:text-red-400 text-center p-4">{error}</div>}
         {isPending && (
           <div className="flex justify-center p-8">
-            <span className="loading loading-spinner loading-lg"></span>
+            <span className="loading loading-spinner loading-lg dark:text-white"></span>
           </div>
         )}
         {item && (

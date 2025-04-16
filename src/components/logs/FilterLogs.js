@@ -36,12 +36,12 @@ export default function FilterLogs({ statusFilter, setStatusFilter, dateFilter, 
   };
 
   return (
-    <div className="col-span-5 flex flex-col sm:flex-row gap-4">
+    <div className="col-span-5 flex flex-col sm:flex-row gap-4 dark:text-white">
       {/* Status Filter */}
       <div className="flex-1">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Status</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Status</label>
         <select
-          className="select w-full"
+          className="select w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
           onChange={handleStatusChange}
           value={statusFilter}
         >
@@ -55,12 +55,12 @@ export default function FilterLogs({ statusFilter, setStatusFilter, dateFilter, 
 
       {/* Date Filter */}
       <div className="flex-1">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Filter by Date</label>
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Date</label>
         <div className="relative">
           <DatePicker
             selected={selectedDate}
             onChange={handleDateChange}
-            className="select w-full"
+            className="select w-full dark:bg-gray-700 dark:text-white dark:border-gray-600"
             placeholderText="Select a date"
             dateFormat="MM/dd/yyyy"
             isClearable
@@ -70,10 +70,10 @@ export default function FilterLogs({ statusFilter, setStatusFilter, dateFilter, 
           />
           {dateFilter && (
             <div className="mt-2">
-              <span className="badge badge-info mr-2">{dateFilter}</span>
+              <span className="badge badge-info mr-2 dark:bg-blue-800 dark:text-white">{dateFilter}</span>
               <button
                 onClick={clearDateFilter}
-                className="text-xs text-red-500 hover:text-red-700"
+                className="text-xs text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
               >
                 Clear
               </button>

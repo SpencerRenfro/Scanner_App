@@ -204,7 +204,7 @@ export default function Inventory({
   };
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 dark:text-white">
       <div className="flex flex-col sm:flex-row justify-between items-center my-6 sm:my-10">
         <h1 className="font-bold text-2xl sm:text-3xl mb-4 sm:mb-0">Inventory</h1>
         <AddItem />

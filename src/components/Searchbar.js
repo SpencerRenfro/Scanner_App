@@ -23,7 +23,7 @@ export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, t
     if(isInventoryData){
       setFilteredItems(results);
     }
-     
+
     console.log("Filtered items:", results);
   }, [term, inventoryItems, setFilteredItems]); // Effect runs when term or inventoryItems updates
 
@@ -47,13 +47,13 @@ export default function Searchbar({ inventoryItems, setTerm, setFilteredItems, t
           >
             <path
               d="m77 77.75-17.5-17.5c3.25-3.75 5.5-8.75 5.5-14 0-11.75-9.5-21.25-21.25-21.25s-21.25 9.5-21.25 21.25 9.5 21.25 21.25 21.25c5.5 0 10.25-2 14-5.5l17.5 17.5zm-33.5-12.75c-10.25 0-18.75-8.5-18.75-18.75s8.5-18.75 18.75-18.75 18.75 8.5 18.75 18.75-8.5 18.75-18.75 18.75z"
-              stroke="black"
+              stroke="currentColor"
               strokeWidth="4"
               fill="none"
             />
           </svg>
           <input
-            className="w-full rounded text-xl py-4 pl-11"
+            className="w-full rounded text-xl py-4 pl-11 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             type="text"
             id="search"
             onChange={(e) => setTerm(e.target.value)} // Update term

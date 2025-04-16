@@ -318,7 +318,8 @@
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "OUT"
+      "status": "OUT",
+      "signOutTo": "c003"
     },
     {
       "id": "2c77",
@@ -486,13 +487,21 @@
       "category": "Tools",
       "price": 0,
       "serialNumber": "",
-      "description": "",
+      "description": "  ",
       "barcode": "656752091507",
       "barcodeCombinedName": "656752091507_Tire Iron",
       "itemCollection": [],
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN"
+      "status": "OUT",
+      "signedOutTo": {
+        "firstName": "Spencer",
+        "lastName": "Renfro",
+        "email": "spencer.renfro13@gmail.com",
+        "phone": "2173134416",
+        "fullName": "Spencer Renfro"
+      },
+      "lastUpdated": "2025-04-16T02:03:54.208Z"
     }
   ],
   "categories": [
@@ -914,7 +923,9 @@
       "barcode": " 161964567241",
       "dayOfWeek": "Tuesday",
       "time": "9:59 AM",
-      "category": "Electronics"
+      "category": "Electronics",
+      "customerId": "c001",
+      "customerName": "John Doe"
     },
     {
       "id": " 161964567241_JBL_Stereo",
@@ -987,6 +998,16 @@
       "price": 0,
       "serialNumber": "N/A",
       "status": "IN"
+    },
+    {
+      "id": "656752091507_Tire Iron",
+      "name": "Tire Iron",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "656752091507",
+      "dayOfWeek": "Tuesday",
+      "time": "8:03 PM",
+      "category": "Tools"
     }
   ],
   "customers": [

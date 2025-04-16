@@ -31,13 +31,13 @@ const BarcodeCard = ({ item }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl m-4 transition-all duration-300 hover:shadow-xl">
+    <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden md:max-w-2xl m-4 transition-all duration-300 hover:shadow-xl dark:text-white">
       <div className="p-6 sm:p-8">
         {/* Item details */}
         {/* Header with status */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <p className="text-gray-600 mb-4 text-sm sm:text-base">
+            <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm sm:text-base">
               {item.description}
             </p>
           </div>
@@ -58,9 +58,9 @@ const BarcodeCard = ({ item }) => {
 
         {/* Barcode section */}
         <div className="mt-6 flex justify-center">
-          <div className="p-4 bg-gray-50 rounded-lg shadow-inner w-full">
+          <div className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg shadow-inner w-full">
             <canvas ref={canvasRef} className="mx-auto" />
-            <p className="text-center text-xs text-gray-500 mt-2">
+            <p className="text-center text-xs text-gray-500 dark:text-gray-300 mt-2">
               Item Barcode
             </p>
           </div>
@@ -68,20 +68,20 @@ const BarcodeCard = ({ item }) => {
 
         {/* Item details */}
         <div className="mt-6 grid grid-cols-3 gap-4">
-          <div className="text-center p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">Category</p>
+          <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <p className="text-xs text-gray-500 dark:text-gray-300 mb-1">Category</p>
             <p className="font-medium text-sm sm:text-base">
               {item.category ? item.category : "Uncategorized"}
             </p>
           </div>
-          <div className="text-center p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">Price</p>
+          <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <p className="text-xs text-gray-500 dark:text-gray-300 mb-1">Price</p>
             <p className="font-medium text-sm sm:text-base">
               ${parseFloat(item.price).toFixed(2)}
             </p>
           </div>
-          <div className="text-center p-3 bg-gray-50 rounded-lg">
-            <p className="text-xs text-gray-500 mb-1">ID</p>
+          <div className="text-center p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <p className="text-xs text-gray-500 dark:text-gray-300 mb-1">ID</p>
             <p className="font-medium text-sm sm:text-base">{item.id}</p>
           </div>
         </div>
@@ -89,10 +89,10 @@ const BarcodeCard = ({ item }) => {
         {/* Action buttons card */}
         <div className="mt-8 overflow-hidden">
           <div className="p-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="bg-gray-50 rounded-lg shadow-md p-3">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md p-3">
               <NavLink
                 to={`/inventory/${item.id}/edit`}
-                className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-indigo-600 text-sm font-medium rounded-md hover:bg-indigo-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm"
+                className="flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-indigo-600 dark:text-indigo-400 text-sm font-medium rounded-md hover:bg-indigo-50 dark:hover:bg-indigo-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -113,10 +113,10 @@ const BarcodeCard = ({ item }) => {
             </div>
 
             {item.status === "IN" ? (
-              <div className="bg-gray-50 rounded-lg shadow-md p-3">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md p-3">
                 <NavLink
                   to={`/${item.id}/sign-out`}
-                  className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-red-600 text-sm font-medium rounded-md hover:bg-amber-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 shadow-sm"
+                  className="flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-red-600 dark:text-red-400 text-sm font-medium rounded-md hover:bg-amber-50 dark:hover:bg-amber-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 shadow-sm"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -136,10 +136,10 @@ const BarcodeCard = ({ item }) => {
                 </NavLink>
               </div>
             ) : (
-              <div className="bg-gray-50 rounded-lg shadow-md p-3">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md p-3">
                 <NavLink
                   to="/check-in"
-                  className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-green-600 text-sm font-medium rounded-md hover:bg-green-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-sm"
+                  className="flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-green-600 dark:text-green-400 text-sm font-medium rounded-md hover:bg-green-50 dark:hover:bg-green-900 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-sm"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -160,10 +160,10 @@ const BarcodeCard = ({ item }) => {
               </div>
             )}
 
-            <div className="bg-gray-50 rounded-lg shadow-md p-3">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg shadow-md p-3">
             <NavLink
               to={`/inventory/${item.id}/print`}
-              className="flex items-center justify-center px-4 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 shadow-sm"
+              className="flex items-center justify-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 shadow-sm"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

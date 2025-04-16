@@ -93,15 +93,15 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
   };
 
   return (
-    <div className="bg-slate-100 min-h-screen">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 shadow-lg bg-white">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-white dark:bg-gray-800 dark:text-white">
         <h1 className="text-xl font-semibold">Log Information</h1>
         <NavLink
           to="/logs"
-          className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+          className="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors flex items-center justify-center"
         >
-          <img src={close} width={25} alt="close" />
+          <img src={close} width={25} alt="close" className="dark:invert" />
         </NavLink>
       </div>
 
@@ -121,11 +121,11 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
             </div>
           </div>
         ) : log ? (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden dark:text-white">
             {/* Log Header */}
-            <div className="p-6 border-b border-gray-200">
+            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-gray-800">{log.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">{log.name}</h2>
                 <span
                   className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusBadgeClass(
                     log.action
@@ -134,22 +134,22 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
                   {log.action}
                 </span>
               </div>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 <span className="font-semibold">Date:</span>{" "}
                 {formatDate(log.date, log.time)}
               </p>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-300">
                 <span className="font-semibold">Day:</span>{" "}
                 {log.dayOfWeek || "Unknown"}
               </p>
               {log.category && (
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   <span className="font-semibold">Category:</span>{" "}
                   {log.category}
                 </p>
               )}
               {log.barcode && (
-                <p className="text-gray-600">
+                <p className="text-gray-600 dark:text-gray-300">
                   <span className="font-semibold">Barcode:</span> {log.barcode}
                 </p>
               )}
@@ -157,26 +157,26 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
 
             {/* Item Details (if available) */}
             {item && (
-              <div className="p-6 bg-gray-50">
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              <div className="p-6 bg-gray-50 dark:bg-gray-700">
+                <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
                   Item Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                       <span className="font-semibold">Name:</span> {item.name}
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                       <span className="font-semibold">Description:</span>{" "}
                       {item.description || "No description"}
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                       <span className="font-semibold">Category:</span>{" "}
                       {item.category || "Uncategorized"}
                     </p>
                   </div>
                   <div>
-                    <div className="text-gray-600 flex items-center gap-2">
+                    <div className="text-gray-600 dark:text-gray-300 flex items-center gap-2">
                       <p className={`font-semibold`}>Current Status:</p>
                       {item.status === "IN" ? (
                         <div className="px-2 rounded-xl text-green-600 bg-green-100">IN</div>
@@ -184,24 +184,24 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
                         <div className="px-2 rounded-xl text-red-600 bg-red-100">OUT</div> || "Unknown"
                       )}
                     </div>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 dark:text-gray-300">
                       <span className="font-semibold">Value:</span>
                       <span className="flex items-center">
                         <img
                           src={dollarSign}
                           width={15}
                           alt="dollar sign"
-                          className="mr-1"
+                          className="mr-1 dark:invert"
                         />
                         {item.price || "0.00"}
                       </span>
                     </p>
                     {item.signedOutTo && (
-                      <div className="mt-2 p-3 bg-yellow-50 rounded-md">
-                        <p className="text-gray-700 font-semibold">
+                      <div className="mt-2 p-3 bg-yellow-50 dark:bg-yellow-900 rounded-md">
+                        <p className="text-gray-700 dark:text-gray-200 font-semibold">
                           Currently signed out to:
                         </p>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 dark:text-gray-300">
                           {item.signedOutTo.fullName ||
                             (item.signedOutTo.firstName &&
                             item.signedOutTo.lastName
@@ -209,7 +209,7 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
                               : "Unknown")}
                         </p>
                         {item.signedOutTo.email && (
-                          <p className="text-gray-600 text-sm">
+                          <p className="text-gray-600 dark:text-gray-300 text-sm">
                             {item.signedOutTo.email}
                           </p>
                         )}
@@ -221,10 +221,10 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
             )}
 
             {/* Action Buttons */}
-            <div className="p-6 border-t border-gray-200 flex justify-end space-x-4">
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700 flex justify-end space-x-4">
               <NavLink
                 to="/logs"
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
               >
                 Back to Logs
               </NavLink>

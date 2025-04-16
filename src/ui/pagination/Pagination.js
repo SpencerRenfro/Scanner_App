@@ -51,7 +51,7 @@ function Pagination({
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
 
   return (
-    <div className="w-full flex flex-col sm:flex-row justify-between sm:justify-end items-center py-4 sm:py-6 gap-4 sm:gap-5">
+    <div className="w-full flex flex-col sm:flex-row justify-between sm:justify-end items-center py-4 sm:py-6 gap-4 sm:gap-5 dark:text-white">
       <div className="flex flex-wrap gap-4 sm:gap-5 items-center">
         <div className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base">
           <p className="whitespace-nowrap">Rows: {itemsPerPage}</p>
@@ -74,11 +74,11 @@ function Pagination({
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-36 sm:w-52 p-2 shadow text-sm"
+              className="dropdown-content menu bg-base-100 dark:bg-gray-800 dark:text-white rounded-box z-[1] w-36 sm:w-52 p-2 shadow text-sm"
             >
-              <li onClick={() => handleItemsPerPageChange(5)} className="cursor-pointer hover:bg-slate-100 p-1 rounded">5 items</li>
-              <li onClick={() => handleItemsPerPageChange(10)} className="cursor-pointer hover:bg-slate-100 p-1 rounded">10 items</li>
-              <li onClick={() => handleItemsPerPageChange(20)} className="cursor-pointer hover:bg-slate-100 p-1 rounded">20 items</li>
+              <li onClick={() => handleItemsPerPageChange(5)} className="cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-1 rounded">5 items</li>
+              <li onClick={() => handleItemsPerPageChange(10)} className="cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-1 rounded">10 items</li>
+              <li onClick={() => handleItemsPerPageChange(20)} className="cursor-pointer hover:bg-slate-100 dark:hover:bg-gray-700 p-1 rounded">20 items</li>
               <li onClick={() => handleItemsPerPageChange(50)} className="cursor-pointer hover:bg-slate-100 p-1 rounded">50 items</li>
             </ul>
           </div>

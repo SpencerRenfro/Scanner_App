@@ -139,8 +139,8 @@ export default function Table({
     }
   };
   return (
-    <div className="overflow-x-auto">
-      <table className="table min-w-full text-black">
+    <div className="overflow-x-auto dark:text-white">
+      <table className="table min-w-full text-black dark:text-white">
         <TableHead />
         <tbody>
           {filteredItems.map((item) =>
@@ -149,11 +149,11 @@ export default function Table({
             item.category === categoryFilter ||
             item.status === categoryFilter ? (
               <tr
-                className="py-4 border-b-2 border-slate-200  hover:bg-slate-50"
+                className="py-4 border-b-2 border-slate-200 dark:border-gray-700 hover:bg-slate-50 dark:hover:bg-gray-700"
                 key={item.id}
               >
                 <td className="whitespace-nowrap py-2 sm:py-4">
-                  <NavLink to={`/inventory/${item.id}`} className="hover:text-indigo-700">
+                  <NavLink to={`/inventory/${item.id}`} className="hover:text-indigo-700 dark:hover:text-indigo-400">
                     <p className="font-medium">{item.name}</p>
                   </NavLink>
                 </td>

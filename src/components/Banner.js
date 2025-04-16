@@ -7,9 +7,9 @@ import { ReactComponent as FailureAlert } from "../assets/icons/alert/failure.sv
 
 export default function Banner({ message, type }) {
   const styles = {
-    success: "bg-green-100 border border-green-400 text-green-700",
-    failure: "bg-red-100 border border-red-400 text-red-700",
-    updateSuccess: "bg-indigo-100 border border-indigo-400 text-indigo-700",
+    success: "bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300",
+    failure: "bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300",
+    updateSuccess: "bg-indigo-100 dark:bg-indigo-900 border border-indigo-400 dark:border-indigo-600 text-indigo-700 dark:text-indigo-300",
   };
   const [icon, setIcon] = useState();
   useEffect(() => {

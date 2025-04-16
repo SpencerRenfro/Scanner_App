@@ -12,13 +12,13 @@ const DeleteConfirmationDialog = ({ isOpen, onClose, categoryName, onConfirm }) 
       <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
 
       {/* Dialog */}
-      <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md z-10 relative">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden w-full max-w-md z-10 relative">
         <div className="bg-red-600 px-4 py-3">
           <h3 className="text-lg font-medium text-white">Delete Category</h3>
         </div>
 
         <div className="p-6">
-          <p className="mb-4 text-gray-700">
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
             Are you sure you want to delete the category <span className="font-semibold">{categoryName}</span>?
             This action cannot be undone.
           </p>
@@ -26,13 +26,13 @@ const DeleteConfirmationDialog = ({ isOpen, onClose, categoryName, onConfirm }) 
           <div className="flex justify-end gap-3 mt-6">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={onConfirm}
-              className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+              className="px-4 py-2 bg-red-600 dark:bg-red-700 text-white rounded-md hover:bg-red-700 dark:hover:bg-red-800 transition-colors"
             >
               Delete
             </button>
@@ -55,7 +55,7 @@ const ReassignDialog = ({ isOpen, onClose, categoryName, categories, onReassign 
       <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
 
       {/* Dialog */}
-      <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md z-10 relative">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl overflow-hidden w-full max-w-md z-10 relative">
         <div className="bg-indigo-600 px-4 py-3">
           <h3 className="text-lg font-medium text-white">Reassign Items</h3>
         </div>
@@ -270,26 +270,26 @@ export default function CategoryManagement() {
   };
 
   return (
-    <div className="bg-slate-100 min-h-screen">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between p-6 shadow-lg bg-white">
+      <div className="flex items-center justify-between p-6 shadow-lg bg-white dark:bg-gray-800 dark:text-white">
         <div className="flex items-center gap-3">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
           </svg>
           <h1 className="text-xl font-semibold">Manage Categories</h1>
         </div>
         <NavLink
           to="/"
-          className="hover:bg-gray-100 p-2 rounded-full transition-colors flex items-center justify-center"
+          className="hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors flex items-center justify-center"
         >
-          <img src={close} width={24} alt="close" />
+          <img src={close} width={24} alt="close" className="dark:invert" />
         </NavLink>
       </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Add Category Form */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 dark:text-white">
           <h2 className="text-lg font-semibold mb-4">Add New Category</h2>
           <form onSubmit={handleAddCategory} className="flex gap-2">
             <input
@@ -297,11 +297,11 @@ export default function CategoryManagement() {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               placeholder="Enter category name"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
             />
             <button
               type="submit"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+              className="px-4 py-2 bg-indigo-600 dark:bg-indigo-700 text-white rounded-md hover:bg-indigo-700 dark:hover:bg-indigo-800 transition-colors"
             >
               Add Category
             </button>
@@ -323,25 +323,25 @@ export default function CategoryManagement() {
         )}
 
         {/* Categories List */}
-        <div className="bg-white rounded-lg shadow-md p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 dark:text-white">
           <h2 className="text-lg font-semibold mb-4">Categories</h2>
           {isLoading ? (
-            <p>Loading categories...</p>
+            <p className="dark:text-gray-300">Loading categories...</p>
           ) : categories.length > 0 ? (
-            <ul className="divide-y divide-gray-200">
+            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {categories.map((category) => (
                 <li key={category.id} className="py-4 flex justify-between items-center">
                   <div className="flex items-center">
-                    <span className="text-gray-800">{category.name}</span>
+                    <span className="text-gray-800 dark:text-white">{category.name}</span>
                     {isCategoryInUse(category.name) && (
-                      <span className="ml-2 px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">
+                      <span className="ml-2 px-2 py-1 text-xs bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-300 rounded-full">
                         In use
                       </span>
                     )}
                   </div>
                   <button
                     onClick={() => initiateDeleteCategory(category)}
-                    className="text-red-600 hover:text-red-800 transition-colors"
+                    className="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 transition-colors"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -351,7 +351,7 @@ export default function CategoryManagement() {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500">No categories available. Add some categories to get started.</p>
+            <p className="text-gray-500 dark:text-gray-400">No categories available. Add some categories to get started.</p>
           )}
         </div>
       </div>

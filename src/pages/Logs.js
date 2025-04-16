@@ -129,9 +129,9 @@ export default function LogsTwo() {
   }, [filteredLogs, currentPage, itemsPerPage]);
 
   return (
-    <div className="bg-slate-100 min-h-screen pb-20">
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen pb-20">
       <div className="grid grid-cols-12 mx-10 lg:mx-40 mt-10">
-        <h1 className="col-start-1 col-span-12 font-bold text-3xl text-black my-10">
+        <h1 className="col-start-1 col-span-12 font-bold text-3xl text-black dark:text-white my-10">
           Logs
         </h1>
         <div className="col-span-7 mr-10">
@@ -164,15 +164,15 @@ export default function LogsTwo() {
         {isPending && (
           <div className="col-span-12">
             {/* Desktop Loading Skeleton - Hidden on mobile */}
-            <div className="hidden md:block bg-slate-100 animate-pulse">
-              <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="hidden md:block bg-slate-100 dark:bg-gray-900 animate-pulse">
+              <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
                 {/* Table Header Skeleton */}
-                <div className="bg-gray-100 px-4 py-3 border-b">
+                <div className="bg-gray-100 dark:bg-gray-700 px-4 py-3 border-b dark:border-gray-600">
                   <div className="grid grid-cols-4 gap-4">
-                    <div className="h-6 bg-gray-200 rounded col-span-1"></div>
-                    <div className="h-6 bg-gray-200 rounded col-span-1"></div>
-                    <div className="h-6 bg-gray-200 rounded col-span-1"></div>
-                    <div className="h-6 bg-gray-200 rounded col-span-1"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-600 rounded col-span-1"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-600 rounded col-span-1"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-600 rounded col-span-1"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-600 rounded col-span-1"></div>
                   </div>
                 </div>
 
@@ -231,10 +231,10 @@ export default function LogsTwo() {
         )}
 
         {filteredLogs && (
-          <div className="col-span-12 bg-slate-100">
-            <div className="bg-slate-100">
+          <div className="col-span-12 bg-slate-100 dark:bg-gray-900">
+            <div className="bg-slate-100 dark:bg-gray-900">
               <Table logs={paginatedLogs} filter={statusFilter} dateFilter={dateFilter} />
-              <div className="bg-slate-100">
+              <div className="bg-slate-100 dark:bg-gray-900">
                 <Pagination
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}

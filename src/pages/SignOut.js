@@ -222,7 +222,7 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
   };
 
   return (
-    <div>
+    <div className="bg-slate-100 dark:bg-gray-900 min-h-screen">
       <div className="flex items-center justify-between p-6 shadow-lg">
         <h1>Sign Item Out</h1>
         <NavLink to="/" onClick={() => handleHideNavbar && handleHideNavbar()}>

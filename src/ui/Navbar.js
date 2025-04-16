@@ -10,12 +10,16 @@ export default function Example() {
   // Function to determine if the current path matches the provided path
   const isActive = (path) => location.pathname === path;
   return (
-    <div className="navbar w-full h-32 flex items-center bg-slate-100 text-black shadow-xl">
+    <div className="navbar w-full h-32 flex items-center bg-slate-100 dark:bg-gray-800 text-black dark:text-white shadow-xl">
       <div className="flex items-center gap-1 ml-5 grow">
-        <NavLink className="flex items-center gap-1" to="/">
-          <img src={scan} width={40} height={20} alt="barcode" />
-          <span className="text-center">Scanner</span>
-        </NavLink>
+        <div className="flex items-center gap-1">
+          <NavLink to="/system-settings">
+            <img src={scan} width={40} height={20} alt="barcode" className="hover:opacity-70 transition-opacity dark:invert" />
+          </NavLink>
+          <NavLink className="flex items-center" to="/">
+            <span className="text-center">Scanner</span>
+          </NavLink>
+        </div>
       </div>
       <div className="justify-center mx-10">
         <NavLink
@@ -32,7 +36,7 @@ export default function Example() {
         <div className="dropdown dropdown-end">
           <ul
             tabIndex={0}
-            className="menu dropdown-content bg-base-100 rounded-box z-[1] mt-10 w-52 p-2 shadow"
+            className="menu dropdown-content bg-base-100 dark:bg-gray-800 dark:text-white rounded-box z-[1] mt-10 w-52 p-2 shadow"
           >
             <li>
               <NavLink to="/item-management">Item Management</NavLink>
