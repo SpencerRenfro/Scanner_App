@@ -12,11 +12,19 @@
       "itemCollection": "",
       "barcodeUrl": "",
       "qrCode": "",
-      "status": "IN",
+      "status": "OUT",
       "signOutTo": "",
       "date": "07/17/2024",
       "dayOfWeek": "Wednesday",
-      "time": "10:30 AM"
+      "time": "10:30 AM",
+      "signedOutTo": {
+        "firstName": "Spencer",
+        "lastName": "Renfro",
+        "email": "spencer.renfro13@gmail.com",
+        "phone": "2173134416",
+        "fullName": "Spencer Renfro"
+      },
+      "lastUpdated": "2025-04-16T03:24:31.509Z"
     },
     {
       "id": "y841",
@@ -244,6 +252,17 @@
       "barcode": "234567890123",
       "dayOfWeek": "Tuesday",
       "time": "9:10 PM",
+      "category": "Electronics"
+    },
+    {
+      "id": "123456789012_Laptop Dell XPS 15_OUT_1744773871496",
+      "logId": "log_1744773871496",
+      "name": "Laptop Dell XPS 15",
+      "action": "OUT",
+      "date": "04/15/2025",
+      "barcode": "123456789012",
+      "dayOfWeek": "Tuesday",
+      "time": "9:24 PM",
       "category": "Electronics"
     }
   ],

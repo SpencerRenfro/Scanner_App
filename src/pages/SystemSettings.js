@@ -17,8 +17,159 @@ export default function SystemSettings() {
   const [deleteLogStatus, setDeleteLogStatus] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Fetch inventory data
+  // Fetch inventory data, logs data, and customers data
   const { data: inventoryData } = useFetch('http://localhost:8000/inventory', 'GET');
+  const { data: logsData } = useFetch('http://localhost:8000/itemLogs', 'GET');
+  const { data: customersData } = useFetch('http://localhost:8000/customers', 'GET');
+
+  // Calculate most frequently signed out items
+  const getMostFrequentlySignedOutItems = () => {
+    if (!logsData) return [];
+
+    // Filter logs to only include sign-out actions
+    const signOutLogs = logsData.filter(log => log.action === 'OUT');
+
+    // Count sign-outs by item name
+    const signOutCounts = {};
+    signOutLogs.forEach(log => {
+      const itemName = log.name;
+      signOutCounts[itemName] = (signOutCounts[itemName] || 0) + 1;
+    });
+
+    // Convert to array and sort by count (descending)
+    const sortedItems = Object.entries(signOutCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+
+    // Return top 5 items
+    return sortedItems.slice(0, 5);
+  };
+
+  // Get recent sign-out activities
+  const getRecentSignOutActivities = () => {
+    if (!logsData) return [];
+
+    // Filter logs to only include sign-out actions
+    const signOutLogs = logsData.filter(log => log.action === 'OUT');
+
+    // Sort by date and time (most recent first)
+    const sortedLogs = [...signOutLogs].sort((a, b) => {
+      // Convert date and time to comparable format
+      const dateA = new Date(`${a.date} ${a.time}`);
+      const dateB = new Date(`${b.date} ${b.time}`);
+      return dateB - dateA; // Descending order (most recent first)
+    });
+
+    // Return top 5 most recent sign-outs
+    return sortedLogs.slice(0, 5);
+  };
+
+  // Get most frequent customers (based on sign-out history)
+  const getMostFrequentCustomers = () => {
+    if (!logsData || !customersData) return [];
+
+    // Filter logs to only include sign-out actions
+    const signOutLogs = logsData.filter(log => log.action === 'OUT');
+
+    // Create a map of customers by ID, email, and full name for easy lookup
+    const customerMap = {};
+    if (customersData) {
+      customersData.forEach(customer => {
+        // Use ID as primary key
+        if (customer.id) {
+          customerMap[customer.id] = customer;
+        }
+
+        // Also index by email if available
+        if (customer.email) {
+          customerMap[customer.email] = customer;
+        }
+
+        // Also index by full name if available
+        const fullName = customer.fullName ||
+          `${customer.firstName || ''} ${customer.lastName || ''}`.trim();
+        if (fullName) {
+          customerMap[fullName] = customer;
+        }
+      });
+    }
+
+    // Also get customers from inventory items as a fallback
+    if (inventoryData) {
+      inventoryData.forEach(item => {
+        if (item.signedOutTo) {
+          const customer = item.signedOutTo;
+          const customerId = customer.email ||
+            (customer.fullName ||
+             `${customer.firstName || ''} ${customer.lastName || ''}`.trim());
+
+          if (customerId && !customerMap[customerId]) {
+            customerMap[customerId] = {
+              id: customerId,
+              name: customer.fullName ||
+                    `${customer.firstName || ''} ${customer.lastName || ''}`.trim(),
+              email: customer.email || 'N/A'
+            };
+          }
+        }
+      });
+    }
+
+    // Count sign-outs by customer from logs
+    const customerCounts = {};
+
+    // For each sign-out log, try to identify the customer
+    signOutLogs.forEach(log => {
+      // Check if the log has customer information (this would be ideal but might not exist)
+      let customerId = null;
+
+      // Try to find the customer by looking at the current inventory state
+      if (inventoryData) {
+        // Find the item in inventory by barcode or name
+        const matchingItem = inventoryData.find(item =>
+          (log.barcode && item.barcode === log.barcode) ||
+          (log.name && item.name === log.name)
+        );
+
+        if (matchingItem && matchingItem.signedOutTo) {
+          const customer = matchingItem.signedOutTo;
+          customerId = customer.email ||
+            (customer.fullName ||
+             `${customer.firstName || ''} ${customer.lastName || ''}`.trim());
+        }
+      }
+
+      // If we found a customer ID
+      if (customerId && customerMap[customerId]) {
+        const customer = customerMap[customerId];
+        const customerKey = customer.id || customer.email || customer.fullName || customerId;
+
+        if (!customerCounts[customerKey]) {
+          customerCounts[customerKey] = {
+            id: customerKey,
+            name: customer.fullName ||
+                  `${customer.firstName || ''} ${customer.lastName || ''}`.trim() || 'Unknown',
+            email: customer.email || 'N/A',
+            count: 0
+          };
+        }
+
+        customerCounts[customerKey].count++;
+      }
+    });
+
+    // Convert to array and sort by count (descending)
+    const sortedCustomers = Object.values(customerCounts)
+      .sort((a, b) => b.count - a.count);
+
+    // Return top 5 customers
+    return sortedCustomers.slice(0, 5);
+  };
+
+  // Get the most frequently signed out items, recent activities, and frequent customers
+  const topSignedOutItems = getMostFrequentlySignedOutItems();
+  const recentSignOutActivities = getRecentSignOutActivities();
+  const topCustomers = getMostFrequentCustomers();
 
   // For deleting inventory
   const {
@@ -519,6 +670,166 @@ export default function SystemSettings() {
               <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">Items Checked Out</h3>
               <p className="text-3xl font-bold text-amber-600">
                 {inventoryData ? inventoryData.filter(item => item.status === 'OUT').length : '...'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Usage Statistics Section */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Most Frequently Signed Out Items */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Most Frequently Signed Out Items</h2>
+
+            {topSignedOutItems && topSignedOutItems.length > 0 ? (
+              <div className="overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Rank
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Item Name
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Times Signed Out
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {topSignedOutItems.map((item, index) => (
+                      <tr key={item.name} className={index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700'}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                          {index + 1}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          {item.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
+                            {item.count} {item.count === 1 ? 'time' : 'times'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                <p className="text-gray-600 dark:text-gray-300">
+                  {logsData ? 'No sign-out data available yet.' : 'Loading sign-out data...'}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+              <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">About This Data</h3>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                This shows which items are signed out most frequently, based on your log history.
+                This can help identify high-demand items that might need additional units or special attention.
+              </p>
+            </div>
+          </div>
+
+          {/* Most Frequent Customers */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Most Frequent Customers</h2>
+
+            {topCustomers && topCustomers.length > 0 ? (
+              <div className="overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Customer
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Total Sign-Outs
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {topCustomers.map((customer, index) => (
+                      <tr key={customer.id} className={index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700'}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          <div className="font-medium text-gray-900 dark:text-white">{customer.name}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">{customer.email}</div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200">
+                            {customer.count} {customer.count === 1 ? 'sign-out' : 'sign-outs'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                <p className="text-gray-600 dark:text-gray-300">
+                  {logsData ? 'No sign-out history available yet.' : 'Loading customer data...'}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+              <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">About This Data</h3>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                This shows which customers have signed out items most frequently over time.
+                Use this to identify your most active users and manage customer relationships.
+              </p>
+            </div>
+          </div>
+
+          {/* Recent Sign-Out Activities */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Recent Sign-Out Activities</h2>
+
+            {recentSignOutActivities && recentSignOutActivities.length > 0 ? (
+              <div className="overflow-hidden">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead className="bg-gray-50 dark:bg-gray-700">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Item Name
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                    {recentSignOutActivities.map((log, index) => (
+                      <tr key={log.logId || log.id} className={index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700'}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          {log.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
+                          <span className="text-xs">
+                            {log.date} at {log.time}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center">
+                <p className="text-gray-600 dark:text-gray-300">
+                  {logsData ? 'No recent sign-out activities.' : 'Loading sign-out data...'}
+                </p>
+              </div>
+            )}
+
+            <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+              <h3 className="text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">About This Data</h3>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                This shows the most recent items that have been signed out.
+                Use this to quickly see recent activity in your inventory system.
               </p>
             </div>
           </div>
