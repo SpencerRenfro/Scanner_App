@@ -15,7 +15,7 @@ function Table({ logs, filter, dateFilter }) {
             >
               <td className="whitespace-nowrap py-2 sm:py-4">
                 <NavLink
-                  to={`/logs/${item.id}`}
+                  to={`/logs/${item.logId || item.id}`}
                   className="hover:text-indigo-700 dark:hover:text-indigo-400"
                 >
                   <p className="font-medium">{item.name}</p>

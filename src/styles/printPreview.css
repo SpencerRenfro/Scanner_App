@@ -6,6 +6,13 @@
   background-color: #f9fafb;
 }
 
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  .print-preview-page {
+    background-color: #111827;
+  }
+}
+
 .print-content {
   background-color: white;
   max-width: 100%;
@@ -48,9 +55,26 @@
     z-index: 9999 !important;
   }
 
-  /* Ensure the page background is white when printing */
+  /* Ensure the page background is white when printing, even in dark mode */
   .print-preview-page {
     background-color: white !important;
+  }
+
+  /* Override dark mode styles when printing */
+  .dark .print-content,
+  .dark .bg-white,
+  .dark .bg-gray-800 {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .dark .bg-gray-700 {
+    background-color: #f9fafb !important;
+  }
+
+  .dark .text-gray-300,
+  .dark .text-gray-400 {
+    color: #6b7280 !important;
   }
 
   /* Maintain the card styling */

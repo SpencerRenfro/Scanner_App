@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Laptop Dell XPS 15",
+    "category": "Electronics",
+    "price": 1299.99,
+    "serialNumber": "XPS15-2024-001",
+    "description": "High-performance laptop with 15.6\" display",
+    "barcode": "123456789012",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:30 AM"
+  },
+  {
+    "name": "iPhone 13 Pro",
+    "category": "Electronics",
+    "price": 999.99,
+    "serialNumber": "IP13-PRO-123456",
+    "description": "Smartphone with 6.1\" Super Retina XDR display",
+    "barcode": "234567890123",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:35 AM"
+  },
+  {
+    "name": "Canon EOS R5",
+    "category": "Photography",
+    "price": 3899.99,
+    "serialNumber": "083021000123",
+    "description": "45MP full-frame mirrorless camera",
+    "barcode": "345678901234",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:40 AM"
+  },
+  {
+    "name": "Dewalt Power Drill",
+    "category": "Tools",
+    "price": 149.99,
+    "serialNumber": "DW7492-123",
+    "description": "20V MAX cordless drill/driver kit",
+    "barcode": "456789012345",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:45 AM"
+  },
+  {
+    "name": "Sony WH-1000XM4",
+    "category": "Electronics",
+    "price": 349.99,
+    "serialNumber": "WH1000XM4-456",
+    "description": "Wireless noise-cancelling headphones",
+    "barcode": "567890123456",
+    "status": "OUT",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:50 AM"
+  },
+  {
+    "name": "MacBook Pro M2",
+    "category": "Electronics",
+    "price": 1999.99,
+    "serialNumber": "MBP-M2-789012",
+    "description": "14-inch MacBook Pro with M2 chip",
+    "barcode": "678901234567",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "10:55 AM"
+  },
+  {
+    "name": "Logitech MX Master 3",
+    "category": "Electronics",
+    "price": 99.99,
+    "serialNumber": "MX-MASTER-3-001",
+    "description": "Advanced wireless mouse",
+    "barcode": "789012345678",
+    "status": "OUT",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "11:00 AM"
+  },
+  {
+    "name": "Herman Miller Aeron Chair",
+    "category": "Furniture",
+    "price": 1395.00,
+    "serialNumber": "AERON-2024-123",
+    "description": "Ergonomic office chair, size B",
+    "barcode": "890123456789",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "11:05 AM"
+  },
+  {
+    "name": "iPad Pro 12.9",
+    "category": "Electronics",
+    "price": 1099.99,
+    "serialNumber": "IPAD-PRO-12-456",
+    "description": "12.9-inch iPad Pro with M2 chip",
+    "barcode": "901234567890",
+    "status": "IN",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "11:10 AM"
+  },
+  {
+    "name": "Bose QuietComfort Earbuds",
+    "category": "Electronics",
+    "price": 279.99,
+    "serialNumber": "QC-EARBUDS-789",
+    "description": "Noise cancelling wireless earbuds",
+    "barcode": "012345678901",
+    "status": "OUT",
+    "date": "07/17/2024",
+    "dayOfWeek": "Wednesday",
+    "time": "11:15 AM"
+  }
+]

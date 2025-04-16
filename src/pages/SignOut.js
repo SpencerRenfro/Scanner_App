@@ -72,9 +72,13 @@ export default function SignOut({ handleHideNavbar, setItemName, setItemSignOutS
       });
       const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
 
-      // Create log entry for the sign-out action
+      // Create a unique timestamp for the log ID
+      const timestamp = now.getTime();
+
+      // Create log entry for the sign-out action with a unique ID
       const logEntry = {
-        id: `${itemData.barcode}_${itemData.name}`,
+        id: `${itemData.barcode}_${itemData.name}_OUT_${timestamp}`,
+        logId: `log_${timestamp}`,
         name: itemData.name,
         action: "OUT",
         date: dateString,

@@ -77,10 +77,21 @@ const PrintPreview = () => {
                   background-color: white;
                   color: black;
                 }
+                /* Always use light theme for printing regardless of system preference */
                 @media (prefers-color-scheme: dark) {
                   body {
-                    background-color: white; /* Keep white for printing */
-                    color: black; /* Keep black for printing */
+                    background-color: white !important; /* Force white for printing */
+                    color: black !important; /* Force black for printing */
+                  }
+                  .card {
+                    background-color: white !important;
+                  }
+                  .card-body {
+                    background-color: white !important;
+                    color: black !important;
+                  }
+                  .barcode-container {
+                    background-color: #f9fafb !important;
                   }
                 }
                 .card {
@@ -248,15 +259,15 @@ const PrintPreview = () => {
       </div>
 
       {/* This is what will be printed */}
-      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center gap-6 dark:text-white print:visible print:absolute print:inset-0 print:p-0 print:m-0 print:flex print:flex-col print:items-center print:justify-center print:bg-white">
+      <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center gap-6 dark:text-white print:visible print:absolute print:inset-0 print:p-0 print:m-0 print:flex print:flex-col print:items-center print:justify-center print:bg-white dark:print:bg-white">
         {/* Barcode Card */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden max-w-md w-full">
-          <div className="bg-indigo-600 p-4 text-white">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-700/30 overflow-hidden max-w-md w-full print:bg-white print:shadow-none">
+          <div className="bg-indigo-600 dark:bg-indigo-700 p-4 text-white print:bg-indigo-600">
             <h1 className="text-xl font-bold text-center">{item.name}</h1>
           </div>
           <div className="p-6 flex flex-col items-center">
             <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">ID: {item.id}</p>
-            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg w-full mb-4 overflow-visible">
+            <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg w-full mb-4 overflow-visible print:bg-gray-50">
               <div className="flex justify-center">
                 <canvas ref={canvasRef} width="250" height="100" />
               </div>
@@ -267,7 +278,7 @@ const PrintPreview = () => {
           </div>
 
           {/* Action Buttons Card - This will be hidden when printing */}
-          <div className="no-print rounded-xl shadow-lg overflow-hidden max-w-md w-full mt-6 dark:bg-gray-800">
+          <div className="no-print rounded-xl shadow-lg dark:shadow-gray-700/30 overflow-hidden max-w-md w-full mt-6 bg-white dark:bg-gray-800">
             <div className="p-4 flex justify-center gap-4">
               <button
                 onClick={handleBackClick}

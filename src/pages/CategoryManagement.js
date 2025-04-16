@@ -61,7 +61,7 @@ const ReassignDialog = ({ isOpen, onClose, categoryName, categories, onReassign 
         </div>
 
         <div className="p-6">
-          <p className="mb-4 text-gray-700">
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
             The category <span className="font-semibold">{categoryName}</span> is currently assigned to one or more items.
             Please select a new category for these items or choose to set them to "Uncategorized".
           </p>
@@ -69,7 +69,7 @@ const ReassignDialog = ({ isOpen, onClose, categoryName, categories, onReassign 
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white"
           >
             <option value="">-- Select a category --</option>
             <option value="Uncategorized">Uncategorized</option>
@@ -85,14 +85,14 @@ const ReassignDialog = ({ isOpen, onClose, categoryName, categories, onReassign 
           <div className="flex justify-end gap-2 mt-4">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors"
+              className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={() => onReassign(selectedCategory)}
               disabled={!selectedCategory}
-              className={`px-4 py-2 rounded-md ${!selectedCategory ? 'bg-indigo-300 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'} text-white transition-colors`}
+              className={`px-4 py-2 rounded-md ${!selectedCategory ? 'bg-indigo-300 dark:bg-indigo-800 cursor-not-allowed' : 'bg-indigo-600 dark:bg-indigo-700 hover:bg-indigo-700 dark:hover:bg-indigo-800'} text-white transition-colors`}
             >
               Reassign
             </button>
@@ -310,14 +310,14 @@ export default function CategoryManagement() {
 
         {/* Success Message */}
         {successMessage && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
+          <div className="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded mb-6">
             {successMessage}
           </div>
         )}
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded mb-6">
             Error: {error}
           </div>
         )}

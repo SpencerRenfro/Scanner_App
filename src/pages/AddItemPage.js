@@ -130,11 +130,12 @@ export default function AddItem({
     const logId = `${barcodeState}_${formData.name.replace(
       /\s+/g,
       "_"
-    )}_${timestamp}`;
+    )}_CREATED_${timestamp}`;
 
     // Create the log entry with complete information
     const logEntry = {
       id: logId,
+      logId: `log_${timestamp}`,
       name: formData.name,
       action: "CREATED",
       date: dateStr,

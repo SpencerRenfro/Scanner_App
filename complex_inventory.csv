@@ -1,0 +1,6 @@
+id,name,category,price,serialNumber,description,barcode,status,date,dayOfWeek,time
+,"Laptop with ""Special"" Features",Electronics,1499.99,SPEC-2024-001,"15.6"" laptop with, special features and ""quoted text""",123456789013,IN,07/17/2024,Wednesday,10:30 AM
+,"Monitor, 32-inch Curved",Electronics,399.99,MON-32C-456,"32"" curved monitor, 144Hz refresh rate",234567890124,IN,07/17/2024,Wednesday,10:35 AM
+,"Tool Set, 150-piece",Tools,199.99,TS-150-789,"Complete tool set with 150 pieces, including ""specialty"" tools",345678901235,IN,07/17/2024,Wednesday,10:40 AM
+,"Conference Table, Oak",Furniture,2499.99,OAK-CONF-123,"Large oak conference table, seats 12",456789012346,IN,07/17/2024,Wednesday,10:45 AM
+,"Camera, DSLR with Lenses",Photography,2899.99,DSLR-KIT-456,"Professional DSLR camera with 3 lenses, carrying case, and tripod",567890123457,OUT,07/17/2024,Wednesday,10:50 AM

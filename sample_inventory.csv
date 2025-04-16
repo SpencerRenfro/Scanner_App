@@ -1,0 +1,11 @@
+id,name,category,price,serialNumber,description,barcode,status,date,dayOfWeek,time
+,Laptop Dell XPS 15,Electronics,1299.99,XPS15-2024-001,"High-performance laptop with 15.6"" display",123456789012,IN,07/17/2024,Wednesday,10:30 AM
+,iPhone 13 Pro,Electronics,999.99,IP13-PRO-123456,"Smartphone with 6.1"" Super Retina XDR display",234567890123,IN,07/17/2024,Wednesday,10:35 AM
+,Canon EOS R5,Photography,3899.99,083021000123,"45MP full-frame mirrorless camera",345678901234,IN,07/17/2024,Wednesday,10:40 AM
+,Dewalt Power Drill,Tools,149.99,DW7492-123,"20V MAX cordless drill/driver kit",456789012345,IN,07/17/2024,Wednesday,10:45 AM
+,Sony WH-1000XM4,Electronics,349.99,WH1000XM4-456,"Wireless noise-cancelling headphones",567890123456,OUT,07/17/2024,Wednesday,10:50 AM
+,MacBook Pro M2,Electronics,1999.99,MBP-M2-789012,"14-inch MacBook Pro with M2 chip",678901234567,IN,07/17/2024,Wednesday,10:55 AM
+,Logitech MX Master 3,Electronics,99.99,MX-MASTER-3-001,"Advanced wireless mouse",789012345678,OUT,07/17/2024,Wednesday,11:00 AM
+,Herman Miller Aeron Chair,Furniture,1395.00,AERON-2024-123,"Ergonomic office chair, size B",890123456789,IN,07/17/2024,Wednesday,11:05 AM
+,iPad Pro 12.9,Electronics,1099.99,IPAD-PRO-12-456,"12.9-inch iPad Pro with M2 chip",901234567890,IN,07/17/2024,Wednesday,11:10 AM
+,Bose QuietComfort Earbuds,Electronics,279.99,QC-EARBUDS-789,"Noise cancelling wireless earbuds",012345678901,OUT,07/17/2024,Wednesday,11:15 AM

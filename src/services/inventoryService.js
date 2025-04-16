@@ -11,48 +11,55 @@ const API_URL = 'http://localhost:8000';
  */
 export const importInventoryItems = async (items) => {
   try {
-    // Validate items
+    // Helper function to clean strings
+    function cleanString(value) {
+      if (value === undefined || value === null) return '';
+      const str = String(value);
+      // Remove extra quotes
+      return str.replace(/^\"|\"$|^\\"|\\\"$/g, '');
+    }
+
+    // Validate and clean items
     const validatedItems = items.map(item => {
+      // Create a clean item object
+      const cleanItem = {};
+
       // Generate a random ID if not provided
-      if (!item.id) {
-        item.id = Math.random().toString(36).substring(2, 6);
-      }
+      cleanItem.id = item.id ? cleanString(item.id) : Math.random().toString(36).substring(2, 6);
 
-      // Set default values for required fields if not provided
-      if (!item.status) {
-        item.status = 'IN';
-      }
+      // Clean and map all the fields
+      cleanItem.name = cleanString(item.name);
+      cleanItem.category = cleanString(item.category);
+      cleanItem.price = item.price ? Number(cleanString(item.price)) || 0 : 0;
+      cleanItem.serialNumber = cleanString(item.serialNumber);
+      cleanItem.description = cleanString(item.description);
+      cleanItem.barcode = cleanString(item.barcode);
+      cleanItem.barcodeCombinedName = cleanString(item.barcodeCombinedName) ||
+        (cleanItem.barcode && cleanItem.name ? `${cleanItem.barcode}_${cleanItem.name}` : '');
+      cleanItem.itemCollection = cleanString(item.itemCollection) || '';
+      cleanItem.barcodeUrl = cleanString(item.barcodeUrl) || '';
+      cleanItem.qrCode = cleanString(item.qrCode) || '';
+      cleanItem.status = cleanString(item.status) || 'IN';
+      cleanItem.signOutTo = cleanString(item.signOutTo) || '';
 
-      // Generate current date if not provided
-      if (!item.date) {
-        const now = new Date();
-        item.date = now.toLocaleDateString();
+      // Add date information
+      const now = new Date();
+      cleanItem.date = item.date ? cleanString(item.date) : now.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      });
+      cleanItem.dayOfWeek = item.dayOfWeek ? cleanString(item.dayOfWeek) : now.toLocaleDateString('en-US', { weekday: 'long' });
+      cleanItem.time = item.time ? cleanString(item.time) : now.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
 
-        // Add day of week and time if not provided
-        if (!item.dayOfWeek) {
-          item.dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
-        }
+      // Log the cleaned item for debugging
+      console.log('Cleaned item for import:', cleanItem);
 
-        if (!item.time) {
-          item.time = now.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true
-          });
-        }
-      }
-
-      // Generate barcodeCombinedName if not provided
-      if (item.barcode && item.name && !item.barcodeCombinedName) {
-        item.barcodeCombinedName = `${item.barcode}_${item.name}`;
-      }
-
-      // Initialize empty arrays if not provided
-      if (!item.itemCollection) {
-        item.itemCollection = [];
-      }
-
-      return item;
+      return cleanItem;
     });
 
     // Import each item
@@ -88,21 +95,29 @@ export const importInventoryItems = async (items) => {
 };
 
 /**
- * Delete all inventory items
- * @returns {Promise} - Promise that resolves when all items are deleted
+ * Delete all inventory items and their associated logs
+ * @returns {Promise} - Promise that resolves when all items and their logs are deleted
  */
 export const deleteAllInventory = async () => {
   try {
     // First, get all inventory items
-    const response = await fetch(`${API_URL}/inventory`);
-    if (!response.ok) {
+    const inventoryResponse = await fetch(`${API_URL}/inventory`);
+    if (!inventoryResponse.ok) {
       throw new Error('Failed to fetch inventory items');
     }
 
-    const items = await response.json();
+    const items = await inventoryResponse.json();
 
-    // Delete each item
-    const deletePromises = items.map(item => {
+    // Get all logs
+    const logsResponse = await fetch(`${API_URL}/itemLogs`);
+    if (!logsResponse.ok) {
+      throw new Error('Failed to fetch item logs');
+    }
+
+    const logs = await logsResponse.json();
+
+    // Delete each inventory item
+    const deleteInventoryPromises = items.map(item => {
       return fetch(`${API_URL}/inventory/${item.id}`, {
         method: 'DELETE'
       }).then(response => {
@@ -113,12 +128,22 @@ export const deleteAllInventory = async () => {
       });
     });
 
-    // Wait for all deletions to complete
-    await Promise.all(deletePromises);
+    // Wait for all inventory deletions to complete
+    await Promise.all(deleteInventoryPromises);
+
+    // Delete each log one by one using our specialized function
+    let logsDeleted = 0;
+    for (const log of logs) {
+      const result = await deleteLogById(log.id);
+      if (result.success) {
+        logsDeleted++;
+      }
+    }
 
     return {
       success: true,
-      count: items.length
+      count: items.length,
+      logsDeleted: logsDeleted
     };
   } catch (error) {
     console.error('Error deleting inventory items:', error);
@@ -205,6 +230,115 @@ export const exportInventoryAsCsv = async () => {
     };
   } catch (error) {
     console.error('Error exporting inventory as CSV:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+};
+
+/**
+ * Delete a specific log by ID
+ * @param {string} logId - The ID of the log to delete
+ * @returns {Promise} - Promise that resolves when the log is deleted
+ */
+export const deleteLogById = async (logId) => {
+  try {
+    console.log(`Attempting to delete log with ID: ${logId}`);
+
+    // Try multiple approaches to delete the log
+    const approaches = [
+      // Standard approach with URL encoding
+      `${API_URL}/itemLogs/${encodeURIComponent(logId)}`,
+      // Alternative encoding for special characters
+      `${API_URL}/itemLogs/${logId.replace(/\//g, '%2F').replace(/\s/g, '%20')}`,
+      // Raw ID (sometimes works with JSON Server)
+      `${API_URL}/itemLogs/${logId}`
+    ];
+
+    for (const url of approaches) {
+      try {
+        console.log(`Trying to delete log using URL: ${url}`);
+        const response = await fetch(url, { method: 'DELETE' });
+
+        if (response.ok) {
+          console.log(`Successfully deleted log with ID: ${logId}`);
+          return { success: true };
+        } else {
+          console.warn(`Approach failed with status: ${response.status}`);
+        }
+      } catch (error) {
+        console.warn(`Approach failed with error:`, error);
+      }
+    }
+
+    return {
+      success: false,
+      error: `Failed to delete log with ID: ${logId} after trying multiple approaches`
+    };
+  } catch (error) {
+    console.error(`Error deleting log with ID: ${logId}:`, error);
+    return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Clean up orphaned logs (logs without corresponding inventory items)
+ * @returns {Promise} - Promise that resolves when orphaned logs are deleted
+ */
+export const cleanupOrphanedLogs = async () => {
+  try {
+    // Get all inventory items
+    const inventoryResponse = await fetch(`${API_URL}/inventory`);
+    if (!inventoryResponse.ok) {
+      throw new Error('Failed to fetch inventory items');
+    }
+    const inventoryItems = await inventoryResponse.json();
+
+    // Get all logs
+    const logsResponse = await fetch(`${API_URL}/itemLogs`);
+    if (!logsResponse.ok) {
+      throw new Error('Failed to fetch item logs');
+    }
+    const logs = await logsResponse.json();
+
+    // Create sets of inventory names and barcodes for quick lookup
+    const inventoryNames = new Set(inventoryItems.map(item => item.name));
+    const inventoryBarcodes = new Set(inventoryItems.map(item => item.barcode));
+
+    // Find orphaned logs (logs without corresponding inventory items)
+    const orphanedLogs = logs.filter(log => {
+      // If inventory is empty, all logs are orphaned
+      if (inventoryItems.length === 0) {
+        return true;
+      }
+
+      // Check if log refers to an item that exists in inventory
+      const nameExists = log.name && inventoryNames.has(log.name);
+      const barcodeExists = log.barcode && inventoryBarcodes.has(log.barcode);
+
+      // If neither name nor barcode exists in inventory, it's an orphaned log
+      return !nameExists && !barcodeExists;
+    });
+
+    console.log(`Found ${orphanedLogs.length} orphaned logs out of ${logs.length} total logs`);
+    console.log('Orphaned logs:', orphanedLogs);
+
+    // Delete each orphaned log one by one using our specialized function
+    let deletedCount = 0;
+    for (const log of orphanedLogs) {
+      const result = await deleteLogById(log.id);
+      if (result.success) {
+        deletedCount++;
+      }
+    }
+
+    return {
+      success: true,
+      count: deletedCount
+    };
+  } catch (error) {
+    console.error('Error cleaning up orphaned logs:', error);
     return {
       success: false,
       error: error.message

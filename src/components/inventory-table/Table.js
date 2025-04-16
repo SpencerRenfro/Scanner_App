@@ -61,9 +61,13 @@ export default function Table({
         });
         const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
 
-        // Create log entry for the sign-in action
+        // Create a unique timestamp for the log ID
+        const timestamp = now.getTime();
+
+        // Create log entry for the sign-in action with a unique ID
         const logEntry = {
-          id: `${item.barcode}_${item.name}`,
+          id: `${item.barcode}_${item.name}_IN_${timestamp}`,
+          logId: `log_${timestamp}`,
           name: item.name,
           action: "IN",
           date: dateString,

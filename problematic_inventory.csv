@@ -1,0 +1,6 @@
+id,name,category,price,serialNumber,description,barcode,status,date,dayOfWeek,time
+,"Item with time in name 10:30 AM",Electronics,99.99,TIME-001,"This item has a time in its name",123456789014,IN,07/17/2024,Wednesday,10:30 AM
+,"Category as name",Tools,149.99,CAT-001,"This item has a category-like name",234567890125,IN,07/17/2024,Wednesday,10:35 AM
+,"Price in description",Electronics,199.99,PRICE-001,"This item costs $199.99 and has price in description",345678901236,IN,07/17/2024,Wednesday,10:40 AM
+,"Item with quotes ""everywhere""","Category ""with"" quotes",299.99,"SN""123""456","Description with ""multiple"" quotes ""everywhere""","456789""012347",IN,"07/17/2024","""Wednesday""","10:45 AM"
+,"Extra, commas, everywhere","Category, with, commas",399.99,"SN,123,456","Description, with, many, commas","567,890,123,458",OUT,"07/17/2024","Wednesday","10:50 AM"

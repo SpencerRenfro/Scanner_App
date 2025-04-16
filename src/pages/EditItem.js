@@ -284,9 +284,13 @@ export default function EditItem({
                 weekday: "long",
               });
 
-              // Create log entry for the delete action
+              // Create a unique timestamp for the log ID
+              const timestamp = now.getTime();
+
+              // Create log entry for the delete action with a unique ID
               const logEntry = {
-                id: `${item.barcode}_${name}_${dateString}`,
+                id: `${item.barcode}_${name}_DELETED_${timestamp}`,
+                logId: `log_${timestamp}`,
                 name: name,
                 action: "DELETED",
                 date: dateString,
@@ -312,6 +316,37 @@ export default function EditItem({
 
               if (!logResponse.ok) {
                 console.error("Failed to create log entry for delete");
+              }
+
+              // Fetch all logs for this item
+              const logsResponse = await fetch("http://localhost:8000/itemLogs");
+              if (!logsResponse.ok) {
+                console.error("Failed to fetch item logs");
+              } else {
+                const logs = await logsResponse.json();
+
+                // Filter logs related to this item (by name and barcode)
+                const itemLogs = logs.filter(log =>
+                  (log.name === name) ||
+                  (item.barcode && log.barcode === item.barcode)
+                );
+
+                console.log(`Found ${itemLogs.length} logs for item ${name}`);
+
+                // Delete each log for this item
+                for (const log of itemLogs) {
+                  try {
+                    const deleteLogResponse = await fetch(`http://localhost:8000/itemLogs/${log.id}`, {
+                      method: "DELETE"
+                    });
+
+                    if (!deleteLogResponse.ok) {
+                      console.warn(`Failed to delete log: ${log.id}`);
+                    }
+                  } catch (logError) {
+                    console.error(`Error deleting log ${log.id}:`, logError);
+                  }
+                }
               }
 
               // Delete the item

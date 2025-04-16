@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
-import { importInventoryItems, deleteAllInventory, exportInventoryAsJson, exportInventoryAsCsv } from '../services/inventoryService';
+import { importInventoryItems, deleteAllInventory, exportInventoryAsJson, exportInventoryAsCsv, cleanupOrphanedLogs, deleteLogById } from '../services/inventoryService';
 
 // Import icons
 import close from '../assets/close.svg';
@@ -12,6 +12,9 @@ export default function SystemSettings() {
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteStatus, setDeleteStatus] = useState(null);
+  const [cleanupStatus, setCleanupStatus] = useState(null);
+  const [logIdToDelete, setLogIdToDelete] = useState('');
+  const [deleteLogStatus, setDeleteLogStatus] = useState(null);
   const fileInputRef = useRef(null);
 
   // Fetch inventory data
@@ -68,22 +71,62 @@ export default function SystemSettings() {
 
   // Convert CSV to JSON
   const csvToJson = (csv) => {
+    // Split the CSV into lines
     const lines = csv.split('\n');
     const result = [];
-    const headers = lines[0].split(',').map(header => header.trim());
 
+    // Parse the header row
+    const headers = parseCSVLine(lines[0]);
+
+    // Process each data row
     for (let i = 1; i < lines.length; i++) {
       if (!lines[i].trim()) continue;
 
+      const values = parseCSVLine(lines[i]);
       const obj = {};
-      const currentLine = lines[i].split(',');
 
+      // Map values to headers
       for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentLine[j]?.trim() || '';
+        // Remove any extra quotes from the values
+        let value = values[j] || '';
+        if (value.startsWith('"') && value.endsWith('"')) {
+          value = value.substring(1, value.length - 1);
+        }
+        obj[headers[j]] = value;
       }
 
       result.push(obj);
     }
+
+    return result;
+  };
+
+  // Helper function to properly parse CSV lines with quoted values
+  const parseCSVLine = (line) => {
+    const result = [];
+    let inQuotes = false;
+    let currentValue = '';
+
+    for (let i = 0; i < line.length; i++) {
+      const char = line[i];
+
+      if (char === '"') {
+        // Toggle the inQuotes flag
+        inQuotes = !inQuotes;
+        // Add the quote to the value
+        currentValue += char;
+      } else if (char === ',' && !inQuotes) {
+        // End of field, add to result and reset currentValue
+        result.push(currentValue.trim());
+        currentValue = '';
+      } else {
+        // Add character to the current value
+        currentValue += char;
+      }
+    }
+
+    // Add the last field
+    result.push(currentValue.trim());
 
     return result;
   };
@@ -196,6 +239,73 @@ export default function SystemSettings() {
     }
   };
 
+  // Handle direct log deletion
+  const handleDeleteLog = async () => {
+    if (!logIdToDelete.trim()) {
+      setDeleteLogStatus({
+        success: false,
+        message: 'Please enter a log ID to delete'
+      });
+      return;
+    }
+
+    try {
+      // Show loading status
+      setDeleteLogStatus({
+        success: null,
+        message: `Deleting log with ID: ${logIdToDelete}...`
+      });
+
+      // Use our service to delete the log
+      const result = await deleteLogById(logIdToDelete);
+
+      if (result.success) {
+        setDeleteLogStatus({
+          success: true,
+          message: `Successfully deleted log with ID: ${logIdToDelete}`
+        });
+        setLogIdToDelete(''); // Clear the input field
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error('Error deleting log:', error);
+      setDeleteLogStatus({
+        success: false,
+        message: `Error deleting log: ${error.message}`
+      });
+    }
+  };
+
+  // Handle cleanup orphaned logs
+  const handleCleanupLogs = async () => {
+    try {
+      // Show loading status
+      setCleanupStatus({
+        success: null,
+        message: 'Cleaning up orphaned logs...'
+      });
+
+      // Use our service to clean up orphaned logs
+      const result = await cleanupOrphanedLogs();
+
+      if (result.success) {
+        setCleanupStatus({
+          success: true,
+          message: `Successfully deleted ${result.count} orphaned logs`
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error('Error cleaning up logs:', error);
+      setCleanupStatus({
+        success: false,
+        message: `Error cleaning up logs: ${error.message}`
+      });
+    }
+  };
+
   // Handle delete inventory
   const handleDeleteInventory = async () => {
     if (deleteConfirmation !== 'DELETE') {
@@ -219,7 +329,7 @@ export default function SystemSettings() {
       if (result.success) {
         setDeleteStatus({
           success: true,
-          message: `Successfully deleted ${result.count} inventory items`
+          message: `Successfully deleted ${result.count} inventory items and ${result.logsDeleted} associated logs`
         });
         setShowDeleteModal(false);
         setDeleteConfirmation('');
@@ -361,6 +471,32 @@ export default function SystemSettings() {
                 <li>Ensure all users are aware of this action</li>
                 <li>This will delete all items, categories, and related data</li>
               </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Maintenance Section */}
+        <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+          <h2 className="text-xl font-semibold mb-4">System Maintenance</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Cleanup Logs Section */}
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200 mb-2">Clean Up Orphaned Logs</h3>
+              <p className="text-gray-600 dark:text-gray-300 mb-4">
+                Remove log entries that don't have corresponding inventory items. This helps keep your database clean.
+              </p>
+              <button
+                onClick={handleCleanupLogs}
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-800 transition-colors"
+              >
+                Clean Up Logs
+              </button>
+
+              {cleanupStatus && (
+                <div className={`mt-4 p-4 rounded ${cleanupStatus.success === true ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : cleanupStatus.success === false ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}`}>
+                  {cleanupStatus.message}
+                </div>
+              )}
             </div>
           </div>
         </div>
