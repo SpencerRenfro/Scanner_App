@@ -5,6 +5,213 @@
 const API_URL = 'http://localhost:8000';
 
 /**
+ * Generate random sample inventory items
+ * @param {number} count - Number of items to generate
+ * @returns {Array} - Array of generated inventory items
+ */
+export const generateSampleInventoryItems = (count = 10) => {
+  const categories = [
+    'Electronics', 'Office Supplies', 'Tools', 'Photography', 'Audio/Video',
+    'Medical', 'Sports', 'Kitchen', 'Furniture', 'Outdoor'
+  ];
+
+  const itemTypes = {
+    'Electronics': ['Laptop', 'Tablet', 'Smartphone', 'Monitor', 'Keyboard', 'Mouse', 'Headphones', 'Webcam', 'Microphone', 'Charger'],
+    'Office Supplies': ['Stapler', 'Printer', 'Scanner', 'Shredder', 'Whiteboard', 'Projector', 'Calculator', 'Desk Lamp', 'Filing Cabinet', 'Desk Chair'],
+    'Tools': ['Drill', 'Saw', 'Hammer', 'Screwdriver Set', 'Wrench Set', 'Measuring Tape', 'Level', 'Tool Box', 'Ladder', 'Work Light'],
+    'Photography': ['Camera', 'Lens', 'Tripod', 'Flash', 'Light Stand', 'Backdrop', 'Memory Card', 'Camera Bag', 'Reflector', 'Battery Grip'],
+    'Audio/Video': ['Microphone', 'Speaker', 'Amplifier', 'Mixer', 'Projector', 'Screen', 'Video Camera', 'Headphones', 'Audio Recorder', 'Cables'],
+    'Medical': ['Stethoscope', 'Blood Pressure Monitor', 'Thermometer', 'Pulse Oximeter', 'First Aid Kit', 'Wheelchair', 'Crutches', 'Exam Table', 'Otoscope', 'Medical Scale'],
+    'Sports': ['Basketball', 'Football', 'Soccer Ball', 'Tennis Racket', 'Baseball Bat', 'Golf Clubs', 'Yoga Mat', 'Dumbbells', 'Exercise Bike', 'Treadmill'],
+    'Kitchen': ['Blender', 'Food Processor', 'Stand Mixer', 'Coffee Maker', 'Toaster', 'Microwave', 'Slow Cooker', 'Knife Set', 'Cutting Board', 'Measuring Cups'],
+    'Furniture': ['Desk', 'Chair', 'Bookshelf', 'Filing Cabinet', 'Conference Table', 'Sofa', 'Coffee Table', 'Side Table', 'Lamp', 'Whiteboard'],
+    'Outdoor': ['Lawn Mower', 'Leaf Blower', 'Pressure Washer', 'Garden Hose', 'Shovel', 'Rake', 'Wheelbarrow', 'Grill', 'Patio Furniture', 'Tent']
+  };
+
+  const brands = {
+    'Electronics': ['Apple', 'Dell', 'Samsung', 'HP', 'Lenovo', 'Asus', 'Acer', 'Microsoft', 'LG', 'Sony'],
+    'Office Supplies': ['Staples', 'Office Depot', 'HP', 'Canon', 'Brother', 'Epson', 'Fellowes', 'Swingline', 'Quartet', 'Logitech'],
+    'Tools': ['DeWalt', 'Milwaukee', 'Makita', 'Bosch', 'Craftsman', 'Ryobi', 'Stanley', 'Black & Decker', 'Ridgid', 'Kobalt'],
+    'Photography': ['Canon', 'Nikon', 'Sony', 'Fujifilm', 'Panasonic', 'Olympus', 'Sigma', 'Tamron', 'Manfrotto', 'Godox'],
+    'Audio/Video': ['Shure', 'Audio-Technica', 'Rode', 'Sennheiser', 'JBL', 'Bose', 'Sony', 'Yamaha', 'Behringer', 'Mackie'],
+    'Medical': ['Littmann', 'Welch Allyn', 'Omron', 'Braun', 'Medline', 'Drive Medical', 'Invacare', 'Midmark', 'ADC', 'Health o meter'],
+    'Sports': ['Wilson', 'Spalding', 'Nike', 'Adidas', 'Under Armour', 'Callaway', 'Prince', 'Rawlings', 'Bowflex', 'NordicTrack'],
+    'Kitchen': ['KitchenAid', 'Cuisinart', 'Ninja', 'Breville', 'Hamilton Beach', 'Keurig', 'Crock-Pot', 'Wusthof', 'OXO', 'Pyrex'],
+    'Furniture': ['IKEA', 'Herman Miller', 'Steelcase', 'HON', 'Knoll', 'Ashley', 'La-Z-Boy', 'Sauder', 'Bush', 'Safco'],
+    'Outdoor': ['Toro', 'Honda', 'John Deere', 'Craftsman', 'Husqvarna', 'Weber', 'Suncast', 'Rubbermaid', 'Coleman', 'North Face']
+  };
+
+  const statuses = ['IN', 'OUT', 'MAINTENANCE'];
+  const statusWeights = [0.7, 0.2, 0.1]; // 70% IN, 20% OUT, 10% MAINTENANCE
+
+  // Generate a random price between min and max
+  const randomPrice = (min, max) => {
+    return (Math.random() * (max - min) + min).toFixed(2);
+  };
+
+  // Generate a random serial number
+  const randomSerialNumber = () => {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const numbers = '0123456789';
+    let serial = '';
+
+    // Add 3 random letters
+    for (let i = 0; i < 3; i++) {
+      serial += letters.charAt(Math.floor(Math.random() * letters.length));
+    }
+
+    serial += '-';
+
+    // Add 6 random numbers
+    for (let i = 0; i < 6; i++) {
+      serial += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+
+    return serial;
+  };
+
+  // Generate a random barcode (EAN-13 format)
+  const randomBarcode = () => {
+    let barcode = '';
+    for (let i = 0; i < 13; i++) {
+      barcode += Math.floor(Math.random() * 10);
+    }
+    return barcode;
+  };
+
+  // Generate a weighted random status
+  const randomStatus = () => {
+    const random = Math.random();
+    let sum = 0;
+    for (let i = 0; i < statusWeights.length; i++) {
+      sum += statusWeights[i];
+      if (random < sum) {
+        return statuses[i];
+      }
+    }
+    return statuses[0]; // Default to IN
+  };
+
+  // Generate sample items
+  const items = [];
+  for (let i = 0; i < count; i++) {
+    // Pick a random category
+    const category = categories[Math.floor(Math.random() * categories.length)];
+
+    // Pick a random item type from the category
+    const itemType = itemTypes[category][Math.floor(Math.random() * itemTypes[category].length)];
+
+    // Pick a random brand from the category
+    const brand = brands[category][Math.floor(Math.random() * brands[category].length)];
+
+    // Generate a random price based on category
+    let minPrice, maxPrice;
+    switch (category) {
+      case 'Electronics':
+        minPrice = 100;
+        maxPrice = 2000;
+        break;
+      case 'Office Supplies':
+        minPrice = 10;
+        maxPrice = 500;
+        break;
+      case 'Tools':
+        minPrice = 20;
+        maxPrice = 300;
+        break;
+      case 'Photography':
+        minPrice = 50;
+        maxPrice = 3000;
+        break;
+      case 'Audio/Video':
+        minPrice = 50;
+        maxPrice = 1000;
+        break;
+      case 'Medical':
+        minPrice = 30;
+        maxPrice = 1500;
+        break;
+      case 'Sports':
+        minPrice = 15;
+        maxPrice = 500;
+        break;
+      case 'Kitchen':
+        minPrice = 25;
+        maxPrice = 400;
+        break;
+      case 'Furniture':
+        minPrice = 50;
+        maxPrice = 800;
+        break;
+      case 'Outdoor':
+        minPrice = 30;
+        maxPrice = 600;
+        break;
+      default:
+        minPrice = 20;
+        maxPrice = 500;
+    }
+
+    const price = randomPrice(minPrice, maxPrice);
+    const status = randomStatus();
+    const barcode = randomBarcode();
+    const name = `${brand} ${itemType}`;
+
+    // Create the item
+    const item = {
+      name,
+      category,
+      price: parseFloat(price),
+      serialNumber: randomSerialNumber(),
+      description: `${brand} ${itemType} - ${category} equipment`,
+      barcode,
+      barcodeCombinedName: `${barcode}_${name}`,
+      status,
+      itemCollection: [],
+    };
+
+    // Add date information
+    const now = new Date();
+    item.date = now.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
+    item.dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
+    item.time = now.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    items.push(item);
+  }
+
+  return items;
+};
+
+/**
+ * Generate and import sample inventory items
+ * @param {number} count - Number of items to generate
+ * @returns {Promise} - Promise that resolves when all items are imported
+ */
+export const importSampleInventoryItems = async (count = 10) => {
+  try {
+    // Generate sample items
+    const sampleItems = generateSampleInventoryItems(count);
+
+    // Import the generated items
+    return await importInventoryItems(sampleItems);
+  } catch (error) {
+    console.error('Error importing sample inventory items:', error);
+    return {
+      success: false,
+      error: error.message
+    };
+  }
+};
+
+/**
  * Import inventory items from data
  * @param {Array} items - Array of inventory items to import
  * @returns {Promise} - Promise that resolves when all items are imported

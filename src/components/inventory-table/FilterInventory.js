@@ -67,7 +67,7 @@ export default function FilterInventory({
       setActiveCategory("");
       setActiveStatus("");
       setActiveCustomer("");
-    } else if (filter === "IN" || filter === "OUT") {
+    } else if (filter === "IN" || filter === "OUT" || filter === "MAINTENANCE") {
       setActiveStatus(filter);
       setActiveCategory("");
       // Keep customer filter
@@ -114,6 +114,10 @@ export default function FilterInventory({
           }`}
           onClick={() => {
             setActiveTab("categories");
+            // Clear MAINTENANCE status if active when switching to Categories tab
+            if (activeStatus === "MAINTENANCE") {
+              setActiveStatus("");
+            }
             setCurrentCategoriesPage(1); // Reset to page 1 when switching to Categories tab
           }}
         >
@@ -129,6 +133,7 @@ export default function FilterInventory({
             setActiveTab("customers");
             // When switching to Customers tab, automatically set status to OUT
             // since customers can only have checked out items
+            // This will override any previous status, including MAINTENANCE
             setActiveStatus("OUT");
             // Reset to page 1 when switching to Customers tab
             setCurrentCustomersPage(1);
@@ -252,7 +257,7 @@ export default function FilterInventory({
                 {/* Header with customer count and gear icon */}
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {savedCustomers.length} {savedCustomers.length === 1 ? 'customer' : 'customers'} found
+                    {checkedOutCustomers ? checkedOutCustomers.length : 0} {(checkedOutCustomers && checkedOutCustomers.length === 1) ? 'customer' : 'customers'} with items checked out
                   </span>
                   <NavLink
                     to="/customers/manage"
@@ -284,7 +289,18 @@ export default function FilterInventory({
 
                 {/* Customer buttons with pagination */}
                 <div className="flex flex-wrap gap-2">
+                  {/* Filter to only show customers with checked out items */}
                   {savedCustomers
+                    .filter(customer => {
+                      // Get the customer's full name
+                      const fullName = customer.fullName ||
+                        `${customer.firstName} ${customer.lastName}`.trim();
+
+                      // Check if this customer has any items checked out
+                      return checkedOutCustomers && checkedOutCustomers.some(
+                        c => c.fullName === fullName || (c.email && c.email === customer.email)
+                      );
+                    })
                     .slice(
                       (currentCustomersPage - 1) * customersPerPage,
                       currentCustomersPage * customersPerPage
@@ -308,33 +324,28 @@ export default function FilterInventory({
                           }`}
                         >
                           {fullName}
-                          {/* Add a badge for customers with items checked out */}
-                          {checkedOutCustomers &&
-                            checkedOutCustomers.some(
-                              (c) =>
-                                c.fullName === fullName ||
-                                (c.email && c.email === customer.email)
-                            ) && (
-                              <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                                <div className="w-1.5 h-1.5 rounded-full bg-red-500 dark:bg-red-400 mr-1"></div>
-                              </span>
-                            )}
+                          <span className="ml-1 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500 dark:bg-red-400 mr-1"></div>
+                          </span>
                         </button>
                       );
                     })}
                 </div>
 
                 {/* Pagination component */}
-                <CustomersPagination
-                  currentPage={currentCustomersPage}
-                  setCurrentPage={setCurrentCustomersPage}
-                  customersPerPage={customersPerPage}
-                  totalCustomers={savedCustomers.length}
-                />
+                {/* Only show pagination if there are checked out customers */}
+                {checkedOutCustomers && checkedOutCustomers.length > customersPerPage && (
+                  <CustomersPagination
+                    currentPage={currentCustomersPage}
+                    setCurrentPage={setCurrentCustomersPage}
+                    customersPerPage={customersPerPage}
+                    totalCustomers={checkedOutCustomers.length}
+                  />
+                )}
               </div>
             ) : (
               <div className="text-gray-500 dark:text-gray-400 mt-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-md">
-                No saved customers found
+                No customers with checked out items
               </div>
             )}
           </div>
@@ -350,8 +361,8 @@ export default function FilterInventory({
                 onClick={() => handleFilterSelect("", "status")}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
                   activeStatus === ""
-                    ? "bg-indigo-100 text-indigo-800 font-medium shadow-sm"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 font-medium shadow-sm"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                 }`}
               >
                 All Status
@@ -364,8 +375,8 @@ export default function FilterInventory({
                 onClick={() => handleFilterSelect("IN", "status")}
                 className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
                   activeStatus === "IN"
-                    ? "bg-green-100 text-green-800 font-medium shadow-sm"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 font-medium shadow-sm"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                 }`}
               >
                 <span className="flex items-center">
@@ -378,8 +389,8 @@ export default function FilterInventory({
               onClick={() => handleFilterSelect("OUT", "status")}
               className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
                 activeStatus === "OUT"
-                  ? "bg-red-100 text-red-800 font-medium shadow-sm"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 font-medium shadow-sm"
+                  : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
               }`}
             >
               <span className="flex items-center">
@@ -387,6 +398,23 @@ export default function FilterInventory({
                 Items Out
               </span>
             </button>
+
+            {/* Maintenance status button - only show when not on Customers or Categories tab */}
+            {activeTab !== "customers" && activeTab !== "categories" && (
+              <button
+                onClick={() => handleFilterSelect("MAINTENANCE", "status")}
+                className={`px-3 py-1.5 text-xs sm:text-sm rounded-full transition-colors ${
+                  activeStatus === "MAINTENANCE"
+                    ? "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200 font-medium shadow-sm"
+                    : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                }`}
+              >
+                <span className="flex items-center">
+                  <span className="w-2 h-2 rounded-full bg-amber-500 mr-1.5"></span>
+                  MX
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>

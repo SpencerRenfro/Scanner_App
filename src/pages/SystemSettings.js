@@ -1,26 +1,36 @@
 import React, { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useFetch } from '../hooks/useFetch';
-import { importInventoryItems, deleteAllInventory, exportInventoryAsJson, exportInventoryAsCsv, cleanupOrphanedLogs, deleteLogById } from '../services/inventoryService';
+import { useStatusWithTimeout } from '../hooks/useStatusWithTimeout';
+import { importInventoryItems, importSampleInventoryItems, deleteAllInventory, exportInventoryAsJson, exportInventoryAsCsv, cleanupOrphanedLogs, deleteLogById } from '../services/inventoryService';
 
 // Import icons
 import close from '../assets/close.svg';
 
 export default function SystemSettings() {
-  const [importStatus, setImportStatus] = useState(null);
-  const [exportStatus, setExportStatus] = useState(null);
+  // Use custom hook with timeout for status messages (5 seconds)
+  const [importStatus, setImportStatus] = useStatusWithTimeout(5000);
+  const [exportStatus, setExportStatus] = useStatusWithTimeout(5000);
+  const [deleteStatus, setDeleteStatus] = useStatusWithTimeout(5000);
+  const [cleanupStatus, setCleanupStatus] = useStatusWithTimeout(5000);
+  const [deleteLogStatus, setDeleteLogStatus] = useStatusWithTimeout(5000);
+
+  // Regular state variables
   const [deleteConfirmation, setDeleteConfirmation] = useState('');
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [deleteStatus, setDeleteStatus] = useState(null);
-  const [cleanupStatus, setCleanupStatus] = useState(null);
   const [logIdToDelete, setLogIdToDelete] = useState('');
-  const [deleteLogStatus, setDeleteLogStatus] = useState(null);
+  const [refreshCounter, setRefreshCounter] = useState(0);
   const fileInputRef = useRef(null);
 
+  // Function to trigger a data refresh
+  const refreshData = () => {
+    setRefreshCounter(prev => prev + 1);
+  };
+
   // Fetch inventory data, logs data, and customers data
-  const { data: inventoryData } = useFetch('http://localhost:8000/inventory', 'GET');
-  const { data: logsData } = useFetch('http://localhost:8000/itemLogs', 'GET');
-  const { data: customersData } = useFetch('http://localhost:8000/customers', 'GET');
+  const { data: inventoryData } = useFetch('http://localhost:8000/inventory', 'GET', refreshCounter);
+  const { data: logsData } = useFetch('http://localhost:8000/itemLogs', 'GET', refreshCounter);
+  const { data: customersData } = useFetch('http://localhost:8000/customers', 'GET', refreshCounter);
 
   // Calculate most frequently signed out items
   const getMostFrequentlySignedOutItems = () => {
@@ -178,6 +188,38 @@ export default function SystemSettings() {
     error: deleteError
   } = useFetch('http://localhost:8000/inventory', 'DELETE');
 
+  // Handle importing sample inventory items
+  const handleImportSampleItems = async () => {
+    try {
+      // Show loading status
+      setImportStatus({
+        success: null,
+        message: 'Generating and importing sample inventory items...'
+      });
+
+      // Use our service to import sample items (default is 10 items)
+      const result = await importSampleInventoryItems(10);
+
+      if (result.success) {
+        setImportStatus({
+          success: true,
+          message: `Successfully imported ${result.count} sample inventory items`
+        });
+
+        // Refresh data to update the counts
+        refreshData();
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      console.error('Error importing sample items:', error);
+      setImportStatus({
+        success: false,
+        message: `Error importing sample items: ${error.message}`
+      });
+    }
+  };
+
   // Handle file import
   const handleFileImport = (e) => {
     const file = e.target.files[0];
@@ -299,6 +341,9 @@ export default function SystemSettings() {
           success: true,
           message: `Successfully imported ${result.count} items`
         });
+
+        // Refresh data to update the counts
+        refreshData();
       } else {
         throw new Error(result.error);
       }
@@ -484,6 +529,9 @@ export default function SystemSettings() {
         });
         setShowDeleteModal(false);
         setDeleteConfirmation('');
+
+        // Refresh data to update the counts
+        refreshData();
       } else {
         throw new Error(result.error);
       }
@@ -521,7 +569,7 @@ export default function SystemSettings() {
               Import inventory data from a CSV or JSON file. The file should contain columns/fields that match your inventory structure.
             </p>
 
-            <div className="mb-4">
+            <div className="mb-4 flex flex-col sm:flex-row gap-4">
               <input
                 type="file"
                 accept=".csv,.json"
@@ -535,11 +583,20 @@ export default function SystemSettings() {
               >
                 Select File
               </button>
+              <button
+                onClick={handleImportSampleItems}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition-colors"
+              >
+                Import Sample Items
+              </button>
             </div>
 
             {importStatus && (
-              <div className={`p-4 rounded ${importStatus.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              <div className={`p-4 rounded relative ${importStatus.success === true ? 'bg-green-100 text-green-800' : importStatus.success === false ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
                 {importStatus.message}
+                {(importStatus.success === true || importStatus.success === false) && (
+                  <div className="absolute bottom-0 left-0 h-1 bg-gray-300 animate-shrink" style={{ width: '100%' }}></div>
+                )}
               </div>
             )}
 
@@ -577,8 +634,11 @@ export default function SystemSettings() {
             </div>
 
             {exportStatus && (
-              <div className={`p-4 rounded ${exportStatus.success === true ? 'bg-green-100 text-green-800' : exportStatus.success === false ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
+              <div className={`p-4 rounded relative ${exportStatus.success === true ? 'bg-green-100 text-green-800' : exportStatus.success === false ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
                 {exportStatus.message}
+                {(exportStatus.success === true || exportStatus.success === false) && (
+                  <div className="absolute bottom-0 left-0 h-1 bg-gray-300 animate-shrink" style={{ width: '100%' }}></div>
+                )}
               </div>
             )}
 
@@ -610,8 +670,11 @@ export default function SystemSettings() {
             </div>
 
             {deleteStatus && (
-              <div className={`p-4 rounded ${deleteStatus.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              <div className={`p-4 rounded relative ${deleteStatus.success === true ? 'bg-green-100 text-green-800' : deleteStatus.success === false ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}`}>
                 {deleteStatus.message}
+                {(deleteStatus.success === true || deleteStatus.success === false) && (
+                  <div className="absolute bottom-0 left-0 h-1 bg-gray-300 animate-shrink" style={{ width: '100%' }}></div>
+                )}
               </div>
             )}
 
@@ -644,8 +707,11 @@ export default function SystemSettings() {
               </button>
 
               {cleanupStatus && (
-                <div className={`mt-4 p-4 rounded ${cleanupStatus.success === true ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : cleanupStatus.success === false ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}`}>
+                <div className={`mt-4 p-4 rounded relative ${cleanupStatus.success === true ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300' : cleanupStatus.success === false ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300' : 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300'}`}>
                   {cleanupStatus.message}
+                  {(cleanupStatus.success === true || cleanupStatus.success === false) && (
+                    <div className="absolute bottom-0 left-0 h-1 bg-gray-300 dark:bg-gray-600 animate-shrink" style={{ width: '100%' }}></div>
+                  )}
                 </div>
               )}
             </div>
@@ -687,8 +753,14 @@ export default function SystemSettings() {
             </div>
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
               <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">Items Checked Out</h3>
-              <p className="text-3xl font-bold text-amber-600">
+              <p className="text-3xl font-bold text-red-600">
                 {inventoryData ? inventoryData.filter(item => item.status === 'OUT').length : '...'}
+              </p>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+              <h3 className="text-lg font-medium text-gray-800 dark:text-gray-200">Items Out For Maintenance</h3>
+              <p className="text-3xl font-bold text-amber-600">
+                {inventoryData ? inventoryData.filter(item => item.status === 'MAINTENANCE').length : '...'}
               </p>
             </div>
           </div>

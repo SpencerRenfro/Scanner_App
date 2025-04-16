@@ -26,6 +26,7 @@ export default function InventorySkeleton() {
             <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-24"></div>
             <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-32"></div>
             <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-32"></div>
+            <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-32"></div>
             <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-40"></div>
           </div>
         </div>

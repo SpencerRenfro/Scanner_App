@@ -10,6 +10,11 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
     if (action === 'OUT') {
       // Navigate to sign-out page
       navigate(`/${item.id}/sign-out`);
+    } else if (action === 'MAINTENANCE') {
+      // Handle maintenance action
+      if (onClose.onConfirm) {
+        onClose.onConfirm();
+      }
     } else if (action === 'IN' && onClose.onConfirm) {
       // Handle sign-in action
       onClose.onConfirm();
@@ -19,9 +24,21 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
   };
 
   // Determine colors based on action
-  const headerBgColor = action === 'OUT' ? 'bg-red-600' : 'bg-green-600';
-  const buttonBgColor = action === 'OUT' ? 'bg-red-600 hover:bg-red-400' : 'bg-green-600 hover:bg-green-700';
-  const iconColor = action === 'OUT' ? 'text-red-600' : 'text-green-600';
+  let headerBgColor, buttonBgColor, iconColor;
+
+  if (action === 'OUT') {
+    headerBgColor = 'bg-red-600';
+    buttonBgColor = 'bg-red-600 hover:bg-red-400';
+    iconColor = 'text-red-600';
+  } else if (action === 'MAINTENANCE') {
+    headerBgColor = 'bg-amber-600';
+    buttonBgColor = 'bg-amber-600 hover:bg-amber-500';
+    iconColor = 'text-amber-600';
+  } else { // IN
+    headerBgColor = 'bg-green-600';
+    buttonBgColor = 'bg-green-600 hover:bg-green-700';
+    iconColor = 'text-green-600';
+  }
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 animate-fadeIn">
@@ -47,7 +64,8 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
             )}
           </div>
           <h3 className="text-lg font-medium text-white">
-            {action === 'OUT' ? 'Sign Out Item' : 'Sign In Item'}
+            {action === 'OUT' ? 'Sign Out Item' :
+             action === 'MAINTENANCE' ? 'Mark as MX' : 'Sign In Item'}
           </h3>
         </div>
 
@@ -75,12 +93,16 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
             <p className="text-gray-700 text-base mb-4">
               {action === 'OUT'
                 ? 'Are you sure you want to sign out this item?'
+                : action === 'MAINTENANCE'
+                ? 'Are you sure you want to mark this item as MX?'
                 : 'Are you sure you want to sign in this item?'}
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-sm text-gray-600">
                 {action === 'OUT'
                   ? 'You will be redirected to complete the sign-out process with customer information.'
+                  : action === 'MAINTENANCE'
+                  ? 'This will update the item status to "MX" and make it unavailable until maintenance is complete.'
                   : 'This will update the item status to "IN" and make it available for others.'}
               </p>
             </div>
@@ -101,7 +123,8 @@ const StatusChangeDialog = ({ isOpen, onClose, item, action }) => {
             className={`w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${buttonBgColor} focus:outline-none focus:ring-2 focus:ring-offset-2 ${action === 'OUT' ? 'focus:ring-amber-500' : 'focus:ring-green-500'}`}
             onClick={handleConfirm}
           >
-            {action === 'OUT' ? 'Continue to Sign Out' : 'Sign In'}
+            {action === 'OUT' ? 'Continue to Sign Out' :
+             action === 'MAINTENANCE' ? 'Mark as MX' : 'Sign In'}
           </button>
         </div>
       </div>

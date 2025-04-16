@@ -46,7 +46,7 @@ export default function Table({
 
     try {
       // Create a log entry for the status change
-      if (newStatus === 'IN') {
+      if (newStatus === 'IN' || newStatus === 'MAINTENANCE') {
         // Get current date and time for the log
         const now = new Date();
         const dateString = now.toLocaleDateString('en-US', {
@@ -64,12 +64,12 @@ export default function Table({
         // Create a unique timestamp for the log ID
         const timestamp = now.getTime();
 
-        // Create log entry for the sign-in action with a unique ID
+        // Create log entry for the action with a unique ID
         const logEntry = {
-          id: `${item.barcode}_${item.name}_IN_${timestamp}`,
+          id: `${item.barcode}_${item.name}_${newStatus}_${timestamp}`,
           logId: `log_${timestamp}`,
           name: item.name,
-          action: "IN",
+          action: newStatus, // Use the actual status (IN or MAINTENANCE)
           date: dateString,
           barcode: item.barcode || 'Unknown',
           dayOfWeek: dayOfWeek,
@@ -178,7 +178,7 @@ export default function Table({
                       >
                         IN
                       </button>
-                    ) : (
+                    ) : item.status === "OUT" ? (
                       <button
                         onClick={() => confirmStatusChange(item, "IN")}
                         disabled={updatingItemId === item.id}
@@ -186,6 +186,15 @@ export default function Table({
                         title="Click to sign in"
                       >
                         {updatingItemId === item.id ? '...' : 'OUT'}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => confirmStatusChange(item, "IN")}
+                        disabled={updatingItemId === item.id}
+                        className="badge badge-warning badge-outline badge-lg w-14 mb-2 sm:mb-0 sm:mr-2 cursor-pointer hover:bg-amber-100 transition-colors"
+                        title="Click to mark as available"
+                      >
+                        {updatingItemId === item.id ? '...' : 'MX'}
                       </button>
                     )}
 
@@ -225,7 +234,7 @@ export default function Table({
                     </summary>
                     <ul className="menu dropdown-content bg-base-100 rounded-box z-50 w-52 p-2 shadow">
 
-                      {item.status === "OUT" && (
+                      {(item.status === "OUT" || item.status === "MAINTENANCE") && (
                         <li>
                           <button
                             onClick={() => {
@@ -240,17 +249,30 @@ export default function Table({
                         </li>
                       )}
                       {item.status === "IN" && (
-                        <li>
-                          <button
-                            onClick={() => {
-                              setOpenDropdownId(null); // Close dropdown after action
-                              confirmStatusChange(item, "OUT");
-                            }}
-                            className="text-left block w-full py-2"
-                          >
-                            Sign Out
-                          </button>
-                        </li>
+                        <>
+                          <li>
+                            <button
+                              onClick={() => {
+                                setOpenDropdownId(null); // Close dropdown after action
+                                confirmStatusChange(item, "OUT");
+                              }}
+                              className="text-left block w-full py-2"
+                            >
+                              Sign Out
+                            </button>
+                          </li>
+                          <li>
+                            <button
+                              onClick={() => {
+                                setOpenDropdownId(null); // Close dropdown after action
+                                confirmStatusChange(item, "MAINTENANCE");
+                              }}
+                              className="text-left block w-full py-2"
+                            >
+                              Mark as MX
+                            </button>
+                          </li>
+                        </>
                       )}
                     </ul>
                   </details>

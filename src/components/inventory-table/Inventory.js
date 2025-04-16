@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Results from "./Results";
 import CheckedIn from "./CheckedIn";
 import CheckedOut from "./CheckedOut";
+import Maintenance from "./Maintenance";
 import TotalAssetValue from "./TotalAssetValue";
 import Searchbar from "../Searchbar";
 import Table from "./Table";
@@ -24,6 +25,7 @@ export default function Inventory({
   const [totalAssetValue, setTotalAssetValue] = useState(0);
   const [checkedIn, setCheckedIn] = useState(0);
   const [checkedOut, setCheckedOut] = useState(0);
+  const [maintenance, setMaintenance] = useState(0);
   const [itemCount, setItemCount] = useState(0);
 
   //for changing filter. This uses useState and a function to change the state. This function is passed to the FilterInventory component,
@@ -73,6 +75,8 @@ export default function Inventory({
       counters.checkedIn++;
     } else if (item.status === "OUT") {
       counters.checkedOut++;
+    } else if (item.status === "MAINTENANCE") {
+      counters.maintenance++;
     }
   };
 
@@ -82,10 +86,11 @@ export default function Inventory({
       totalItems: 0,
       checkedIn: 0,
       checkedOut: 0,
+      maintenance: 0,
     };
 
     // Parse the filter value to determine category and status
-    if (filter === "IN" || filter === "OUT") {
+    if (filter === "IN" || filter === "OUT" || filter === "MAINTENANCE") {
       setActiveStatus(filter);
     } else if (filter !== "") {
       setActiveCategory(filter);
@@ -112,6 +117,7 @@ export default function Inventory({
     setTotalAssetValue(counters.totalPrice);
     setCheckedIn(counters.checkedIn);
     setCheckedOut(counters.checkedOut);
+    setMaintenance(counters.maintenance);
     setItemCount(counters.totalItems);
   }, [inventoryItems, filter, activeCategory, activeStatus]);
 
@@ -235,6 +241,7 @@ export default function Inventory({
             <Results itemCount={itemCount} />
             <CheckedIn checkedIn={checkedIn} />
             <CheckedOut checkedOut={checkedOut} />
+            <Maintenance maintenance={maintenance} />
             <TotalAssetValue totalAssetValue={totalAssetValue} />
           </div>
         </div>

@@ -234,6 +234,7 @@ export default function EditItem({
                     >
                       <option value="IN">IN</option>
                       <option value="OUT">OUT</option>
+                      <option value="MAINTENANCE">MX</option>
                     </select>
                   </div>
                   <div className="flex justify-center gap-4 mt-6">

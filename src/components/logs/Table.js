@@ -33,6 +33,8 @@ function Table({ logs, filter, dateFilter }) {
                       ? "badge-success"
                       : item.action === "OUT"
                       ? "badge-error"
+                      : item.action === "MAINTENANCE"
+                      ? "badge-warning"
                       : item.action === "DELETED"
                       ? "badge-warning"
                       : ""

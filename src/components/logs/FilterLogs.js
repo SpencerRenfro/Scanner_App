@@ -49,6 +49,7 @@ export default function FilterLogs({ statusFilter, setStatusFilter, dateFilter, 
           <option value="CREATED">Created</option>
           <option value="OUT">Out</option>
           <option value="IN">In</option>
+          <option value="MAINTENANCE">Maintenance</option>
           <option value="DELETED">Deleted</option>
         </select>
       </div>
