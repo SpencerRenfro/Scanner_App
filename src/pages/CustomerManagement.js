@@ -262,9 +262,51 @@ export default function CustomerManagement() {
     }
   };
 
+  // Check if a customer is a duplicate
+  const isDuplicateCustomer = (customerData) => {
+    // Check for exact match on email (case insensitive)
+    if (customerData.email) {
+      const emailMatch = customers.find(c =>
+        c.email && c.email.toLowerCase() === customerData.email.toLowerCase()
+      );
+      if (emailMatch) return true;
+    }
+
+    // Check for exact match on first name AND last name (case insensitive)
+    if (customerData.firstName && customerData.lastName) {
+      const nameMatch = customers.find(c =>
+        c.firstName && c.lastName &&
+        c.firstName.toLowerCase() === customerData.firstName.toLowerCase() &&
+        c.lastName.toLowerCase() === customerData.lastName.toLowerCase()
+      );
+      if (nameMatch) return true;
+    }
+
+    // Check for exact match on phone number (if provided)
+    if (customerData.phone) {
+      // Remove any non-digit characters for comparison
+      const cleanPhone = customerData.phone.replace(/\D/g, '');
+      if (cleanPhone) {
+        const phoneMatch = customers.find(c =>
+          c.phone && c.phone.replace(/\D/g, '') === cleanPhone
+        );
+        if (phoneMatch) return true;
+      }
+    }
+
+    return false;
+  };
+
   // Handle adding a new customer
   const addCustomer = async (customerData) => {
     try {
+      // Check for duplicate customer
+      if (isDuplicateCustomer(customerData)) {
+        setError('A customer with the same email, name, or phone number already exists.');
+        setTimeout(() => setError(null), 5000);
+        return;
+      }
+
       // Let the server generate the ID (don't include an ID in the request)
       const newCustomer = {
         ...customerData,
@@ -306,6 +348,50 @@ export default function CustomerManagement() {
   // Handle updating a customer
   const updateCustomer = async (customerData) => {
     try {
+      // Check for duplicate customer, excluding the current customer being edited
+      const isDuplicateOnUpdate = () => {
+        // Check for exact match on email (case insensitive)
+        if (customerData.email) {
+          const emailMatch = customers.find(c =>
+            c.id !== customerData.id && // Exclude the current customer
+            c.email && c.email.toLowerCase() === customerData.email.toLowerCase()
+          );
+          if (emailMatch) return true;
+        }
+
+        // Check for exact match on first name AND last name (case insensitive)
+        if (customerData.firstName && customerData.lastName) {
+          const nameMatch = customers.find(c =>
+            c.id !== customerData.id && // Exclude the current customer
+            c.firstName && c.lastName &&
+            c.firstName.toLowerCase() === customerData.firstName.toLowerCase() &&
+            c.lastName.toLowerCase() === customerData.lastName.toLowerCase()
+          );
+          if (nameMatch) return true;
+        }
+
+        // Check for exact match on phone number (if provided)
+        if (customerData.phone) {
+          // Remove any non-digit characters for comparison
+          const cleanPhone = customerData.phone.replace(/\D/g, '');
+          if (cleanPhone) {
+            const phoneMatch = customers.find(c =>
+              c.id !== customerData.id && // Exclude the current customer
+              c.phone && c.phone.replace(/\D/g, '') === cleanPhone
+            );
+            if (phoneMatch) return true;
+          }
+        }
+
+        return false;
+      };
+
+      if (isDuplicateOnUpdate()) {
+        setError('A customer with the same email, name, or phone number already exists.');
+        setTimeout(() => setError(null), 5000);
+        return;
+      }
+
       const response = await fetch(`http://localhost:8000/customers/${customerData.id}`, {
         method: 'PUT',
         headers: {

@@ -29,18 +29,13 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
     const fetchLogAndItem = async () => {
       setIsLoading(true);
       try {
-        // Fetch the log entry
-        console.log("Fetching log with ID:", id);
-
         // First try direct fetch by ID
         // URL encode the ID to handle special characters
         const encodedId = encodeURIComponent(id);
-        console.log("Encoded ID:", encodedId);
         let logResponse = await fetch(`http://localhost:8000/itemLogs/${encodedId}`);
 
         // If that fails, try to get all logs and find the matching one
         if (!logResponse.ok) {
-          console.log("Direct fetch failed, trying to find log in all logs");
           const allLogsResponse = await fetch(`http://localhost:8000/itemLogs`);
 
           if (!allLogsResponse.ok) {
@@ -48,13 +43,11 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
           }
 
           const allLogs = await allLogsResponse.json();
-          console.log("All logs:", allLogs);
 
           // Find the log with the matching ID or logId
           const matchingLog = allLogs.find(log => log.id === id || log.logId === id);
 
           if (matchingLog) {
-            console.log("Found matching log:", matchingLog);
             // Create a fake response with the matching log
             logResponse = {
               ok: true,
@@ -65,15 +58,12 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
           }
         }
         const logData = await logResponse.json();
-        console.log("Log data retrieved:", logData);
-        console.log("Log action:", logData.action);
         setLog(logData);
 
         // Get the barcode from the log data
         const barcode = logData.barcode;
 
         if (barcode) {
-          console.log("Looking up item with barcode:", barcode);
           // Find the item in inventory using the exact barcode
           const itemResponse = await fetch(
             `http://localhost:8000/inventory?barcode=${barcode}`
@@ -82,7 +72,6 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
             throw new Error("Failed to fetch item information");
           }
           const itemsData = await itemResponse.json();
-          console.log("Found items:", itemsData);
 
           if (itemsData.length > 0) {
             setItem(itemsData[0]);
@@ -96,7 +85,6 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
 
             // Find the item with matching barcode
             const matchedItem = allItems.find(item => item.barcode === barcode);
-            console.log("Matched item from all inventory:", matchedItem);
 
             if (matchedItem) {
               setItem(matchedItem);
@@ -121,22 +109,6 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
   const formatDate = (dateStr, timeStr) => {
     if (!dateStr) return "Unknown date";
     return `${dateStr} at ${timeStr || "Unknown time"}`;
-  };
-
-  // Format action description based on action type
-  const getActionDescription = (action) => {
-    switch (action) {
-      case "IN":
-        return "This log records when the item was checked back in";
-      case "OUT":
-        return "This log records when the item was checked out";
-      case "CREATED":
-        return "This log records when the item was first created";
-      case "DELETED":
-        return "This log records when the item was deleted";
-      default:
-        return `This log records an action (${action}) performed on the item`;
-    }
   };
 
   return (
@@ -201,13 +173,7 @@ export default function SingleItemLogInformation({ setHideNavbar }) {
             {/* Log Action Highlight */}
             <div className="px-6 py-4 bg-indigo-50 dark:bg-indigo-900 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-2">Log Entry Details</h3>
-              {/* Debug information */}
-              <div className="mb-2 p-2 bg-yellow-50 dark:bg-yellow-900/30 rounded-md text-xs text-yellow-800 dark:text-yellow-200">
-                <p>Debug - Log ID: {log.id}</p>
-                <p>Debug - Log Unique ID: {log.logId || 'Not available'}</p>
-                <p>Debug - Log Action: {log.action}</p>
-                <p>Debug - Log Date: {log.date} {log.time}</p>
-              </div>
+
               <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-gray-700 dark:text-gray-300">Action Type:</span>
